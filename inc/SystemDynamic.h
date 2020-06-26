@@ -3,7 +3,7 @@
 
 /*--- Public Functions ---*/
 // Get the Parameter Setting from the main.c
-void PassParameters(SolverInput *InputPtr, SpeedDynParameter *ModelParaPtr, EnvFactor *EnvFactorPtr);
+void PassParameters(SolverInput *InputPtr, DynParameter *ModelParaPtr, EnvFactor *EnvFactorPtr);
 
 // Create State Grid [min, max]
 void createStateVector(real_T *StateGrid, real_T min, real_T max, uint32_t N);

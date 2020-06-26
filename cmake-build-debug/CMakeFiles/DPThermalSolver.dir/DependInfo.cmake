@@ -4,13 +4,13 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_C
-  "E:/Thesis_Project/DPThermalSolver/main.c" "E:/Thesis_Project/DPThermalSolver/cmake-build-debug/CMakeFiles/DPThermalSolver.dir/main.c.obj"
-  "E:/Thesis_Project/DPThermalSolver/src/AdaptiveGrid.c" "E:/Thesis_Project/DPThermalSolver/cmake-build-debug/CMakeFiles/DPThermalSolver.dir/src/AdaptiveGrid.c.obj"
-  "E:/Thesis_Project/DPThermalSolver/src/BasicAlgorithm.c" "E:/Thesis_Project/DPThermalSolver/cmake-build-debug/CMakeFiles/DPThermalSolver.dir/src/BasicAlgorithm.c.obj"
-  "E:/Thesis_Project/DPThermalSolver/src/BoundaryLine.c" "E:/Thesis_Project/DPThermalSolver/cmake-build-debug/CMakeFiles/DPThermalSolver.dir/src/BoundaryLine.c.obj"
-  "E:/Thesis_Project/DPThermalSolver/src/MathFunction.c" "E:/Thesis_Project/DPThermalSolver/cmake-build-debug/CMakeFiles/DPThermalSolver.dir/src/MathFunction.c.obj"
-  "E:/Thesis_Project/DPThermalSolver/src/PrintResult.c" "E:/Thesis_Project/DPThermalSolver/cmake-build-debug/CMakeFiles/DPThermalSolver.dir/src/PrintResult.c.obj"
-  "E:/Thesis_Project/DPThermalSolver/src/SystemDynamic.c" "E:/Thesis_Project/DPThermalSolver/cmake-build-debug/CMakeFiles/DPThermalSolver.dir/src/SystemDynamic.c.obj"
+  "E:/Thesis_Project/CascadingDPSolver/main.c" "E:/Thesis_Project/CascadingDPSolver/cmake-build-debug/CMakeFiles/DPThermalSolver.dir/main.c.obj"
+  "E:/Thesis_Project/CascadingDPSolver/src/AdaptiveGrid.c" "E:/Thesis_Project/CascadingDPSolver/cmake-build-debug/CMakeFiles/DPThermalSolver.dir/src/AdaptiveGrid.c.obj"
+  "E:/Thesis_Project/CascadingDPSolver/src/BasicAlgorithm.c" "E:/Thesis_Project/CascadingDPSolver/cmake-build-debug/CMakeFiles/DPThermalSolver.dir/src/BasicAlgorithm.c.obj"
+  "E:/Thesis_Project/CascadingDPSolver/src/BoundaryLine.c" "E:/Thesis_Project/CascadingDPSolver/cmake-build-debug/CMakeFiles/DPThermalSolver.dir/src/BoundaryLine.c.obj"
+  "E:/Thesis_Project/CascadingDPSolver/src/MathFunction.c" "E:/Thesis_Project/CascadingDPSolver/cmake-build-debug/CMakeFiles/DPThermalSolver.dir/src/MathFunction.c.obj"
+  "E:/Thesis_Project/CascadingDPSolver/src/PrintResult.c" "E:/Thesis_Project/CascadingDPSolver/cmake-build-debug/CMakeFiles/DPThermalSolver.dir/src/PrintResult.c.obj"
+  "E:/Thesis_Project/CascadingDPSolver/src/SystemDynamic.c" "E:/Thesis_Project/CascadingDPSolver/cmake-build-debug/CMakeFiles/DPThermalSolver.dir/src/SystemDynamic.c.obj"
   )
 set(CMAKE_C_COMPILER_ID "GNU")
 

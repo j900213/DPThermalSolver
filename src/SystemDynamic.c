@@ -2,7 +2,7 @@
 #include "../inc/MathFunction.h"
 
 /*--- Static Variables ---*/
-static const SpeedDynParameter *ModelParameter;
+static const DynParameter *ModelParameter;
 static EnvFactor *EnvironmentalFactor;
 static SolverInput *SolverInputPtr;
 
@@ -11,7 +11,7 @@ uint32_t counterDynamics = 0;
 #endif // DYNCOUNTER
 
 /*--- Public Function Definition ---*/
-void PassParameters(SolverInput *InputPtr, SpeedDynParameter *ModelParaPtr, EnvFactor *EnvFactorPtr) {
+void PassParameters(SolverInput *InputPtr, DynParameter *ModelParaPtr, EnvFactor *EnvFactorPtr) {
     ModelParameter = ModelParaPtr;
     EnvironmentalFactor = EnvFactorPtr;
     SolverInputPtr = InputPtr;
