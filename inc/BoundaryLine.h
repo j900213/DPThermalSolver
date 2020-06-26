@@ -29,7 +29,7 @@ void freeBoundary(Boundary *BoundaryPtr);
 void normalBoundary(Boundary *BoundaryPtr, EnvFactor *EnvPtr);
 
 // DP Optimization - Boundary Line (Drawing Part)
-void ScreteWeapon(Boundary *BoundaryPtr, SolverInput *SolverInputPtr, SpeedDynParameter *ParaPtr, EnvFactor *EnvPtr,
+void ScreteWeapon(Boundary *BoundaryPtr, SolverInput *SolverInputPtr, DynParameter *ParaPtr, EnvFactor *EnvPtr,
                   real_T X0);
 
 // DP Optimization - Update State Grid

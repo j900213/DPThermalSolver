@@ -17,11 +17,11 @@
 #define HORIZON 200
 #define NX 200
 #define NU 500
-#define BLOCK 1
+#define BLOCK 4
 
 
 // Choose pre-defined scenario (SCENE1/SCENE2)
-#define SCENE2
+#define SCENE1
 // Turn on/off the counter of dynamics computation
 #define DYNCOUNTER
 // Turn on/off the counter of interpolation computation
@@ -53,7 +53,7 @@ extern uint32_t counterBound;
 typedef struct {
     uint16_t Nx;                // Number of state grid points
     uint16_t Nu;                // Number of control grid points
-    uint16_t Nhrz;                // Resolution of the horizon
+    uint16_t Nhrz;              // Length of the horizon
 }
         GridSetting;
 
@@ -64,6 +64,14 @@ typedef struct {
     real_T Fmin;                // Lower limit of the force
     real_T PAmax;               // Upper limit of the power when acceleration (at wheels)
     real_T PDmax;               // Upper limit of the power when deceleration (at wheels)
+    real_T Tmax;                // Upper limit of the cabin temperature
+    real_T Tmin;                // Lower limit of the cabin temperature
+    real_T Tmax_inlet;          // Upper limit of the inlet temperature
+    real_T Tmin_inlet;          // Lower limit of the inlet temperature
+    real_T Qmin;                // Upper limit of the inlet heat flow
+    real_T Qmax;                // Lower limit of the inlet heat flow
+    real_T PACmax;              // Upper limit of the AC power
+    real_T PACmin;              // Lower limit of the AC power
 }
         LimitSetting;
 
@@ -80,6 +88,7 @@ typedef struct {
         SolverInput;
 
 typedef struct {
+    // Speed
     real_T m;
     real_T g;
     real_T crr;
@@ -91,25 +100,41 @@ typedef struct {
     real_T alpha1;
     real_T alpha2;
     real_T beta0;
+
+    // Thermal
+    real_T Cth;
+    real_T Rth;
+    real_T Qsun;
+    real_T Qpas;
+    real_T Cp;
+    real_T rho;
+    real_T mDot;
+    real_T CoP_pos;
+    real_T CoP_neg;
+    real_T Tamb;
+
     // Tuning Parameter
     real_T penalty;
 }
-        SpeedDynParameter;
+        DynParameter;
 
 typedef struct {
     real_T Vmax_env[HORIZON + 1];
     real_T Vmin_env[HORIZON + 1];
     real_T Angle_env[HORIZON + 1];
     uint16_t endBlock[BLOCK];
+    real_T T_required[HORIZON + 1];
 }
         EnvFactor;
 
 typedef struct {
     real_T Cost;                            // Total Cost
-    real_T Vo[HORIZON];                    // Optimal State Trajectory
-    real_T Fo[HORIZON];                    // Optimal Control Policy
-    real_T upperBound[HORIZON + 1];        // Upper Boundary Line
-    real_T lowerBound[HORIZON + 1];        // Lower Boundary Line
+    real_T Vo[HORIZON];                     // Optimal Speed Trajectory
+    real_T Fo[HORIZON];                     // Optimal Speed Control Policy
+    real_T To[HORIZON];                     // Optimal Thermal Trajectory
+    real_T Qo[HORIZON];                     // Optimal Thermal Control Policy
+    real_T upperBound[HORIZON + 1];         // Upper Boundary Line
+    real_T lowerBound[HORIZON + 1];         // Lower Boundary Line
     real_T upperActual[HORIZON];
     real_T lowerActual[HORIZON];
 }

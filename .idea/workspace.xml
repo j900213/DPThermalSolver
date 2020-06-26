@@ -27,6 +27,7 @@
   <component name="CMakeRunConfigurationManager" shouldGenerate="true" shouldDeleteObsolete="true">
     <generated>
       <config projectName="DPSpeedSolver" targetName="DPSpeedSolver" />
+      <config projectName="DPSpeedSolver" targetName="DPThermalSolver" />
     </generated>
   </component>
   <component name="CMakeSettings">
@@ -35,7 +36,44 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b3db8204-853c-4db9-a74f-bbcd32791450" name="Default Changelist" comment="" />
+    <list default="true" id="b3db8204-853c-4db9-a74f-bbcd32791450" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/j9002.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dictionaries/j9002.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeCache.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeCache.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/3.16.5/CMakeDetermineCompilerABI_C.bin" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/3.16.5/CMakeDetermineCompilerABI_C.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/CMakeDirectoryInformation.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/CMakeDirectoryInformation.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/CMakeOutput.log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/CMakeOutput.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/DPSpeedSolver.dir/C.includecache" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/DPSpeedSolver.dir/DependInfo.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/DPSpeedSolver.dir/build.make" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/DPSpeedSolver.dir/cmake_clean.cmake" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/DPSpeedSolver.dir/depend.internal" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/DPSpeedSolver.dir/depend.make" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/DPSpeedSolver.dir/flags.make" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/DPSpeedSolver.dir/link.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/DPSpeedSolver.dir/linklibs.rsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/DPSpeedSolver.dir/objects1.rsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/DPSpeedSolver.dir/progress.make" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/DPThermalSolver.dir/C.includecache" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/DPThermalSolver.dir/C.includecache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/DPThermalSolver.dir/DependInfo.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/DPThermalSolver.dir/DependInfo.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/DPThermalSolver.dir/build.make" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/DPThermalSolver.dir/build.make" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/DPThermalSolver.dir/depend.internal" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/DPThermalSolver.dir/depend.internal" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/Makefile.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/Makefile.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/Makefile2" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/Makefile2" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/TargetDirectories.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/TargetDirectories.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-log.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/DPSpeedSolver.cbp" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/DPSpeedSolver.cbp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/Makefile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/inc/BasicAlgorithm.h" beforeDir="false" afterPath="$PROJECT_DIR$/inc/BasicAlgorithm.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/inc/BoundaryLine.h" beforeDir="false" afterPath="$PROJECT_DIR$/inc/BoundaryLine.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/inc/SolverStruct.h" beforeDir="false" afterPath="$PROJECT_DIR$/inc/SolverStruct.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/inc/SystemDynamic.h" beforeDir="false" afterPath="$PROJECT_DIR$/inc/SystemDynamic.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.c" beforeDir="false" afterPath="$PROJECT_DIR$/main.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/BasicAlgorithm.c" beforeDir="false" afterPath="$PROJECT_DIR$/src/BasicAlgorithm.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/BoundaryLine.c" beforeDir="false" afterPath="$PROJECT_DIR$/src/BoundaryLine.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/SystemDynamic.c" beforeDir="false" afterPath="$PROJECT_DIR$/src/SystemDynamic.c" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -92,6 +130,8 @@
       <workItem from="1592897951053" duration="31768000" />
       <workItem from="1592982326513" duration="5745000" />
       <workItem from="1593069112446" duration="15242000" />
+      <workItem from="1593174853593" duration="8318000" />
+      <workItem from="1593186332947" duration="1083000" />
     </task>
     <servers />
   </component>
@@ -123,7 +163,7 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="WindowStateProjectService">
-    <state width="1877" height="348" key="GridCell.Tab.0.bottom" timestamp="1593095505948">
+    <state width="1125" height="552" key="GridCell.Tab.0.bottom" timestamp="1593188061004">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="929" height="392" key="GridCell.Tab.0.bottom/-1920.0.1536.832/0.0.1920.1040@-1920.0.1536.832" timestamp="1592939871616" />
@@ -131,8 +171,8 @@
     <state width="1242" height="661" key="GridCell.Tab.0.bottom/-1920.0.1920.1040/0.0.1920.1040@-1920.0.1920.1040" timestamp="1593094669400" />
     <state width="1877" height="348" key="GridCell.Tab.0.bottom/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1593095505948" />
     <state width="1199" height="407" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1592595614306" />
-    <state width="929" height="392" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1593029108287" />
-    <state width="1877" height="348" key="GridCell.Tab.0.center" timestamp="1593095505948">
+    <state width="1125" height="552" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1593188061004" />
+    <state width="1125" height="552" key="GridCell.Tab.0.center" timestamp="1593188061004">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="929" height="392" key="GridCell.Tab.0.center/-1920.0.1536.832/0.0.1920.1040@-1920.0.1536.832" timestamp="1592939871616" />
@@ -140,8 +180,8 @@
     <state width="1242" height="661" key="GridCell.Tab.0.center/-1920.0.1920.1040/0.0.1920.1040@-1920.0.1920.1040" timestamp="1593094669400" />
     <state width="1877" height="348" key="GridCell.Tab.0.center/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1593095505948" />
     <state width="1199" height="407" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1592595614306" />
-    <state width="929" height="392" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1593029108287" />
-    <state width="1877" height="348" key="GridCell.Tab.0.left" timestamp="1593095505948">
+    <state width="1125" height="552" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1593188061004" />
+    <state width="1125" height="552" key="GridCell.Tab.0.left" timestamp="1593188061004">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="929" height="392" key="GridCell.Tab.0.left/-1920.0.1536.832/0.0.1920.1040@-1920.0.1536.832" timestamp="1592939871616" />
@@ -149,8 +189,8 @@
     <state width="1242" height="661" key="GridCell.Tab.0.left/-1920.0.1920.1040/0.0.1920.1040@-1920.0.1920.1040" timestamp="1593094669400" />
     <state width="1877" height="348" key="GridCell.Tab.0.left/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1593095505948" />
     <state width="1199" height="407" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1592595614306" />
-    <state width="929" height="392" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1593029108287" />
-    <state width="1877" height="348" key="GridCell.Tab.0.right" timestamp="1593095505948">
+    <state width="1125" height="552" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1593188061004" />
+    <state width="1125" height="552" key="GridCell.Tab.0.right" timestamp="1593188061004">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="929" height="392" key="GridCell.Tab.0.right/-1920.0.1536.832/0.0.1920.1040@-1920.0.1536.832" timestamp="1592939871616" />
@@ -158,7 +198,7 @@
     <state width="1242" height="661" key="GridCell.Tab.0.right/-1920.0.1920.1040/0.0.1920.1040@-1920.0.1920.1040" timestamp="1593094669400" />
     <state width="1877" height="348" key="GridCell.Tab.0.right/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1593095505948" />
     <state width="1199" height="407" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1592595614306" />
-    <state width="929" height="392" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1593029108287" />
+    <state width="1125" height="552" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1593188061004" />
     <state width="1877" height="348" key="GridCell.Tab.1.bottom" timestamp="1593095505948">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -187,10 +227,11 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="689" y="209" key="SettingsEditor/-1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1592339069875" />
-    <state x="539" y="183" width="840" height="856" key="search.everywhere.popup" timestamp="1592911324741">
+    <state x="539" y="183" width="840" height="856" key="search.everywhere.popup" timestamp="1593186240502">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="539" y="183" width="840" height="856" key="search.everywhere.popup/-1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1592911324741" />
     <state x="431" y="145" width="672" height="678" key="search.everywhere.popup/0.0.1536.824@0.0.1536.824" timestamp="1592575037321" />
+    <state x="539" y="183" width="840" height="856" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1593186240502" />
   </component>
 </project>

@@ -8,18 +8,18 @@
 		<Option virtualFolders="CMake Files\;"/>
 		<Build>
 			<Target title="all">
-				<Option working_dir="E:/Thesis_Project/DPThermalSolver/cmake-build-debug"/>
+				<Option working_dir="E:/Thesis_Project/CascadingDPSolver/cmake-build-debug"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="C:/MinGW/bin/mingw32-make.exe -f &quot;E:/Thesis_Project/DPThermalSolver/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
-					<CompileFile command="C:/MinGW/bin/mingw32-make.exe -f &quot;E:/Thesis_Project/DPThermalSolver/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="C:/MinGW/bin/mingw32-make.exe -f &quot;E:/Thesis_Project/DPThermalSolver/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="C:/MinGW/bin/mingw32-make.exe -f &quot;E:/Thesis_Project/DPThermalSolver/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="C:/MinGW/bin/mingw32-make.exe -f &quot;E:/Thesis_Project/CascadingDPSolver/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="C:/MinGW/bin/mingw32-make.exe -f &quot;E:/Thesis_Project/CascadingDPSolver/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/MinGW/bin/mingw32-make.exe -f &quot;E:/Thesis_Project/CascadingDPSolver/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/MinGW/bin/mingw32-make.exe -f &quot;E:/Thesis_Project/CascadingDPSolver/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="DPThermalSolver">
-				<Option output="E:/Thesis_Project/DPThermalSolver/cmake-build-debug/DPThermalSolver.exe" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="E:/Thesis_Project/DPThermalSolver/cmake-build-debug"/>
+				<Option output="E:/Thesis_Project/CascadingDPSolver/cmake-build-debug/DPThermalSolver.exe" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="E:/Thesis_Project/CascadingDPSolver/cmake-build-debug"/>
 				<Option object_output="./"/>
 				<Option type="1"/>
 				<Option compiler="gcc"/>
@@ -30,15 +30,15 @@
 					<Add directory="c:\mingw\bin\../lib/gcc/mingw32/6.3.0/../../../../mingw32/include"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="C:/MinGW/bin/mingw32-make.exe -f &quot;E:/Thesis_Project/DPThermalSolver/cmake-build-debug/Makefile&quot;  VERBOSE=1 DPThermalSolver"/>
-					<CompileFile command="C:/MinGW/bin/mingw32-make.exe -f &quot;E:/Thesis_Project/DPThermalSolver/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="C:/MinGW/bin/mingw32-make.exe -f &quot;E:/Thesis_Project/DPThermalSolver/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="C:/MinGW/bin/mingw32-make.exe -f &quot;E:/Thesis_Project/DPThermalSolver/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="C:/MinGW/bin/mingw32-make.exe -f &quot;E:/Thesis_Project/CascadingDPSolver/cmake-build-debug/Makefile&quot;  VERBOSE=1 DPThermalSolver"/>
+					<CompileFile command="C:/MinGW/bin/mingw32-make.exe -f &quot;E:/Thesis_Project/CascadingDPSolver/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/MinGW/bin/mingw32-make.exe -f &quot;E:/Thesis_Project/CascadingDPSolver/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/MinGW/bin/mingw32-make.exe -f &quot;E:/Thesis_Project/CascadingDPSolver/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="DPThermalSolver/fast">
-				<Option output="E:/Thesis_Project/DPThermalSolver/cmake-build-debug/DPThermalSolver.exe" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="E:/Thesis_Project/DPThermalSolver/cmake-build-debug"/>
+				<Option output="E:/Thesis_Project/CascadingDPSolver/cmake-build-debug/DPThermalSolver.exe" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="E:/Thesis_Project/CascadingDPSolver/cmake-build-debug"/>
 				<Option object_output="./"/>
 				<Option type="1"/>
 				<Option compiler="gcc"/>
@@ -49,76 +49,76 @@
 					<Add directory="c:\mingw\bin\../lib/gcc/mingw32/6.3.0/../../../../mingw32/include"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="C:/MinGW/bin/mingw32-make.exe -f &quot;E:/Thesis_Project/DPThermalSolver/cmake-build-debug/Makefile&quot;  VERBOSE=1 DPThermalSolver/fast"/>
-					<CompileFile command="C:/MinGW/bin/mingw32-make.exe -f &quot;E:/Thesis_Project/DPThermalSolver/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="C:/MinGW/bin/mingw32-make.exe -f &quot;E:/Thesis_Project/DPThermalSolver/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="C:/MinGW/bin/mingw32-make.exe -f &quot;E:/Thesis_Project/DPThermalSolver/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="C:/MinGW/bin/mingw32-make.exe -f &quot;E:/Thesis_Project/CascadingDPSolver/cmake-build-debug/Makefile&quot;  VERBOSE=1 DPThermalSolver/fast"/>
+					<CompileFile command="C:/MinGW/bin/mingw32-make.exe -f &quot;E:/Thesis_Project/CascadingDPSolver/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/MinGW/bin/mingw32-make.exe -f &quot;E:/Thesis_Project/CascadingDPSolver/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/MinGW/bin/mingw32-make.exe -f &quot;E:/Thesis_Project/CascadingDPSolver/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="edit_cache">
-				<Option working_dir="E:/Thesis_Project/DPThermalSolver/cmake-build-debug"/>
+				<Option working_dir="E:/Thesis_Project/CascadingDPSolver/cmake-build-debug"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="C:/MinGW/bin/mingw32-make.exe -f &quot;E:/Thesis_Project/DPThermalSolver/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
-					<CompileFile command="C:/MinGW/bin/mingw32-make.exe -f &quot;E:/Thesis_Project/DPThermalSolver/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="C:/MinGW/bin/mingw32-make.exe -f &quot;E:/Thesis_Project/DPThermalSolver/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="C:/MinGW/bin/mingw32-make.exe -f &quot;E:/Thesis_Project/DPThermalSolver/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="C:/MinGW/bin/mingw32-make.exe -f &quot;E:/Thesis_Project/CascadingDPSolver/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="C:/MinGW/bin/mingw32-make.exe -f &quot;E:/Thesis_Project/CascadingDPSolver/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/MinGW/bin/mingw32-make.exe -f &quot;E:/Thesis_Project/CascadingDPSolver/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/MinGW/bin/mingw32-make.exe -f &quot;E:/Thesis_Project/CascadingDPSolver/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="rebuild_cache">
-				<Option working_dir="E:/Thesis_Project/DPThermalSolver/cmake-build-debug"/>
+				<Option working_dir="E:/Thesis_Project/CascadingDPSolver/cmake-build-debug"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="C:/MinGW/bin/mingw32-make.exe -f &quot;E:/Thesis_Project/DPThermalSolver/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
-					<CompileFile command="C:/MinGW/bin/mingw32-make.exe -f &quot;E:/Thesis_Project/DPThermalSolver/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="C:/MinGW/bin/mingw32-make.exe -f &quot;E:/Thesis_Project/DPThermalSolver/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="C:/MinGW/bin/mingw32-make.exe -f &quot;E:/Thesis_Project/DPThermalSolver/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="C:/MinGW/bin/mingw32-make.exe -f &quot;E:/Thesis_Project/CascadingDPSolver/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="C:/MinGW/bin/mingw32-make.exe -f &quot;E:/Thesis_Project/CascadingDPSolver/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/MinGW/bin/mingw32-make.exe -f &quot;E:/Thesis_Project/CascadingDPSolver/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/MinGW/bin/mingw32-make.exe -f &quot;E:/Thesis_Project/CascadingDPSolver/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 		</Build>
-		<Unit filename="E:/Thesis_Project/DPThermalSolver/inc/AdaptiveGrid.h">
+		<Unit filename="E:/Thesis_Project/CascadingDPSolver/inc/AdaptiveGrid.h">
 			<Option target="DPThermalSolver"/>
 		</Unit>
-		<Unit filename="E:/Thesis_Project/DPThermalSolver/inc/BasicAlgorithm.h">
+		<Unit filename="E:/Thesis_Project/CascadingDPSolver/inc/BasicAlgorithm.h">
 			<Option target="DPThermalSolver"/>
 		</Unit>
-		<Unit filename="E:/Thesis_Project/DPThermalSolver/inc/BoundaryLine.h">
+		<Unit filename="E:/Thesis_Project/CascadingDPSolver/inc/BoundaryLine.h">
 			<Option target="DPThermalSolver"/>
 		</Unit>
-		<Unit filename="E:/Thesis_Project/DPThermalSolver/inc/MathFunction.h">
+		<Unit filename="E:/Thesis_Project/CascadingDPSolver/inc/MathFunction.h">
 			<Option target="DPThermalSolver"/>
 		</Unit>
-		<Unit filename="E:/Thesis_Project/DPThermalSolver/inc/PrintResult.h">
+		<Unit filename="E:/Thesis_Project/CascadingDPSolver/inc/PrintResult.h">
 			<Option target="DPThermalSolver"/>
 		</Unit>
-		<Unit filename="E:/Thesis_Project/DPThermalSolver/inc/SolverStruct.h">
+		<Unit filename="E:/Thesis_Project/CascadingDPSolver/inc/SolverStruct.h">
 			<Option target="DPThermalSolver"/>
 		</Unit>
-		<Unit filename="E:/Thesis_Project/DPThermalSolver/inc/SystemDynamic.h">
+		<Unit filename="E:/Thesis_Project/CascadingDPSolver/inc/SystemDynamic.h">
 			<Option target="DPThermalSolver"/>
 		</Unit>
-		<Unit filename="E:/Thesis_Project/DPThermalSolver/main.c">
+		<Unit filename="E:/Thesis_Project/CascadingDPSolver/main.c">
 			<Option target="DPThermalSolver"/>
 		</Unit>
-		<Unit filename="E:/Thesis_Project/DPThermalSolver/src/AdaptiveGrid.c">
+		<Unit filename="E:/Thesis_Project/CascadingDPSolver/src/AdaptiveGrid.c">
 			<Option target="DPThermalSolver"/>
 		</Unit>
-		<Unit filename="E:/Thesis_Project/DPThermalSolver/src/BasicAlgorithm.c">
+		<Unit filename="E:/Thesis_Project/CascadingDPSolver/src/BasicAlgorithm.c">
 			<Option target="DPThermalSolver"/>
 		</Unit>
-		<Unit filename="E:/Thesis_Project/DPThermalSolver/src/BoundaryLine.c">
+		<Unit filename="E:/Thesis_Project/CascadingDPSolver/src/BoundaryLine.c">
 			<Option target="DPThermalSolver"/>
 		</Unit>
-		<Unit filename="E:/Thesis_Project/DPThermalSolver/src/MathFunction.c">
+		<Unit filename="E:/Thesis_Project/CascadingDPSolver/src/MathFunction.c">
 			<Option target="DPThermalSolver"/>
 		</Unit>
-		<Unit filename="E:/Thesis_Project/DPThermalSolver/src/PrintResult.c">
+		<Unit filename="E:/Thesis_Project/CascadingDPSolver/src/PrintResult.c">
 			<Option target="DPThermalSolver"/>
 		</Unit>
-		<Unit filename="E:/Thesis_Project/DPThermalSolver/src/SystemDynamic.c">
+		<Unit filename="E:/Thesis_Project/CascadingDPSolver/src/SystemDynamic.c">
 			<Option target="DPThermalSolver"/>
 		</Unit>
-		<Unit filename="E:/Thesis_Project/DPThermalSolver/CMakeLists.txt">
+		<Unit filename="E:/Thesis_Project/CascadingDPSolver/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\"/>
 		</Unit>
 	</Project>

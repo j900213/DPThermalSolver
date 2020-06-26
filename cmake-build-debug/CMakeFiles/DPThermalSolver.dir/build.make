@@ -42,10 +42,10 @@ RM = "E:\CLion\CLion 2020.1.2\bin\cmake\win\bin\cmake.exe" -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = E:\Thesis_Project\DPThermalSolver
+CMAKE_SOURCE_DIR = E:\Thesis_Project\CascadingDPSolver
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = E:\Thesis_Project\DPThermalSolver\cmake-build-debug
+CMAKE_BINARY_DIR = E:\Thesis_Project\CascadingDPSolver\cmake-build-debug
 
 # Include any dependencies generated for this target.
 include CMakeFiles/DPThermalSolver.dir/depend.make
@@ -58,94 +58,94 @@ include CMakeFiles/DPThermalSolver.dir/flags.make
 
 CMakeFiles/DPThermalSolver.dir/main.c.obj: CMakeFiles/DPThermalSolver.dir/flags.make
 CMakeFiles/DPThermalSolver.dir/main.c.obj: ../main.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=E:\Thesis_Project\DPThermalSolver\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object CMakeFiles/DPThermalSolver.dir/main.c.obj"
-	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\DPThermalSolver.dir\main.c.obj   -c E:\Thesis_Project\DPThermalSolver\main.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=E:\Thesis_Project\CascadingDPSolver\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object CMakeFiles/DPThermalSolver.dir/main.c.obj"
+	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\DPThermalSolver.dir\main.c.obj   -c E:\Thesis_Project\CascadingDPSolver\main.c
 
 CMakeFiles/DPThermalSolver.dir/main.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/DPThermalSolver.dir/main.c.i"
-	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E E:\Thesis_Project\DPThermalSolver\main.c > CMakeFiles\DPThermalSolver.dir\main.c.i
+	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E E:\Thesis_Project\CascadingDPSolver\main.c > CMakeFiles\DPThermalSolver.dir\main.c.i
 
 CMakeFiles/DPThermalSolver.dir/main.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/DPThermalSolver.dir/main.c.s"
-	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S E:\Thesis_Project\DPThermalSolver\main.c -o CMakeFiles\DPThermalSolver.dir\main.c.s
+	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S E:\Thesis_Project\CascadingDPSolver\main.c -o CMakeFiles\DPThermalSolver.dir\main.c.s
 
 CMakeFiles/DPThermalSolver.dir/src/BasicAlgorithm.c.obj: CMakeFiles/DPThermalSolver.dir/flags.make
 CMakeFiles/DPThermalSolver.dir/src/BasicAlgorithm.c.obj: ../src/BasicAlgorithm.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=E:\Thesis_Project\DPThermalSolver\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object CMakeFiles/DPThermalSolver.dir/src/BasicAlgorithm.c.obj"
-	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\DPThermalSolver.dir\src\BasicAlgorithm.c.obj   -c E:\Thesis_Project\DPThermalSolver\src\BasicAlgorithm.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=E:\Thesis_Project\CascadingDPSolver\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object CMakeFiles/DPThermalSolver.dir/src/BasicAlgorithm.c.obj"
+	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\DPThermalSolver.dir\src\BasicAlgorithm.c.obj   -c E:\Thesis_Project\CascadingDPSolver\src\BasicAlgorithm.c
 
 CMakeFiles/DPThermalSolver.dir/src/BasicAlgorithm.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/DPThermalSolver.dir/src/BasicAlgorithm.c.i"
-	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E E:\Thesis_Project\DPThermalSolver\src\BasicAlgorithm.c > CMakeFiles\DPThermalSolver.dir\src\BasicAlgorithm.c.i
+	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E E:\Thesis_Project\CascadingDPSolver\src\BasicAlgorithm.c > CMakeFiles\DPThermalSolver.dir\src\BasicAlgorithm.c.i
 
 CMakeFiles/DPThermalSolver.dir/src/BasicAlgorithm.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/DPThermalSolver.dir/src/BasicAlgorithm.c.s"
-	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S E:\Thesis_Project\DPThermalSolver\src\BasicAlgorithm.c -o CMakeFiles\DPThermalSolver.dir\src\BasicAlgorithm.c.s
+	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S E:\Thesis_Project\CascadingDPSolver\src\BasicAlgorithm.c -o CMakeFiles\DPThermalSolver.dir\src\BasicAlgorithm.c.s
 
 CMakeFiles/DPThermalSolver.dir/src/BoundaryLine.c.obj: CMakeFiles/DPThermalSolver.dir/flags.make
 CMakeFiles/DPThermalSolver.dir/src/BoundaryLine.c.obj: ../src/BoundaryLine.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=E:\Thesis_Project\DPThermalSolver\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building C object CMakeFiles/DPThermalSolver.dir/src/BoundaryLine.c.obj"
-	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\DPThermalSolver.dir\src\BoundaryLine.c.obj   -c E:\Thesis_Project\DPThermalSolver\src\BoundaryLine.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=E:\Thesis_Project\CascadingDPSolver\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building C object CMakeFiles/DPThermalSolver.dir/src/BoundaryLine.c.obj"
+	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\DPThermalSolver.dir\src\BoundaryLine.c.obj   -c E:\Thesis_Project\CascadingDPSolver\src\BoundaryLine.c
 
 CMakeFiles/DPThermalSolver.dir/src/BoundaryLine.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/DPThermalSolver.dir/src/BoundaryLine.c.i"
-	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E E:\Thesis_Project\DPThermalSolver\src\BoundaryLine.c > CMakeFiles\DPThermalSolver.dir\src\BoundaryLine.c.i
+	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E E:\Thesis_Project\CascadingDPSolver\src\BoundaryLine.c > CMakeFiles\DPThermalSolver.dir\src\BoundaryLine.c.i
 
 CMakeFiles/DPThermalSolver.dir/src/BoundaryLine.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/DPThermalSolver.dir/src/BoundaryLine.c.s"
-	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S E:\Thesis_Project\DPThermalSolver\src\BoundaryLine.c -o CMakeFiles\DPThermalSolver.dir\src\BoundaryLine.c.s
+	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S E:\Thesis_Project\CascadingDPSolver\src\BoundaryLine.c -o CMakeFiles\DPThermalSolver.dir\src\BoundaryLine.c.s
 
 CMakeFiles/DPThermalSolver.dir/src/MathFunction.c.obj: CMakeFiles/DPThermalSolver.dir/flags.make
 CMakeFiles/DPThermalSolver.dir/src/MathFunction.c.obj: ../src/MathFunction.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=E:\Thesis_Project\DPThermalSolver\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building C object CMakeFiles/DPThermalSolver.dir/src/MathFunction.c.obj"
-	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\DPThermalSolver.dir\src\MathFunction.c.obj   -c E:\Thesis_Project\DPThermalSolver\src\MathFunction.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=E:\Thesis_Project\CascadingDPSolver\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building C object CMakeFiles/DPThermalSolver.dir/src/MathFunction.c.obj"
+	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\DPThermalSolver.dir\src\MathFunction.c.obj   -c E:\Thesis_Project\CascadingDPSolver\src\MathFunction.c
 
 CMakeFiles/DPThermalSolver.dir/src/MathFunction.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/DPThermalSolver.dir/src/MathFunction.c.i"
-	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E E:\Thesis_Project\DPThermalSolver\src\MathFunction.c > CMakeFiles\DPThermalSolver.dir\src\MathFunction.c.i
+	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E E:\Thesis_Project\CascadingDPSolver\src\MathFunction.c > CMakeFiles\DPThermalSolver.dir\src\MathFunction.c.i
 
 CMakeFiles/DPThermalSolver.dir/src/MathFunction.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/DPThermalSolver.dir/src/MathFunction.c.s"
-	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S E:\Thesis_Project\DPThermalSolver\src\MathFunction.c -o CMakeFiles\DPThermalSolver.dir\src\MathFunction.c.s
+	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S E:\Thesis_Project\CascadingDPSolver\src\MathFunction.c -o CMakeFiles\DPThermalSolver.dir\src\MathFunction.c.s
 
 CMakeFiles/DPThermalSolver.dir/src/PrintResult.c.obj: CMakeFiles/DPThermalSolver.dir/flags.make
 CMakeFiles/DPThermalSolver.dir/src/PrintResult.c.obj: ../src/PrintResult.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=E:\Thesis_Project\DPThermalSolver\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building C object CMakeFiles/DPThermalSolver.dir/src/PrintResult.c.obj"
-	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\DPThermalSolver.dir\src\PrintResult.c.obj   -c E:\Thesis_Project\DPThermalSolver\src\PrintResult.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=E:\Thesis_Project\CascadingDPSolver\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building C object CMakeFiles/DPThermalSolver.dir/src/PrintResult.c.obj"
+	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\DPThermalSolver.dir\src\PrintResult.c.obj   -c E:\Thesis_Project\CascadingDPSolver\src\PrintResult.c
 
 CMakeFiles/DPThermalSolver.dir/src/PrintResult.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/DPThermalSolver.dir/src/PrintResult.c.i"
-	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E E:\Thesis_Project\DPThermalSolver\src\PrintResult.c > CMakeFiles\DPThermalSolver.dir\src\PrintResult.c.i
+	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E E:\Thesis_Project\CascadingDPSolver\src\PrintResult.c > CMakeFiles\DPThermalSolver.dir\src\PrintResult.c.i
 
 CMakeFiles/DPThermalSolver.dir/src/PrintResult.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/DPThermalSolver.dir/src/PrintResult.c.s"
-	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S E:\Thesis_Project\DPThermalSolver\src\PrintResult.c -o CMakeFiles\DPThermalSolver.dir\src\PrintResult.c.s
+	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S E:\Thesis_Project\CascadingDPSolver\src\PrintResult.c -o CMakeFiles\DPThermalSolver.dir\src\PrintResult.c.s
 
 CMakeFiles/DPThermalSolver.dir/src/SystemDynamic.c.obj: CMakeFiles/DPThermalSolver.dir/flags.make
 CMakeFiles/DPThermalSolver.dir/src/SystemDynamic.c.obj: ../src/SystemDynamic.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=E:\Thesis_Project\DPThermalSolver\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building C object CMakeFiles/DPThermalSolver.dir/src/SystemDynamic.c.obj"
-	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\DPThermalSolver.dir\src\SystemDynamic.c.obj   -c E:\Thesis_Project\DPThermalSolver\src\SystemDynamic.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=E:\Thesis_Project\CascadingDPSolver\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building C object CMakeFiles/DPThermalSolver.dir/src/SystemDynamic.c.obj"
+	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\DPThermalSolver.dir\src\SystemDynamic.c.obj   -c E:\Thesis_Project\CascadingDPSolver\src\SystemDynamic.c
 
 CMakeFiles/DPThermalSolver.dir/src/SystemDynamic.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/DPThermalSolver.dir/src/SystemDynamic.c.i"
-	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E E:\Thesis_Project\DPThermalSolver\src\SystemDynamic.c > CMakeFiles\DPThermalSolver.dir\src\SystemDynamic.c.i
+	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E E:\Thesis_Project\CascadingDPSolver\src\SystemDynamic.c > CMakeFiles\DPThermalSolver.dir\src\SystemDynamic.c.i
 
 CMakeFiles/DPThermalSolver.dir/src/SystemDynamic.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/DPThermalSolver.dir/src/SystemDynamic.c.s"
-	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S E:\Thesis_Project\DPThermalSolver\src\SystemDynamic.c -o CMakeFiles\DPThermalSolver.dir\src\SystemDynamic.c.s
+	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S E:\Thesis_Project\CascadingDPSolver\src\SystemDynamic.c -o CMakeFiles\DPThermalSolver.dir\src\SystemDynamic.c.s
 
 CMakeFiles/DPThermalSolver.dir/src/AdaptiveGrid.c.obj: CMakeFiles/DPThermalSolver.dir/flags.make
 CMakeFiles/DPThermalSolver.dir/src/AdaptiveGrid.c.obj: ../src/AdaptiveGrid.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=E:\Thesis_Project\DPThermalSolver\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building C object CMakeFiles/DPThermalSolver.dir/src/AdaptiveGrid.c.obj"
-	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\DPThermalSolver.dir\src\AdaptiveGrid.c.obj   -c E:\Thesis_Project\DPThermalSolver\src\AdaptiveGrid.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=E:\Thesis_Project\CascadingDPSolver\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building C object CMakeFiles/DPThermalSolver.dir/src/AdaptiveGrid.c.obj"
+	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\DPThermalSolver.dir\src\AdaptiveGrid.c.obj   -c E:\Thesis_Project\CascadingDPSolver\src\AdaptiveGrid.c
 
 CMakeFiles/DPThermalSolver.dir/src/AdaptiveGrid.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/DPThermalSolver.dir/src/AdaptiveGrid.c.i"
-	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E E:\Thesis_Project\DPThermalSolver\src\AdaptiveGrid.c > CMakeFiles\DPThermalSolver.dir\src\AdaptiveGrid.c.i
+	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E E:\Thesis_Project\CascadingDPSolver\src\AdaptiveGrid.c > CMakeFiles\DPThermalSolver.dir\src\AdaptiveGrid.c.i
 
 CMakeFiles/DPThermalSolver.dir/src/AdaptiveGrid.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/DPThermalSolver.dir/src/AdaptiveGrid.c.s"
-	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S E:\Thesis_Project\DPThermalSolver\src\AdaptiveGrid.c -o CMakeFiles\DPThermalSolver.dir\src\AdaptiveGrid.c.s
+	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S E:\Thesis_Project\CascadingDPSolver\src\AdaptiveGrid.c -o CMakeFiles\DPThermalSolver.dir\src\AdaptiveGrid.c.s
 
 # Object files for target DPThermalSolver
 DPThermalSolver_OBJECTS = \
@@ -171,7 +171,7 @@ DPThermalSolver.exe: CMakeFiles/DPThermalSolver.dir/build.make
 DPThermalSolver.exe: CMakeFiles/DPThermalSolver.dir/linklibs.rsp
 DPThermalSolver.exe: CMakeFiles/DPThermalSolver.dir/objects1.rsp
 DPThermalSolver.exe: CMakeFiles/DPThermalSolver.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=E:\Thesis_Project\DPThermalSolver\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Linking C executable DPThermalSolver.exe"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=E:\Thesis_Project\CascadingDPSolver\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Linking C executable DPThermalSolver.exe"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles\DPThermalSolver.dir\link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -184,6 +184,6 @@ CMakeFiles/DPThermalSolver.dir/clean:
 .PHONY : CMakeFiles/DPThermalSolver.dir/clean
 
 CMakeFiles/DPThermalSolver.dir/depend:
-	$(CMAKE_COMMAND) -E cmake_depends "MinGW Makefiles" E:\Thesis_Project\DPThermalSolver E:\Thesis_Project\DPThermalSolver E:\Thesis_Project\DPThermalSolver\cmake-build-debug E:\Thesis_Project\DPThermalSolver\cmake-build-debug E:\Thesis_Project\DPThermalSolver\cmake-build-debug\CMakeFiles\DPThermalSolver.dir\DependInfo.cmake --color=$(COLOR)
+	$(CMAKE_COMMAND) -E cmake_depends "MinGW Makefiles" E:\Thesis_Project\CascadingDPSolver E:\Thesis_Project\CascadingDPSolver E:\Thesis_Project\CascadingDPSolver\cmake-build-debug E:\Thesis_Project\CascadingDPSolver\cmake-build-debug E:\Thesis_Project\CascadingDPSolver\cmake-build-debug\CMakeFiles\DPThermalSolver.dir\DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/DPThermalSolver.dir/depend
 

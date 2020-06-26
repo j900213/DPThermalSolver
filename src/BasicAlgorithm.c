@@ -4,7 +4,7 @@
 static real_T *StateVec;                            // vector with all the admissible state values
 static real_T *ControlVec;                          // vector with all the admissible control values
 static SolverInput *SolverInputPtr;                 // local copy of the input pointer
-static SpeedDynParameter *ParameterPtr;             // local copy of the parameter pointer
+static DynParameter *ParameterPtr;                  // local copy of the parameter pointer
 static EnvFactor *EnvFactorPtr;                     // local copy of the Env factor pointer
 static uint16_t X0_index;                           // the rounded X0
 
@@ -39,6 +39,16 @@ typedef struct {
 /*--- Private Functions ---*/
 /*--- Using static to restrict functions in this file ---*/
 
+// Speed Solver Part
+static void
+speedSolver(SolverInput *InputPtr, DynParameter *ParaPtr, EnvFactor *EnvPtr, SolverOutput *OutputPtr, real_T X0,
+            real_T Xfmin, real_T Xfmax);
+
+// Thermal Solver Part
+static void
+thermalSolver(SolverInput *InputPtr, DynParameter *ParaPtr, EnvFactor *EnvPtr, SolverOutput *OutputPtr, real_T X0,
+              real_T Xfmin, real_T Xfmax);
+
 // Initialize Solution Pointer
 static void solutionStruct_init(Solution *SolutionPtr);
 
@@ -68,8 +78,23 @@ static void calculate_costTocome(Solution *SolutionPtr, uint16_t N);
 
 
 /*--- Pubic Function Definition ---*/
-void MagicBox(SolverInput *InputPtr, SpeedDynParameter *ParaPtr, EnvFactor *EnvPtr, SolverOutput *OutputPtr, real_T X0,
-              real_T Xfmin, real_T Xfmax) {
+void
+MagicBox(SolverInput *InputPtr, DynParameter *ParaPtr, EnvFactor *EnvPtr, SolverOutput *OutputPtr, real_T V0, real_T T0,
+         real_T Vfmin, real_T Vfmax, real_T Tfmin, real_T Tfmax) {
+
+    /*--- Cascading DP solver fashion ---*/
+    // Speed Solver part
+    speedSolver(InputPtr, ParaPtr, EnvPtr, OutputPtr, V0, Vfmin, Vfmax);
+
+    // Thermal Solver part
+    thermalSolver(InputPtr, ParaPtr, EnvPtr, OutputPtr, T0, Tfmin, Tfmax);
+}
+
+
+/*--- Private Function Definition ---*/
+static void
+speedSolver(SolverInput *InputPtr, DynParameter *ParaPtr, EnvFactor *EnvPtr, SolverOutput *OutputPtr, real_T X0,
+            real_T Xfmin, real_T Xfmax) {
     // Make a local copy of the input pointer
     SolverInputPtr = InputPtr;
     ParameterPtr = ParaPtr;
@@ -155,8 +180,94 @@ void MagicBox(SolverInput *InputPtr, SpeedDynParameter *ParaPtr, EnvFactor *EnvP
 #endif
 }
 
+static void
+thermalSolver(SolverInput *InputPtr, DynParameter *ParaPtr, EnvFactor *EnvPtr, SolverOutput *OutputPtr, real_T X0,
+              real_T Xfmin, real_T Xfmax) {
+    // Make a local copy of the input pointer
+    SolverInputPtr = InputPtr;
+    ParameterPtr = ParaPtr;
+    EnvFactorPtr = EnvPtr;
 
-/*--- Private Function Definition ---*/
+    // Global Copy of X0
+    Xinitial = X0;
+
+    // Allocate memory to State Vector and Control Vector
+    StateVec = malloc(SolverInputPtr->GridSize.Nx * sizeof(real_T));
+    ControlVec = malloc(SolverInputPtr->GridSize.Nu * sizeof(real_T));
+
+    // Pass Parameters to SystemDynamics in order to perform calculation
+    PassParameters(SolverInputPtr, ParameterPtr, EnvFactorPtr);
+
+    // Initialize State Vector and Control Vector (based on given [Vmin, Vmax] and [Fmin, Fmax])
+    createStateVector(StateVec, SolverInputPtr->Constraint.Tmin, SolverInputPtr->Constraint.Tmax,
+                      SolverInputPtr->GridSize.Nx);
+    createControlVector(ControlVec, SolverInputPtr->Constraint.Qmin, SolverInputPtr->Constraint.Qmax,
+                        SolverInputPtr->GridSize.Nu);
+
+#ifdef ADAPTIVEGRID
+    // Initialize Box Edges
+    BoxEdges = malloc((SolverInputPtr->GridSize.Nx + 1) * sizeof(real_T));
+    createBoxEdges(BoxEdges, StateVec, SolverInputPtr->GridSize.Nx);
+    // Initialize the Adaptive State Grid
+    StateGrid = malloc(sizeof(real_T[SolverInputPtr->GridSize.Nhrz + 1][SolverInputPtr->GridSize.Nx]));
+    createStateGrid(StateGrid, StateVec, SolverInputPtr->GridSize.Nx, SolverInputPtr->GridSize.Nhrz);
+#endif
+
+    // Initialize Solution Structure
+    Solution SolutionStruct;
+    solutionStruct_init(&SolutionStruct);
+
+    // Give the initial state X0 to the solution structure
+    x0_init(&SolutionStruct, X0);
+    X0_index = SolutionStruct.startIdx[0];
+    real_T X0_round = StateVec[SolutionStruct.startIdx[0]];
+
+    printf("The starting index: %d\n", X0_index);
+
+    // Print Input Info
+    printInputInfo(SolverInputPtr, X0, X0_round, SolutionStruct.startIdx[0], StateVec, ControlVec);
+
+    // Obtain the Boundary Line
+#ifdef CUSTOMBOUND
+    initBoundary(&BoundaryPtr);
+    ScreteWeapon(&BoundaryPtr, SolverInputPtr, ParameterPtr, EnvFactorPtr, X0);
+#elif defined NORMALBOUND
+    initBoundary(&BoundaryPtr);
+    normalBoundary(&BoundaryPtr, EnvFactorPtr);
+#endif
+
+
+    // Find the minimum Cost-to-come value step by step
+    uint16_t i;
+    uint16_t j;
+    for (i = 0; i < SolverInputPtr->GridSize.Nhrz; i++) {
+        calculate_costTocome(&SolutionStruct, i);
+    }
+
+    // Retrieve the optimal solution
+    findSolution(OutputPtr, &SolutionStruct, Xfmin, Xfmax);
+
+#if defined(NORMALBOUND) || defined(CUSTOMBOUND)
+    // Get the boundary line to the output pointer
+    copyBoundary(&BoundaryPtr, OutputPtr);
+#endif
+
+    // Print Output Solution
+    printSolution(SolverInputPtr, X0_round, OutputPtr);
+
+    // Free the memory
+    solutionStruct_free(&SolutionStruct);
+    free(StateVec);
+    free(ControlVec);
+#if defined(NORMALBOUND) || defined(CUSTOMBOUND)
+    freeBoundary(&BoundaryPtr);
+#endif
+
+#ifdef ADAPTIVEGRID
+    free(BoxEdges);
+#endif
+}
+
 static void solutionStruct_init(Solution *SolutionPtr) {
     uint16_t Nx = SolverInputPtr->GridSize.Nx;
     uint16_t Nhrz = SolverInputPtr->GridSize.Nhrz;
@@ -294,7 +405,7 @@ static void calculate_costTocome(Solution *SolutionPtr, uint16_t N)        // (N
                 CostToCome[j] = CostToBeComp[j];
 
 #ifdef ADAPTIVEGRID
-                StateGrid[N+1][j] = ArcStruct.arcX[startIdx][j];
+                StateGrid[N + 1][j] = ArcStruct.arcX[startIdx][j];
 #endif
             }
         }
@@ -552,7 +663,7 @@ static void findSolution(SolverOutput *OutputPtr, Solution *SolutionPtr, real_T 
         // Find the optimal control policy and state trajectory
         for (i = 0; i < Nhrz; i++) {
 #ifdef ADAPTIVEGRID
-            OutputPtr->Vo[i] = StateGrid[i+1][optimalstateIdx[i + 1]];
+            OutputPtr->Vo[i] = StateGrid[i + 1][optimalstateIdx[i + 1]];
 #elif defined(BOUNDCALIBRATION)
             if (optimalstateIdx[i + 1] == BoundaryPtr.boundMemo[i][2]) {
                 OutputPtr->Vo[i] = BoundaryPtr.boundMemo[i][0];

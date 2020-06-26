@@ -1,4 +1,4 @@
-# Install script for directory: E:/Thesis_Project/DPThermalSolver
+# Install script for directory: E:/Thesis_Project/CascadingDPSolver
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -40,5 +40,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "E:/Thesis_Project/DPThermalSolver/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "E:/Thesis_Project/CascadingDPSolver/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

@@ -36,7 +36,7 @@ void normalBoundary(Boundary *BoundaryPtr, EnvFactor *EnvPtr) {
 }
 
 
-void ScreteWeapon(Boundary *BoundaryPtr, SolverInput *SolverInputPtr, SpeedDynParameter *ParaPtr, EnvFactor *EnvPtr,
+void ScreteWeapon(Boundary *BoundaryPtr, SolverInput *SolverInputPtr, DynParameter *ParaPtr, EnvFactor *EnvPtr,
                   real_T X0) {
     // Iteration Index
     uint16_t i, j, k;

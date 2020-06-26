@@ -6,6 +6,8 @@
       <w>amax</w>
       <w>boundcalibration</w>
       <w>boundcounter</w>
+      <w>cmax</w>
+      <w>cmin</w>
       <w>custombound</w>
       <w>dmax</w>
       <w>dynamicmemo</w>
@@ -25,8 +27,19 @@
       <w>optimalstate</w>
       <w>pbatt</w>
       <w>pinv</w>
+      <w>qmaxl</w>
+      <w>qmin</w>
+      <w>qpas</w>
+      <w>qsun</w>
       <w>screte</w>
+      <w>tamb</w>
+      <w>tfmax</w>
+      <w>tfmin</w>
+      <w>tmax</w>
+      <w>tmin</w>
       <w>tocome</w>
+      <w>vfmax</w>
+      <w>vfmin</w>
       <w>vmax</w>
       <w>vmin</w>
       <w>xcurrent</w>

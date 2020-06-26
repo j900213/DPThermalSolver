@@ -9,16 +9,21 @@ int main()
 
     // Input Variable declaration (will be used in the BasicAlgorithm)
     SolverInput SolverInputPtr;						// solver inputs: Constraints, Grid Sizes, Road Profile, etc.
-    SpeedDynParameter ModelParaPtr;					// solver inputs: Model parameters
+    DynParameter ModelParaPtr;					    // solver inputs: Model parameters
     EnvFactor EnvFactorPtr;							// solver inputs: Environmental Factors (Legal speed limits, Angle of slopes)
     SolverOutput SolverOutputPtr;					// solver outputs: Minimum Total Cost, Optimal Speed Trajectory, Optimal Control Policy
-    real_T X0;										// initial state (speed in this case)
-    real_T Xfmin;									// final state constraints
-    real_T Xfmax;
+    real_T V0;										// initial speed
+    real_T T0;										// initial temperature
+    real_T Vfmin;									// final speed constraints
+    real_T Vfmax;
+    real_T Tfmin;									// final thermal constraints
+    real_T Tfmax;
 
     // Final states constraint
-    Xfmin = 0 / 3.6;
-    Xfmax = 400 / 3.6;
+    Vfmin = 0 / 3.6;
+    Vfmax = 400 / 3.6;
+    Tfmin = 18;
+    Tfmax = 30;
 
     // Input Settings
     SolverInputPtr.GridSize.Nx = NX;
@@ -31,10 +36,18 @@ int main()
     SolverInputPtr.Constraint.Fmin = -3e3;
     SolverInputPtr.Constraint.PAmax = 6e4;
     SolverInputPtr.Constraint.PDmax = -6e4;
+    SolverInputPtr.Constraint.Tmax = 30;
+    SolverInputPtr.Constraint.Tmin = 10;
+    SolverInputPtr.Constraint.Tmax_inlet = 30;
+    SolverInputPtr.Constraint.Tmin_inlet = 10;
+    SolverInputPtr.Constraint.Qmax = 2000;
+    SolverInputPtr.Constraint.Qmin = -2000;
+    SolverInputPtr.Constraint.PACmax = 1000;
+    SolverInputPtr.Constraint.PACmin = -1000;
 
     SolverInputPtr.SolverLimit.infValue = FLT_MAX;
 
-    // System Dynamics Parameters
+    // Speed Parameters
     ModelParaPtr.m = 2000;
     ModelParaPtr.g = 9.81;
     ModelParaPtr.CdA = 0.6;
@@ -47,6 +60,18 @@ int main()
     ModelParaPtr.eta_dc = 0.99;
     ModelParaPtr.eta_trans = 0.98;
 
+    // Thermal Parameters
+    ModelParaPtr.Cth = 113e3;
+    ModelParaPtr.Rth = 15e-6;
+    ModelParaPtr.Qsun = 469.05;
+    ModelParaPtr.Qpas = 416;
+    ModelParaPtr.Cp = 1.0035e3;
+    ModelParaPtr.rho = 1.1839;
+    ModelParaPtr.mDot = 0.0842;
+    ModelParaPtr.CoP_pos = 2.14;
+    ModelParaPtr.CoP_neg = -2.14;
+    ModelParaPtr.Tamb = 28;
+
     // Tuning Parameter
     ModelParaPtr.ds = 10;
     ModelParaPtr.penalty = 11e4;
@@ -58,7 +83,8 @@ int main()
 
 #ifdef SCENE1
     // Initial Speed
-    X0 = 70/3.6;
+    V0 = 70/3.6;
+    T0 = 28;
 
     real_T Vmax_GPS_1 = 130 / 3.6;
     real_T Vmin_GPS_1 = 60 / 3.6;
@@ -107,10 +133,13 @@ int main()
             EnvFactorPtr.Vmin_env[i] = Vmin_GPS_4;					// Legal Vmin
             EnvFactorPtr.Angle_env[i] = 0.0;						// Road slops
         }
+
+        EnvFactorPtr.T_required[i] = 24;
     }
 #elif defined(SCENE2)
     // Initial Speed
     X0 = 0/3.6;
+    T0 = 28;
 
     real_T Vmax_GPS_1 = 130 / 3.6;
     real_T Vmin_GPS_1 = 0 / 3.6;
@@ -120,13 +149,15 @@ int main()
         EnvFactorPtr.Vmax_env[i] = Vmax_GPS_1;					// Legal Vmax
         EnvFactorPtr.Vmin_env[i] = Vmin_GPS_1;					// Legal Vmin
         EnvFactorPtr.Angle_env[i] = 0.0;						// Road slops
+
+        EnvFactorPtr.T_required[i] = 24;
     }
 #endif
 
     /*-------------------------*/
     /*--- Run the Algorithm ---*/
     /*-------------------------*/
-    MagicBox(&SolverInputPtr, &ModelParaPtr, &EnvFactorPtr, &SolverOutputPtr, X0, Xfmin, Xfmax);
+    MagicBox(&SolverInputPtr, &ModelParaPtr, &EnvFactorPtr, &SolverOutputPtr, V0, T0, Vfmin, Vfmax, Tfmin, Tfmax);
 
 #ifdef DYNCOUNTER
     printf("The number of dynamics computation: %d\n", counterDynamics);
