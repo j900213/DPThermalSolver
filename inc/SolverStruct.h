@@ -17,8 +17,8 @@
 #define HORIZON 200
 #define NV 200
 #define NF 500
-#define NT 200
-#define NQ 500
+#define NT 40
+#define NQ 100
 #define BLOCK 4
 
 
@@ -118,7 +118,8 @@ typedef struct {
     real_T Tamb;
 
     // Tuning Parameter
-    real_T penalty;
+    real_T speedPenalty;
+    real_T thermalPenalty;
 }
         DynParameter;
 

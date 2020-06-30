@@ -68,7 +68,7 @@ void ScreteWeapon(Boundary *BoundaryPtr, SolverInput *SolverInputPtr, DynParamet
     real_T crr = ParaPtr->crr;
     real_T CdA = ParaPtr->CdA;
     real_T ds = ParaPtr->ds;
-    real_T penalty = ParaPtr->penalty;
+    real_T penalty = ParaPtr->speedPenalty;
     real_T eta_trans = ParaPtr->eta_trans;
     real_T eta_dc = ParaPtr->eta_dc;
     real_T alpha0 = ParaPtr->alpha0;

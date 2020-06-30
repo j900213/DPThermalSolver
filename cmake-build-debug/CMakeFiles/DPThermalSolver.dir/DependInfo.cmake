@@ -10,7 +10,9 @@ set(CMAKE_DEPENDS_CHECK_C
   "E:/Thesis_Project/CascadingDPSolver/src/BoundaryLine.c" "E:/Thesis_Project/CascadingDPSolver/cmake-build-debug/CMakeFiles/DPThermalSolver.dir/src/BoundaryLine.c.obj"
   "E:/Thesis_Project/CascadingDPSolver/src/MathFunction.c" "E:/Thesis_Project/CascadingDPSolver/cmake-build-debug/CMakeFiles/DPThermalSolver.dir/src/MathFunction.c.obj"
   "E:/Thesis_Project/CascadingDPSolver/src/PrintResult.c" "E:/Thesis_Project/CascadingDPSolver/cmake-build-debug/CMakeFiles/DPThermalSolver.dir/src/PrintResult.c.obj"
+  "E:/Thesis_Project/CascadingDPSolver/src/SpeedSolver.c" "E:/Thesis_Project/CascadingDPSolver/cmake-build-debug/CMakeFiles/DPThermalSolver.dir/src/SpeedSolver.c.obj"
   "E:/Thesis_Project/CascadingDPSolver/src/SystemDynamic.c" "E:/Thesis_Project/CascadingDPSolver/cmake-build-debug/CMakeFiles/DPThermalSolver.dir/src/SystemDynamic.c.obj"
+  "E:/Thesis_Project/CascadingDPSolver/src/ThermalSolver.c" "E:/Thesis_Project/CascadingDPSolver/cmake-build-debug/CMakeFiles/DPThermalSolver.dir/src/ThermalSolver.c.obj"
   )
 set(CMAKE_C_COMPILER_ID "GNU")
 

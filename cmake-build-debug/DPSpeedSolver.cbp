@@ -94,7 +94,13 @@
 		<Unit filename="E:/Thesis_Project/CascadingDPSolver/inc/SolverStruct.h">
 			<Option target="DPThermalSolver"/>
 		</Unit>
+		<Unit filename="E:/Thesis_Project/CascadingDPSolver/inc/SpeedSolver.h">
+			<Option target="DPThermalSolver"/>
+		</Unit>
 		<Unit filename="E:/Thesis_Project/CascadingDPSolver/inc/SystemDynamic.h">
+			<Option target="DPThermalSolver"/>
+		</Unit>
+		<Unit filename="E:/Thesis_Project/CascadingDPSolver/inc/ThermalSolver.h">
 			<Option target="DPThermalSolver"/>
 		</Unit>
 		<Unit filename="E:/Thesis_Project/CascadingDPSolver/main.c">
@@ -115,7 +121,13 @@
 		<Unit filename="E:/Thesis_Project/CascadingDPSolver/src/PrintResult.c">
 			<Option target="DPThermalSolver"/>
 		</Unit>
+		<Unit filename="E:/Thesis_Project/CascadingDPSolver/src/SpeedSolver.c">
+			<Option target="DPThermalSolver"/>
+		</Unit>
 		<Unit filename="E:/Thesis_Project/CascadingDPSolver/src/SystemDynamic.c">
+			<Option target="DPThermalSolver"/>
+		</Unit>
+		<Unit filename="E:/Thesis_Project/CascadingDPSolver/src/ThermalSolver.c">
 			<Option target="DPThermalSolver"/>
 		</Unit>
 		<Unit filename="E:/Thesis_Project/CascadingDPSolver/CMakeLists.txt">

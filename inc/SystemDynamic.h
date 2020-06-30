@@ -1,11 +1,15 @@
 #include "SolverStruct.h"
 #include "BoundaryLine.h"
 
+#ifndef BRIDGE
+#define BRIDGE
+
 typedef struct {
     real_T *Pdc;                                    // Vector of Pdc based on the optimal Speed trajectory
     real_T *tDelta;                                 // Vector of delta t based on the optimal Speed trajectory
 }
         Bridge;
+#endif
 
 /*--- Public Functions ---*/
 // Get the Parameter Setting from the main.c
@@ -18,8 +22,14 @@ void createStateVector(real_T *StateGrid, real_T min, real_T max, uint32_t N);
 void createControlVector(real_T *ControlGrid, real_T min, real_T max, uint32_t N);
 
 // Calculate the Speed dynamics
-void systemDynamics(uint16_t Nx, uint16_t Nu, real_T (*Xnext)[Nu], real_T (*ArcCost)[Nu], uint8_t (*InfFlag)[Nu], real_T const *StateVec,
-                    real_T const *ControlVec, Boundary *BoundaryPtr, uint16_t N, uint16_t X0_index);
+void speedDynamics(uint16_t Nx, uint16_t Nu, real_T (*Xnext)[Nu], real_T (*ArcCost)[Nu], uint8_t (*InfFlag)[Nu],
+                   real_T const *StateVec, real_T const *ControlVec, Boundary *BoundaryPtr, uint16_t N,
+                   uint16_t X0_index);
+
+// Calculate the Thermal dynamics
+void thermalDynamics(uint16_t Nx, uint16_t Nu, real_T (*Xnext)[Nu], real_T (*ArcCost)[Nu], uint8_t (*InfFlag)[Nu],
+                     real_T const *StateVec, real_T const *ControlVec, Bridge *BridgePtr, uint16_t N,
+                     uint16_t X0_index);
 
 // Initialize bridge memory
 void initBridge(Bridge *BridgePtr);

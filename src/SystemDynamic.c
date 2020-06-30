@@ -38,9 +38,8 @@ void createControlVector(real_T *ControlVector, real_T min, real_T max, uint32_t
 }
 
 void
-systemDynamics(uint16_t Nx, uint16_t Nu, real_T (*Xnext)[Nu], real_T (*ArcCost)[Nu], uint8_t (*InfFlag)[Nu],
-               real_T const *StateVec,
-               real_T const *ControlVec, Boundary *BoundaryPtr, uint16_t N, uint16_t X0_index) {
+speedDynamics(uint16_t Nx, uint16_t Nu, real_T (*Xnext)[Nu], real_T (*ArcCost)[Nu], uint8_t (*InfFlag)[Nu],
+              real_T const *StateVec, real_T const *ControlVec, Boundary *BoundaryPtr, uint16_t N, uint16_t X0_index) {
 
     // Local Copy the State and Control grids
     real_T *Xin = (real_T *) malloc(Nx * sizeof(real_T));
@@ -92,7 +91,7 @@ systemDynamics(uint16_t Nx, uint16_t Nu, real_T (*Xnext)[Nu], real_T (*ArcCost)[
     real_T CdA = ModelParameter->CdA;
     real_T ds = ModelParameter->ds;
 
-    real_T penalty = ModelParameter->penalty;
+    real_T penalty = ModelParameter->speedPenalty;
 
     real_T eta_trans = ModelParameter->eta_trans;
     real_T eta_dc = ModelParameter->eta_dc;
@@ -187,6 +186,107 @@ systemDynamics(uint16_t Nx, uint16_t Nu, real_T (*Xnext)[Nu], real_T (*ArcCost)[
 
         }
     }
+
+    // Free the memory of local state and control vectors
+    free(Xin);
+    free(Uin);
+}
+
+void thermalDynamics(uint16_t Nx, uint16_t Nu, real_T (*Xnext)[Nu], real_T (*ArcCost)[Nu], uint8_t (*InfFlag)[Nu],
+                     real_T const *StateVec, real_T const *ControlVec, Bridge *BridgePtr, uint16_t N,
+                     uint16_t X0_index) {
+
+    // Local Copy the State and Control grids
+    real_T *Xin = (real_T *) malloc(Nx * sizeof(real_T));
+    real_T *Uin = (real_T *) malloc(Nu * sizeof(real_T));
+    memcpy(Xin, StateVec, Nx * sizeof(real_T));
+    memcpy(Uin, ControlVec, Nu * sizeof(real_T));
+
+    // Required temperature by the driver
+    real_T Tmax_end = EnvironmentalFactor->T_required[N + 1] + 1;
+    real_T Tmin_end = EnvironmentalFactor->T_required[N + 1] - 1;
+
+    // Intermediate Variables
+    real_T Pdc = BridgePtr->Pdc[N];
+    real_T tDelta = BridgePtr->tDelta[N];
+    real_T Phvac;
+    real_T Ps;
+    real_T Pbatt;
+    real_T Tinlet;
+
+    // Hard Constraints
+    real_T PACmax = SolverInputPtr->Constraint.PACmax;
+    real_T PACmin = SolverInputPtr->Constraint.PACmin;
+    real_T Tmax_inlet = SolverInputPtr->Constraint.Tmax_inlet;
+    real_T Tmin_inlet = SolverInputPtr->Constraint.Tmin_inlet;
+
+    //Parameters
+    real_T Cth = ModelParameter->Cth;
+    real_T Rth = ModelParameter->Rth;
+    real_T Qsun = ModelParameter->Qsun;
+    real_T Qpas = ModelParameter->Qpas;
+    real_T Cp = ModelParameter->Cp;
+    real_T rho = ModelParameter->rho;
+    real_T mDot = ModelParameter->mDot;
+    real_T CoP_pos = ModelParameter->CoP_pos;
+    real_T CoP_neg = ModelParameter->CoP_neg;
+    real_T Tamb = ModelParameter->Tamb;
+
+    real_T beta0 = ModelParameter->beta0;
+
+    real_T T_required = EnvironmentalFactor->T_required[N + 1];
+    real_T penalty = ModelParameter->thermalPenalty;
+
+    uint16_t i;
+    uint16_t j;
+
+    // Preserve the initial state accuracy
+    if (N == 0) {
+        Xin[X0_index] = Xinitial;
+    }
+
+    for (i = 0; i < Nx; i++) {
+        for (j = 0; j < Nu; j++) {
+
+            // Heating or Cooling
+            if (Uin[j] > 0) {
+                Phvac = Uin[j] / CoP_pos;
+            } else if (Uin[j] == 0) {
+                Phvac = 0;
+            } else {
+                Phvac = Uin[j] / CoP_neg;
+            }
+
+            // Check if Phvac exceeds the limits
+            if (Phvac > PACmax || Phvac < PACmin) {
+                InfFlag[i][j] = 1;
+                continue;
+            }
+
+            Ps = Pdc + Phvac;
+            Pbatt = (1 - sqrt(1 - 4 * beta0 * Pdc)) / (2 * beta0);
+
+            // Check if Tinlet exceeds the limits
+            Tinlet = Xin[i] + Uin[j] / (Cp * rho * mDot);
+            if (Tinlet > Tmax_inlet || Tinlet < Tmin_inlet) {
+                InfFlag[i][j] = 1;
+                continue;
+            }
+
+            // Temperature at the next step
+            Xnext[i][j] = Xin[i] + (tDelta / Cth) * (Uin[j] + Qsun + Qpas + (Tamb - Xin[i]) / Rth);
+
+            // Check if it stays in the cabin temperature limit
+            if (Xnext[i][j] > Tmax_end || Xnext[i][j] < Tmin_end) {
+                InfFlag[i][j] = 1;
+                continue;
+            }
+
+            // ArcCost - added a L2 norm as the penalization
+            ArcCost[i][j] = Pbatt * tDelta + penalty * (Xnext[i][j] - T_required) * (Xnext[i][j] - T_required);
+        }
+    }
+
 
     // Free the memory of local state and control vectors
     free(Xin);

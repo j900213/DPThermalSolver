@@ -8,7 +8,9 @@ CMakeFiles/DPThermalSolver.dir/main.c.obj
  E:/Thesis_Project/CascadingDPSolver/inc/MathFunction.h
  E:/Thesis_Project/CascadingDPSolver/inc/PrintResult.h
  E:/Thesis_Project/CascadingDPSolver/inc/SolverStruct.h
+ E:/Thesis_Project/CascadingDPSolver/inc/SpeedSolver.h
  E:/Thesis_Project/CascadingDPSolver/inc/SystemDynamic.h
+ E:/Thesis_Project/CascadingDPSolver/inc/ThermalSolver.h
  E:/Thesis_Project/CascadingDPSolver/main.c
 CMakeFiles/DPThermalSolver.dir/src/AdaptiveGrid.c.obj
  E:/Thesis_Project/CascadingDPSolver/inc/AdaptiveGrid.h
@@ -21,7 +23,9 @@ CMakeFiles/DPThermalSolver.dir/src/BasicAlgorithm.c.obj
  E:/Thesis_Project/CascadingDPSolver/inc/MathFunction.h
  E:/Thesis_Project/CascadingDPSolver/inc/PrintResult.h
  E:/Thesis_Project/CascadingDPSolver/inc/SolverStruct.h
+ E:/Thesis_Project/CascadingDPSolver/inc/SpeedSolver.h
  E:/Thesis_Project/CascadingDPSolver/inc/SystemDynamic.h
+ E:/Thesis_Project/CascadingDPSolver/inc/ThermalSolver.h
  E:/Thesis_Project/CascadingDPSolver/src/BasicAlgorithm.c
 CMakeFiles/DPThermalSolver.dir/src/BoundaryLine.c.obj
  E:/Thesis_Project/CascadingDPSolver/inc/BoundaryLine.h
@@ -35,9 +39,26 @@ CMakeFiles/DPThermalSolver.dir/src/PrintResult.c.obj
  E:/Thesis_Project/CascadingDPSolver/inc/PrintResult.h
  E:/Thesis_Project/CascadingDPSolver/inc/SolverStruct.h
  E:/Thesis_Project/CascadingDPSolver/src/PrintResult.c
+CMakeFiles/DPThermalSolver.dir/src/SpeedSolver.c.obj
+ E:/Thesis_Project/CascadingDPSolver/inc/AdaptiveGrid.h
+ E:/Thesis_Project/CascadingDPSolver/inc/BoundaryLine.h
+ E:/Thesis_Project/CascadingDPSolver/inc/MathFunction.h
+ E:/Thesis_Project/CascadingDPSolver/inc/PrintResult.h
+ E:/Thesis_Project/CascadingDPSolver/inc/SolverStruct.h
+ E:/Thesis_Project/CascadingDPSolver/inc/SpeedSolver.h
+ E:/Thesis_Project/CascadingDPSolver/inc/SystemDynamic.h
+ E:/Thesis_Project/CascadingDPSolver/src/SpeedSolver.c
 CMakeFiles/DPThermalSolver.dir/src/SystemDynamic.c.obj
  E:/Thesis_Project/CascadingDPSolver/inc/BoundaryLine.h
  E:/Thesis_Project/CascadingDPSolver/inc/MathFunction.h
  E:/Thesis_Project/CascadingDPSolver/inc/SolverStruct.h
  E:/Thesis_Project/CascadingDPSolver/inc/SystemDynamic.h
  E:/Thesis_Project/CascadingDPSolver/src/SystemDynamic.c
+CMakeFiles/DPThermalSolver.dir/src/ThermalSolver.c.obj
+ E:/Thesis_Project/CascadingDPSolver/inc/BoundaryLine.h
+ E:/Thesis_Project/CascadingDPSolver/inc/MathFunction.h
+ E:/Thesis_Project/CascadingDPSolver/inc/PrintResult.h
+ E:/Thesis_Project/CascadingDPSolver/inc/SolverStruct.h
+ E:/Thesis_Project/CascadingDPSolver/inc/SystemDynamic.h
+ E:/Thesis_Project/CascadingDPSolver/inc/ThermalSolver.h
+ E:/Thesis_Project/CascadingDPSolver/src/ThermalSolver.c
