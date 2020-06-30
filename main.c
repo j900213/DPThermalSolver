@@ -26,8 +26,10 @@ int main()
     Tfmax = 30;
 
     // Input Settings
-    SolverInputPtr.GridSize.Nx = NX;
-    SolverInputPtr.GridSize.Nu = NU;
+    SolverInputPtr.GridSize.Nv = NV;
+    SolverInputPtr.GridSize.Nf = NF;
+    SolverInputPtr.GridSize.Nt = NT;
+    SolverInputPtr.GridSize.Nq = NQ;
     SolverInputPtr.GridSize.Nhrz = HORIZON;
 
     SolverInputPtr.Constraint.Vmax = 200 / 3.6;		// Physical Speed limits
@@ -84,22 +86,27 @@ int main()
 #ifdef SCENE1
     // Initial Speed
     V0 = 70/3.6;
+    // Initial Temperature
     T0 = 28;
 
     real_T Vmax_GPS_1 = 130 / 3.6;
     real_T Vmin_GPS_1 = 60 / 3.6;
+    real_T T_required_1 = 26;
     uint16_t endBlock_1 = 30;
 
     real_T Vmax_GPS_2 = 80 / 3.6;
     real_T Vmin_GPS_2 = 30 / 3.6;
+    real_T T_required_2 = 25;
     uint16_t endBlock_2 = 100;
 
     real_T Vmax_GPS_3 = 50 / 3.6;
     real_T Vmin_GPS_3 = 10 / 3.6;
+    real_T T_required_3 = 24;
     uint16_t endBlock_3 = 150;
 
     real_T Vmax_GPS_4 = 80 / 3.6;
     real_T Vmin_GPS_4 = 30 / 3.6;
+    real_T T_required_4 = 25;
     uint16_t endBlock_4 = Nhrz;
 
     EnvFactorPtr.endBlock[0] = endBlock_1;

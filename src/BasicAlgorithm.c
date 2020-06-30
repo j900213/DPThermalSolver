@@ -1,5 +1,14 @@
 #include "../inc/BasicAlgorithm.h"
 
+/*--- Global Variables ---*/
+Boundary BoundaryPtr;                               // boundary line structure
+uint16_t Nx;                                        // Problem sizes
+uint16_t Nu;                                        // - they are changed based on running Speed or Thermal solver
+uint16_t Nhrz;
+
+/*--- External Variables ---*/
+real_T Xinitial;                                    // The initial state
+
 /*--- Static Variables ---*/
 static real_T *StateVec;                            // vector with all the admissible state values
 static real_T *ControlVec;                          // vector with all the admissible control values
@@ -10,30 +19,25 @@ static uint16_t X0_index;                           // the rounded X0
 
 #ifdef ADAPTIVEGRID
 static real_T *BoxEdges;                            // Box Edges for adaptive grid method
-static real_T (*StateGrid)[NX];                     // Adaptive State Grid
+static real_T (*StateGrid)[NV];                     // Adaptive State Grid
 #endif
-
-Boundary BoundaryPtr;                               // boundary line structure
-
-real_T Xinitial;
 
 /*--- Private Structure ---*/
 typedef struct {
     real_T *CostToCome;                             // The most recent cost-to-come vector [Nx]
     uint16_t *startIdx;                             // All the possible starting indexes [Nx]
     uint16_t Nstart;                                // Number of possible starting points
-    uint16_t (*Xn)[NX];                             // Optimal State Trajectory [Nhrz][Nx]
-    real_T (*Un)[NX];                               // Optimal Control Policy [Nhrz][Nx]
+    uint16_t (*Xn)[NV];                             // Optimal State Trajectory [Nhrz][Nx]
+    real_T (*Un)[NV];                               // Optimal Control Policy [Nhrz][Nx]
 }
         Solution;
 
 typedef struct {
-    real_T (*arcCost)[NX];                          // Vector with arc costs from one to another state [Nx][Nx]
-    real_T (*arcU)[NX];                             // Vector with instant controls from one to another state [Nx][Nx]
-    real_T (*arcX)[NX];                             // (Used in Adaptive Grid) Vector that notes the possible state to state [Nx][Nx]
+    real_T (*arcCost)[NV];                          // Vector with arc costs from one to another state [Nx][Nx]
+    real_T (*arcU)[NV];                             // Vector with instant controls from one to another state [Nx][Nx]
+    real_T (*arcX)[NV];                             // (Used in Adaptive Grid) Vector that notes the possible state to state [Nx][Nx]
 }
         ArcProcess;
-
 
 
 /*--- Private Functions ---*/
@@ -46,8 +50,8 @@ speedSolver(SolverInput *InputPtr, DynParameter *ParaPtr, EnvFactor *EnvPtr, Sol
 
 // Thermal Solver Part
 static void
-thermalSolver(SolverInput *InputPtr, DynParameter *ParaPtr, EnvFactor *EnvPtr, SolverOutput *OutputPtr, real_T X0,
-              real_T Xfmin, real_T Xfmax);
+thermalSolver(SolverInput *InputPtr, DynParameter *ParaPtr, EnvFactor *EnvPtr, SolverOutput *OutputPtr,
+              Bridge *BridgePtr, real_T X0, real_T Xfmin, real_T Xfmax);
 
 // Initialize Solution Pointer
 static void solutionStruct_init(Solution *SolutionPtr);
@@ -76,7 +80,6 @@ static void calculate_arc_cost(ArcProcess *ArcPtr, uint16_t N);
 // Calculate the Cost-to-Come Values at each state
 static void calculate_costTocome(Solution *SolutionPtr, uint16_t N);
 
-
 /*--- Pubic Function Definition ---*/
 void
 MagicBox(SolverInput *InputPtr, DynParameter *ParaPtr, EnvFactor *EnvPtr, SolverOutput *OutputPtr, real_T V0, real_T T0,
@@ -86,8 +89,13 @@ MagicBox(SolverInput *InputPtr, DynParameter *ParaPtr, EnvFactor *EnvPtr, Solver
     // Speed Solver part
     speedSolver(InputPtr, ParaPtr, EnvPtr, OutputPtr, V0, Vfmin, Vfmax);
 
+    // Bridge Connection
+    Bridge BridgeStruct;
+    initBridge(&BridgeStruct);
+    bridgeConnection(&BridgeStruct, OutputPtr, V0);
+
     // Thermal Solver part
-    thermalSolver(InputPtr, ParaPtr, EnvPtr, OutputPtr, T0, Tfmin, Tfmax);
+    thermalSolver(InputPtr, ParaPtr, EnvPtr, OutputPtr, &BridgeStruct, T0, Tfmin, Tfmax);
 }
 
 
@@ -95,34 +103,38 @@ MagicBox(SolverInput *InputPtr, DynParameter *ParaPtr, EnvFactor *EnvPtr, Solver
 static void
 speedSolver(SolverInput *InputPtr, DynParameter *ParaPtr, EnvFactor *EnvPtr, SolverOutput *OutputPtr, real_T X0,
             real_T Xfmin, real_T Xfmax) {
-    // Make a local copy of the input pointer
+
+    // Local copy of the input pointer
     SolverInputPtr = InputPtr;
     ParameterPtr = ParaPtr;
     EnvFactorPtr = EnvPtr;
 
-    // Global Copy of X0
+    // Global Copy of X0 (External)
     Xinitial = X0;
 
+    // Global copy of the problem size (Speed)
+    Nx = SolverInputPtr->GridSize.Nv;
+    Nu = SolverInputPtr->GridSize.Nf;
+    Nhrz = SolverInputPtr->GridSize.Nhrz;
+
     // Allocate memory to State Vector and Control Vector
-    StateVec = malloc(SolverInputPtr->GridSize.Nx * sizeof(real_T));
-    ControlVec = malloc(SolverInputPtr->GridSize.Nu * sizeof(real_T));
+    StateVec = malloc(Nx * sizeof(real_T));
+    ControlVec = malloc(Nu * sizeof(real_T));
 
     // Pass Parameters to SystemDynamics in order to perform calculation
     PassParameters(SolverInputPtr, ParameterPtr, EnvFactorPtr);
 
     // Initialize State Vector and Control Vector (based on given [Vmin, Vmax] and [Fmin, Fmax])
-    createStateVector(StateVec, SolverInputPtr->Constraint.Vmin, SolverInputPtr->Constraint.Vmax,
-                      SolverInputPtr->GridSize.Nx);
-    createControlVector(ControlVec, SolverInputPtr->Constraint.Fmin, SolverInputPtr->Constraint.Fmax,
-                        SolverInputPtr->GridSize.Nu);
+    createStateVector(StateVec, SolverInputPtr->Constraint.Vmin, SolverInputPtr->Constraint.Vmax, Nx);
+    createControlVector(ControlVec, SolverInputPtr->Constraint.Fmin, SolverInputPtr->Constraint.Fmax, Nu);
 
 #ifdef ADAPTIVEGRID
     // Initialize Box Edges
-    BoxEdges = malloc((SolverInputPtr->GridSize.Nx + 1) * sizeof(real_T));
-    createBoxEdges(BoxEdges, StateVec, SolverInputPtr->GridSize.Nx);
+    BoxEdges = malloc((Nx + 1) * sizeof(real_T));
+    createBoxEdges(BoxEdges, StateVec, Nx);
     // Initialize the Adaptive State Grid
-    StateGrid = malloc(sizeof(real_T[SolverInputPtr->GridSize.Nhrz + 1][SolverInputPtr->GridSize.Nx]));
-    createStateGrid(StateGrid, StateVec, SolverInputPtr->GridSize.Nx, SolverInputPtr->GridSize.Nhrz);
+    StateGrid = malloc(sizeof(real_T[Nhrz + 1][Nx]));
+    createStateGrid(StateGrid, StateVec, Nx, Nhrz);
 #endif
 
     // Initialize Solution Structure
@@ -152,7 +164,7 @@ speedSolver(SolverInput *InputPtr, DynParameter *ParaPtr, EnvFactor *EnvPtr, Sol
     // Find the minimum Cost-to-come value step by step
     uint16_t i;
     uint16_t j;
-    for (i = 0; i < SolverInputPtr->GridSize.Nhrz; i++) {
+    for (i = 0; i < Nhrz; i++) {
         calculate_costTocome(&SolutionStruct, i);
     }
 
@@ -181,36 +193,40 @@ speedSolver(SolverInput *InputPtr, DynParameter *ParaPtr, EnvFactor *EnvPtr, Sol
 }
 
 static void
-thermalSolver(SolverInput *InputPtr, DynParameter *ParaPtr, EnvFactor *EnvPtr, SolverOutput *OutputPtr, real_T X0,
-              real_T Xfmin, real_T Xfmax) {
-    // Make a local copy of the input pointer
+thermalSolver(SolverInput *InputPtr, DynParameter *ParaPtr, EnvFactor *EnvPtr, SolverOutput *OutputPtr,
+              Bridge *BridgePtr, real_T X0, real_T Xfmin, real_T Xfmax) {
+
+    // Local copy of the input pointer
     SolverInputPtr = InputPtr;
     ParameterPtr = ParaPtr;
     EnvFactorPtr = EnvPtr;
 
-    // Global Copy of X0
+    // Global Copy of X0 (External)
     Xinitial = X0;
 
+    // Global copy of the problem size (Thermal)
+    Nx = SolverInputPtr->GridSize.Nt;
+    Nu = SolverInputPtr->GridSize.Nq;
+    Nhrz = SolverInputPtr->GridSize.Nhrz;
+
     // Allocate memory to State Vector and Control Vector
-    StateVec = malloc(SolverInputPtr->GridSize.Nx * sizeof(real_T));
-    ControlVec = malloc(SolverInputPtr->GridSize.Nu * sizeof(real_T));
+    StateVec = malloc(Nx * sizeof(real_T));
+    ControlVec = malloc(Nu * sizeof(real_T));
 
     // Pass Parameters to SystemDynamics in order to perform calculation
     PassParameters(SolverInputPtr, ParameterPtr, EnvFactorPtr);
 
     // Initialize State Vector and Control Vector (based on given [Vmin, Vmax] and [Fmin, Fmax])
-    createStateVector(StateVec, SolverInputPtr->Constraint.Tmin, SolverInputPtr->Constraint.Tmax,
-                      SolverInputPtr->GridSize.Nx);
-    createControlVector(ControlVec, SolverInputPtr->Constraint.Qmin, SolverInputPtr->Constraint.Qmax,
-                        SolverInputPtr->GridSize.Nu);
+    createStateVector(StateVec, SolverInputPtr->Constraint.Tmin, SolverInputPtr->Constraint.Tmax, Nx);
+    createControlVector(ControlVec, SolverInputPtr->Constraint.Qmin, SolverInputPtr->Constraint.Qmax, Nu);
 
 #ifdef ADAPTIVEGRID
     // Initialize Box Edges
-    BoxEdges = malloc((SolverInputPtr->GridSize.Nx + 1) * sizeof(real_T));
-    createBoxEdges(BoxEdges, StateVec, SolverInputPtr->GridSize.Nx);
+    BoxEdges = malloc((Nx + 1) * sizeof(real_T));
+    createBoxEdges(BoxEdges, StateVec, Nx);
     // Initialize the Adaptive State Grid
-    StateGrid = malloc(sizeof(real_T[SolverInputPtr->GridSize.Nhrz + 1][SolverInputPtr->GridSize.Nx]));
-    createStateGrid(StateGrid, StateVec, SolverInputPtr->GridSize.Nx, SolverInputPtr->GridSize.Nhrz);
+    StateGrid = malloc(sizeof(real_T[Nhrz + 1][Nx]));
+    createStateGrid(StateGrid, StateVec, Nx, Nhrz);
 #endif
 
     // Initialize Solution Structure
@@ -240,7 +256,7 @@ thermalSolver(SolverInput *InputPtr, DynParameter *ParaPtr, EnvFactor *EnvPtr, S
     // Find the minimum Cost-to-come value step by step
     uint16_t i;
     uint16_t j;
-    for (i = 0; i < SolverInputPtr->GridSize.Nhrz; i++) {
+    for (i = 0; i < Nhrz; i++) {
         calculate_costTocome(&SolutionStruct, i);
     }
 
@@ -269,9 +285,6 @@ thermalSolver(SolverInput *InputPtr, DynParameter *ParaPtr, EnvFactor *EnvPtr, S
 }
 
 static void solutionStruct_init(Solution *SolutionPtr) {
-    uint16_t Nx = SolverInputPtr->GridSize.Nx;
-    uint16_t Nhrz = SolverInputPtr->GridSize.Nhrz;
-
     SolutionPtr->CostToCome = malloc(Nx * sizeof(real_T));
     SolutionPtr->startIdx = malloc(Nx * sizeof(uint16_t));
 
@@ -307,7 +320,7 @@ static void solutionStruct_free(Solution *SolutionPtr) {
 
 static void x0_init(Solution *SolutionPtr, real_T X0) {
     // Round the initial state to the closet point in the state vector
-    SolutionPtr->startIdx[0] = (uint16_t) findNearest(StateVec, X0, SolverInputPtr->GridSize.Nx);
+    SolutionPtr->startIdx[0] = (uint16_t) findNearest(StateVec, X0, Nx);
     SolutionPtr->Nstart = 1;
 }
 
@@ -315,7 +328,7 @@ static void updateStartX(Solution *SolutionPtr, real_T *CostToCome) {
     uint16_t counter = 0;
     uint16_t i;
 
-    for (i = 0; i < SolverInputPtr->GridSize.Nx; i++) {
+    for (i = 0; i < Nx; i++) {
         if (CostToCome[i] < SolverInputPtr->SolverLimit.infValue) {
             SolutionPtr->startIdx[counter] = i;
             counter++;
@@ -326,8 +339,6 @@ static void updateStartX(Solution *SolutionPtr, real_T *CostToCome) {
 }
 
 static void arcStruct_init(ArcProcess *ArcPtr) {
-    uint16_t Nx = SolverInputPtr->GridSize.Nx;
-
     uint16_t i, j;
 
     ArcPtr->arcCost = malloc(sizeof(real_T[Nx][Nx]));
@@ -359,8 +370,6 @@ static void arcStruct_free(ArcProcess *ArcPtr) {
 
 static void calculate_costTocome(Solution *SolutionPtr, uint16_t N)        // (N is iteration index)
 {
-    uint16_t Nx = SolverInputPtr->GridSize.Nx;
-
     // Initialize arc process structure
     ArcProcess ArcStruct;
     arcStruct_init(&ArcStruct);
@@ -425,9 +434,6 @@ static void calculate_costTocome(Solution *SolutionPtr, uint16_t N)        // (N
 
 static void calculate_arc_cost(ArcProcess *ArcPtr, uint16_t N)    // N is iteration index
 {
-    uint16_t Nx = SolverInputPtr->GridSize.Nx;
-    uint16_t Nu = SolverInputPtr->GridSize.Nu;
-
     uint16_t i;
     uint16_t j;
 
@@ -451,10 +457,10 @@ static void calculate_arc_cost(ArcProcess *ArcPtr, uint16_t N)    // N is iterat
 
 #ifdef ADAPTIVEGRID
     // Calculate System Dynamics
-    systemDynamics(Nu, Xnext, ArcCost, InfFlag, StateGrid[N], ControlVec, &BoundaryPtr, N, X0_index);
+    systemDynamics(Nx, Nu, Xnext, ArcCost, InfFlag, StateGrid[N], ControlVec, &BoundaryPtr, N, X0_index);
 #else
     // Calculate System Dynamics
-    systemDynamics(Nu, Xnext, ArcCost, InfFlag, StateVec, ControlVec, &BoundaryPtr, N, X0_index);
+    systemDynamics(Nx, Nu, Xnext, ArcCost, InfFlag, StateVec, ControlVec, &BoundaryPtr, N, X0_index);
 #endif
 
     // Local Copy the State and Control grids
@@ -620,8 +626,6 @@ static void calculate_arc_cost(ArcProcess *ArcPtr, uint16_t N)    // N is iterat
 }
 
 static void findSolution(SolverOutput *OutputPtr, Solution *SolutionPtr, real_T Xfmin, real_T Xfmax) {
-    uint16_t Nx = SolverInputPtr->GridSize.Nx;
-    uint16_t Nhrz = SolverInputPtr->GridSize.Nhrz;
 
     // Find the index range within the final state constraints
     uint16_t minIdx = (uint16_t) findMinGEQ(StateVec, Xfmin, Nx);
