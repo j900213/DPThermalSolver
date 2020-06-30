@@ -13,10 +13,12 @@
 #define STRUCT
 
 // Problem sizes
-//TODO: These 4 values require to be the same as defined in MatLab
+// TODO: These values require to be the same as defined in MatLab
 #define HORIZON 200
-#define NX 200
-#define NU 500
+#define NV 200
+#define NF 500
+#define NT 200
+#define NQ 500
 #define BLOCK 4
 
 
@@ -29,11 +31,11 @@
 // Turn on/off the counter of boundary calculations
 #define BOUNDCOUNTER
 // Choose the boundary line mode (NOBOUND/NORMALBOUND/CUSTOMBOUND)
-#define CUSTOMBOUND
+#define NOBOUND
 // Turn on/off boundary calibration
-#define BOUNDCALIBRATION
+//#define BOUNDCALIBRATION
 // Turn on/off Adaptive grid method
-#define ADAPTIVEGRID
+//#define ADAPTIVEGRID
 
 /*--- External Variables ---*/
 extern real_T Xinitial;
@@ -51,8 +53,10 @@ extern uint32_t counterBound;
 #endif // BOUNDCOUNTER
 
 typedef struct {
-    uint16_t Nx;                // Number of state grid points
-    uint16_t Nu;                // Number of control grid points
+    uint16_t Nv;                // Number of state grid points (Speed)
+    uint16_t Nf;                // Number of control grid points (Speed)
+    uint16_t Nt;                // Number of state grid points (Thermal)
+    uint16_t Nq;                // Number of control grid points (Thermal)
     uint16_t Nhrz;              // Length of the horizon
 }
         GridSetting;

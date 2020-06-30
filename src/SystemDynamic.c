@@ -38,11 +38,9 @@ void createControlVector(real_T *ControlVector, real_T min, real_T max, uint32_t
 }
 
 void
-systemDynamics(uint16_t Nu, real_T (*Xnext)[Nu], real_T (*ArcCost)[Nu], uint8_t (*InfFlag)[Nu], real_T const *StateVec,
+systemDynamics(uint16_t Nx, uint16_t Nu, real_T (*Xnext)[Nu], real_T (*ArcCost)[Nu], uint8_t (*InfFlag)[Nu],
+               real_T const *StateVec,
                real_T const *ControlVec, Boundary *BoundaryPtr, uint16_t N, uint16_t X0_index) {
-
-    // Grid Sizes
-    uint16_t Nx = SolverInputPtr->GridSize.Nx;
 
     // Local Copy the State and Control grids
     real_T *Xin = (real_T *) malloc(Nx * sizeof(real_T));
@@ -193,4 +191,60 @@ systemDynamics(uint16_t Nu, real_T (*Xnext)[Nu], real_T (*ArcCost)[Nu], uint8_t 
     // Free the memory of local state and control vectors
     free(Xin);
     free(Uin);
+}
+
+void initBridge(Bridge *BridgePtr) {
+    BridgePtr->Pdc = (real_T *) malloc(HORIZON * sizeof(real_T));
+    BridgePtr->tDelta = (real_T *) malloc(HORIZON * sizeof(real_T));
+}
+
+void freeBridge(Bridge *BridgePtr) {
+    free(BridgePtr->Pdc);
+    free(BridgePtr->tDelta);
+}
+
+void bridgeConnection(Bridge *BridgePtr, SolverOutput *OutputPtr, real_T V0) {
+
+    // Intermediate Variables
+    real_T Pwh;
+    real_T Pm;
+    real_T Pinv;
+
+    // Parameters
+    real_T ds = ModelParameter->ds;
+
+    real_T eta_trans = ModelParameter->eta_trans;
+    real_T eta_dc = ModelParameter->eta_dc;
+    real_T alpha0 = ModelParameter->alpha0;
+    real_T alpha1 = ModelParameter->alpha1;
+    real_T alpha2 = ModelParameter->alpha2;
+
+    uint16_t i;
+    for (i = 0; i < HORIZON; i++) {
+
+        // Calculate delta t
+        // Whether it's the initial state or not
+        if (i == 0) {
+            BridgePtr->tDelta[i] = 2 * ds / (OutputPtr->Vo[i] + V0);
+            Pwh = OutputPtr->Fo[i] * V0;
+        } else {
+            BridgePtr->tDelta[i] = 2 * ds / (OutputPtr->Vo[i] + OutputPtr->Vo[i - 1]);
+            Pwh = OutputPtr->Fo[i] * OutputPtr->Vo[i - 1];
+        }
+
+        // Calculate Pdc
+        // Acceleration
+        if (Pwh > 0) {
+            Pm = Pwh / eta_trans;
+            Pinv = ((1 - alpha1) - sqrt((alpha1 - 1) * (alpha1 - 1) - 4 * alpha2 * (alpha0 + Pm))) / (2 * alpha2);
+            BridgePtr->Pdc[i] = Pinv / eta_dc;
+        }
+            //Deceleration
+        else {
+            Pm = Pwh * eta_trans;
+            Pinv = ((1 - alpha1) - sqrt((alpha1 - 1) * (alpha1 - 1) - 4 * alpha2 * (alpha0 + Pm))) / (2 * alpha2);
+            BridgePtr->Pdc[i] = Pinv * eta_dc;
+        }
+    }
+
 }
