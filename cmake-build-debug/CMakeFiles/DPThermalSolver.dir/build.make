@@ -147,6 +147,32 @@ CMakeFiles/DPThermalSolver.dir/src/AdaptiveGrid.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/DPThermalSolver.dir/src/AdaptiveGrid.c.s"
 	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S E:\Thesis_Project\CascadingDPSolver\src\AdaptiveGrid.c -o CMakeFiles\DPThermalSolver.dir\src\AdaptiveGrid.c.s
 
+CMakeFiles/DPThermalSolver.dir/src/SpeedSolver.c.obj: CMakeFiles/DPThermalSolver.dir/flags.make
+CMakeFiles/DPThermalSolver.dir/src/SpeedSolver.c.obj: ../src/SpeedSolver.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=E:\Thesis_Project\CascadingDPSolver\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building C object CMakeFiles/DPThermalSolver.dir/src/SpeedSolver.c.obj"
+	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\DPThermalSolver.dir\src\SpeedSolver.c.obj   -c E:\Thesis_Project\CascadingDPSolver\src\SpeedSolver.c
+
+CMakeFiles/DPThermalSolver.dir/src/SpeedSolver.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/DPThermalSolver.dir/src/SpeedSolver.c.i"
+	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E E:\Thesis_Project\CascadingDPSolver\src\SpeedSolver.c > CMakeFiles\DPThermalSolver.dir\src\SpeedSolver.c.i
+
+CMakeFiles/DPThermalSolver.dir/src/SpeedSolver.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/DPThermalSolver.dir/src/SpeedSolver.c.s"
+	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S E:\Thesis_Project\CascadingDPSolver\src\SpeedSolver.c -o CMakeFiles\DPThermalSolver.dir\src\SpeedSolver.c.s
+
+CMakeFiles/DPThermalSolver.dir/src/ThermalSolver.c.obj: CMakeFiles/DPThermalSolver.dir/flags.make
+CMakeFiles/DPThermalSolver.dir/src/ThermalSolver.c.obj: ../src/ThermalSolver.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=E:\Thesis_Project\CascadingDPSolver\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building C object CMakeFiles/DPThermalSolver.dir/src/ThermalSolver.c.obj"
+	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\DPThermalSolver.dir\src\ThermalSolver.c.obj   -c E:\Thesis_Project\CascadingDPSolver\src\ThermalSolver.c
+
+CMakeFiles/DPThermalSolver.dir/src/ThermalSolver.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/DPThermalSolver.dir/src/ThermalSolver.c.i"
+	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E E:\Thesis_Project\CascadingDPSolver\src\ThermalSolver.c > CMakeFiles\DPThermalSolver.dir\src\ThermalSolver.c.i
+
+CMakeFiles/DPThermalSolver.dir/src/ThermalSolver.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/DPThermalSolver.dir/src/ThermalSolver.c.s"
+	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S E:\Thesis_Project\CascadingDPSolver\src\ThermalSolver.c -o CMakeFiles\DPThermalSolver.dir\src\ThermalSolver.c.s
+
 # Object files for target DPThermalSolver
 DPThermalSolver_OBJECTS = \
 "CMakeFiles/DPThermalSolver.dir/main.c.obj" \
@@ -155,7 +181,9 @@ DPThermalSolver_OBJECTS = \
 "CMakeFiles/DPThermalSolver.dir/src/MathFunction.c.obj" \
 "CMakeFiles/DPThermalSolver.dir/src/PrintResult.c.obj" \
 "CMakeFiles/DPThermalSolver.dir/src/SystemDynamic.c.obj" \
-"CMakeFiles/DPThermalSolver.dir/src/AdaptiveGrid.c.obj"
+"CMakeFiles/DPThermalSolver.dir/src/AdaptiveGrid.c.obj" \
+"CMakeFiles/DPThermalSolver.dir/src/SpeedSolver.c.obj" \
+"CMakeFiles/DPThermalSolver.dir/src/ThermalSolver.c.obj"
 
 # External object files for target DPThermalSolver
 DPThermalSolver_EXTERNAL_OBJECTS =
@@ -167,11 +195,13 @@ DPThermalSolver.exe: CMakeFiles/DPThermalSolver.dir/src/MathFunction.c.obj
 DPThermalSolver.exe: CMakeFiles/DPThermalSolver.dir/src/PrintResult.c.obj
 DPThermalSolver.exe: CMakeFiles/DPThermalSolver.dir/src/SystemDynamic.c.obj
 DPThermalSolver.exe: CMakeFiles/DPThermalSolver.dir/src/AdaptiveGrid.c.obj
+DPThermalSolver.exe: CMakeFiles/DPThermalSolver.dir/src/SpeedSolver.c.obj
+DPThermalSolver.exe: CMakeFiles/DPThermalSolver.dir/src/ThermalSolver.c.obj
 DPThermalSolver.exe: CMakeFiles/DPThermalSolver.dir/build.make
 DPThermalSolver.exe: CMakeFiles/DPThermalSolver.dir/linklibs.rsp
 DPThermalSolver.exe: CMakeFiles/DPThermalSolver.dir/objects1.rsp
 DPThermalSolver.exe: CMakeFiles/DPThermalSolver.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=E:\Thesis_Project\CascadingDPSolver\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Linking C executable DPThermalSolver.exe"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=E:\Thesis_Project\CascadingDPSolver\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Linking C executable DPThermalSolver.exe"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles\DPThermalSolver.dir\link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

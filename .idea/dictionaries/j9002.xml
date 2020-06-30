@@ -26,6 +26,7 @@
       <w>nstart</w>
       <w>optimalstate</w>
       <w>pbatt</w>
+      <w>phvac</w>
       <w>pinv</w>
       <w>qmax</w>
       <w>qmaxl</w>
@@ -36,6 +37,7 @@
       <w>tamb</w>
       <w>tfmax</w>
       <w>tfmin</w>
+      <w>tinlet</w>
       <w>tmax</w>
       <w>tmin</w>
       <w>tocome</w>

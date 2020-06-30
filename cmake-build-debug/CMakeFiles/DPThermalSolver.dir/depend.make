@@ -7,7 +7,9 @@ CMakeFiles/DPThermalSolver.dir/main.c.obj: ../inc/BoundaryLine.h
 CMakeFiles/DPThermalSolver.dir/main.c.obj: ../inc/MathFunction.h
 CMakeFiles/DPThermalSolver.dir/main.c.obj: ../inc/PrintResult.h
 CMakeFiles/DPThermalSolver.dir/main.c.obj: ../inc/SolverStruct.h
+CMakeFiles/DPThermalSolver.dir/main.c.obj: ../inc/SpeedSolver.h
 CMakeFiles/DPThermalSolver.dir/main.c.obj: ../inc/SystemDynamic.h
+CMakeFiles/DPThermalSolver.dir/main.c.obj: ../inc/ThermalSolver.h
 CMakeFiles/DPThermalSolver.dir/main.c.obj: ../main.c
 
 CMakeFiles/DPThermalSolver.dir/src/AdaptiveGrid.c.obj: ../inc/AdaptiveGrid.h
@@ -20,7 +22,9 @@ CMakeFiles/DPThermalSolver.dir/src/BasicAlgorithm.c.obj: ../inc/BoundaryLine.h
 CMakeFiles/DPThermalSolver.dir/src/BasicAlgorithm.c.obj: ../inc/MathFunction.h
 CMakeFiles/DPThermalSolver.dir/src/BasicAlgorithm.c.obj: ../inc/PrintResult.h
 CMakeFiles/DPThermalSolver.dir/src/BasicAlgorithm.c.obj: ../inc/SolverStruct.h
+CMakeFiles/DPThermalSolver.dir/src/BasicAlgorithm.c.obj: ../inc/SpeedSolver.h
 CMakeFiles/DPThermalSolver.dir/src/BasicAlgorithm.c.obj: ../inc/SystemDynamic.h
+CMakeFiles/DPThermalSolver.dir/src/BasicAlgorithm.c.obj: ../inc/ThermalSolver.h
 CMakeFiles/DPThermalSolver.dir/src/BasicAlgorithm.c.obj: ../src/BasicAlgorithm.c
 
 CMakeFiles/DPThermalSolver.dir/src/BoundaryLine.c.obj: ../inc/BoundaryLine.h
@@ -35,9 +39,26 @@ CMakeFiles/DPThermalSolver.dir/src/PrintResult.c.obj: ../inc/PrintResult.h
 CMakeFiles/DPThermalSolver.dir/src/PrintResult.c.obj: ../inc/SolverStruct.h
 CMakeFiles/DPThermalSolver.dir/src/PrintResult.c.obj: ../src/PrintResult.c
 
+CMakeFiles/DPThermalSolver.dir/src/SpeedSolver.c.obj: ../inc/AdaptiveGrid.h
+CMakeFiles/DPThermalSolver.dir/src/SpeedSolver.c.obj: ../inc/BoundaryLine.h
+CMakeFiles/DPThermalSolver.dir/src/SpeedSolver.c.obj: ../inc/MathFunction.h
+CMakeFiles/DPThermalSolver.dir/src/SpeedSolver.c.obj: ../inc/PrintResult.h
+CMakeFiles/DPThermalSolver.dir/src/SpeedSolver.c.obj: ../inc/SolverStruct.h
+CMakeFiles/DPThermalSolver.dir/src/SpeedSolver.c.obj: ../inc/SpeedSolver.h
+CMakeFiles/DPThermalSolver.dir/src/SpeedSolver.c.obj: ../inc/SystemDynamic.h
+CMakeFiles/DPThermalSolver.dir/src/SpeedSolver.c.obj: ../src/SpeedSolver.c
+
 CMakeFiles/DPThermalSolver.dir/src/SystemDynamic.c.obj: ../inc/BoundaryLine.h
 CMakeFiles/DPThermalSolver.dir/src/SystemDynamic.c.obj: ../inc/MathFunction.h
 CMakeFiles/DPThermalSolver.dir/src/SystemDynamic.c.obj: ../inc/SolverStruct.h
 CMakeFiles/DPThermalSolver.dir/src/SystemDynamic.c.obj: ../inc/SystemDynamic.h
 CMakeFiles/DPThermalSolver.dir/src/SystemDynamic.c.obj: ../src/SystemDynamic.c
+
+CMakeFiles/DPThermalSolver.dir/src/ThermalSolver.c.obj: ../inc/BoundaryLine.h
+CMakeFiles/DPThermalSolver.dir/src/ThermalSolver.c.obj: ../inc/MathFunction.h
+CMakeFiles/DPThermalSolver.dir/src/ThermalSolver.c.obj: ../inc/PrintResult.h
+CMakeFiles/DPThermalSolver.dir/src/ThermalSolver.c.obj: ../inc/SolverStruct.h
+CMakeFiles/DPThermalSolver.dir/src/ThermalSolver.c.obj: ../inc/SystemDynamic.h
+CMakeFiles/DPThermalSolver.dir/src/ThermalSolver.c.obj: ../inc/ThermalSolver.h
+CMakeFiles/DPThermalSolver.dir/src/ThermalSolver.c.obj: ../src/ThermalSolver.c
 

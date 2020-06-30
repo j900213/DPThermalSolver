@@ -76,7 +76,8 @@ int main()
 
     // Tuning Parameter
     ModelParaPtr.ds = 10;
-    ModelParaPtr.penalty = 11e4;
+    ModelParaPtr.speedPenalty = 11e4;
+    ModelParaPtr.thermalPenalty = 3e3;
 
     // Environmental Information
     uint8_t numFactors = 3;
@@ -121,27 +122,29 @@ int main()
             EnvFactorPtr.Vmax_env[i] = Vmax_GPS_1;					// Legal Vmax
             EnvFactorPtr.Vmin_env[i] = Vmin_GPS_1;					// Legal Vmin
             EnvFactorPtr.Angle_env[i] = 0.0;						// Road slops
+            EnvFactorPtr.T_required[i] = T_required_1;              // Required Temp
         }
         else if (i < endBlock_2)
         {
             EnvFactorPtr.Vmax_env[i] = Vmax_GPS_2;					// Legal Vmax
             EnvFactorPtr.Vmin_env[i] = Vmin_GPS_2;					// Legal Vmin
             EnvFactorPtr.Angle_env[i] = 0.0;						// Road slops
+            EnvFactorPtr.T_required[i] = T_required_2;              // Required Temp
         }
         else if (i < endBlock_3)
         {
             EnvFactorPtr.Vmax_env[i] = Vmax_GPS_3;					// Legal Vmax
             EnvFactorPtr.Vmin_env[i] = Vmin_GPS_3;					// Legal Vmin
             EnvFactorPtr.Angle_env[i] = 0.0;						// Road slops
+            EnvFactorPtr.T_required[i] = T_required_3;              // Required Temp
         }
         else
         {
             EnvFactorPtr.Vmax_env[i] = Vmax_GPS_4;					// Legal Vmax
             EnvFactorPtr.Vmin_env[i] = Vmin_GPS_4;					// Legal Vmin
             EnvFactorPtr.Angle_env[i] = 0.0;						// Road slops
+            EnvFactorPtr.T_required[i] = T_required_4;              // Required Temp
         }
-
-        EnvFactorPtr.T_required[i] = 24;
     }
 #elif defined(SCENE2)
     // Initial Speed
