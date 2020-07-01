@@ -77,7 +77,7 @@ int main()
     // Tuning Parameter
     ModelParaPtr.ds = 10;
     ModelParaPtr.speedPenalty = 11e4;
-    ModelParaPtr.thermalPenalty = 3e3;
+    ModelParaPtr.thermalPenalty = 10e3;
 
     // Environmental Information
     uint8_t numFactors = 3;
@@ -102,7 +102,7 @@ int main()
 
     real_T Vmax_GPS_3 = 50 / 3.6;
     real_T Vmin_GPS_3 = 10 / 3.6;
-    real_T T_required_3 = 24;
+    real_T T_required_3 = 25;
     uint16_t endBlock_3 = 150;
 
     real_T Vmax_GPS_4 = 80 / 3.6;

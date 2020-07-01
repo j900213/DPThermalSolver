@@ -17,7 +17,7 @@
 #define HORIZON 200
 #define NV 200
 #define NF 500
-#define NT 40
+#define NT 50
 #define NQ 100
 #define BLOCK 4
 

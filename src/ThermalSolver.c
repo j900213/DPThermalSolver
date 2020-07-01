@@ -17,6 +17,10 @@ static EnvFactor *EnvFactorPtr;                     // local copy of the Env fac
 static uint16_t X0_index;                           // the rounded X0
 static Bridge *SolverBridgePtr;                     // local copy of the bridge pointer
 
+#ifdef ADAPTIVEGRID
+static real_T *BoxEdges;                            // Box Edges for adaptive grid method
+static real_T (*StateGrid)[NV];                     // Adaptive State Grid
+#endif
 
 /*--- Private Structure ---*/
 typedef struct {
@@ -88,8 +92,6 @@ thermalSolver(SolverInput *InputPtr, DynParameter *ParaPtr, EnvFactor *EnvPtr, S
     // Allocate memory to State Vector and Control Vector
     StateVec = malloc(Nx * sizeof(real_T));
     ControlVec = malloc(Nu * sizeof(real_T));
-
-    printf("Size: %d %d %d\n", Nx, Nu, Nhrz);
 
     // Pass Parameters to SystemDynamics in order to perform calculation
     PassParameters(SolverInputPtr, ParameterPtr, EnvFactorPtr);
@@ -225,6 +227,7 @@ static void calculate_costTocome(Solution *SolutionPtr, uint16_t N)        // (N
     uint16_t i;
     uint16_t j;
 
+
     // Initialize the Cost-to-Come Value at the current State Vector
     for (i = 0; i < Nx; i++) {
         CostToCome[i] = SolverInputPtr->SolverLimit.infValue;
@@ -323,6 +326,7 @@ static void calculate_arc_cost(ArcProcess *ArcPtr, uint16_t N)    // N is iterat
         FeasibleCounter[i] = counter;
     }
 
+
 #ifndef ADAPTIVEGRID
 
     // Interpolate the cost-to-come for states that can be reached
@@ -361,9 +365,14 @@ static void calculate_arc_cost(ArcProcess *ArcPtr, uint16_t N)    // N is iterat
             reorderVector(ArcCost_real, idxSort, FeasibleCounter[i]);
             reorderVector(Control_real, idxSort, FeasibleCounter[i]);
 
-            // Find the range of the states (in the StateVector) that can be reached
+            // Find the range of the states (in the StateVector) where interpolation can be calculated
             uint16_t idxMax = (uint16_t) findMaxLEQ(StateVecCopy, Xnext_real[FeasibleCounter[i] - 1], Nx);
             uint16_t idxMin = (uint16_t) findMinGEQ(StateVecCopy, Xnext_real[0], Nx);
+
+            // Find the up and down points where we perform extrapolation to avoid shrinking the searching space
+            //uint16_t idxUp = (uint16_t) findMinGEQ(StateVecCopy, Xnext_real[FeasibleCounter[i] - 1], Nx);
+            //uint16_t idxDown = (uint16_t) findMaxLEQ(StateVecCopy, Xnext_real[0], Nx);
+
 
             // Calculate all the possible arc costs to each state (in the State Vector)
             LookupTable CostComeTable;
