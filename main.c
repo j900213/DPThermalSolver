@@ -1,22 +1,21 @@
 #include "./inc/SolverStruct.h"
 #include "./inc/BasicAlgorithm.h"
 
-int main()
-{
+int main() {
     /*----------------------*/
     /*--- Initialization ---*/
     /*----------------------*/
 
     // Input Variable declaration (will be used in the BasicAlgorithm)
-    SolverInput SolverInputPtr;						// solver inputs: Constraints, Grid Sizes, Road Profile, etc.
-    DynParameter ModelParaPtr;					    // solver inputs: Model parameters
-    EnvFactor EnvFactorPtr;							// solver inputs: Environmental Factors (Legal speed limits, Angle of slopes)
-    SolverOutput SolverOutputPtr;					// solver outputs: Minimum Total Cost, Optimal Speed Trajectory, Optimal Control Policy
-    real_T V0;										// initial speed
-    real_T T0;										// initial temperature
-    real_T Vfmin;									// final speed constraints
+    SolverInput SolverInputPtr;                        // solver inputs: Constraints, Grid Sizes, Road Profile, etc.
+    DynParameter ModelParaPtr;                        // solver inputs: Model parameters
+    EnvFactor EnvFactorPtr;                            // solver inputs: Environmental Factors (Legal speed limits, Angle of slopes)
+    SolverOutput SolverOutputPtr;                    // solver outputs: Minimum Total Cost, Optimal Speed Trajectory, Optimal Control Policy
+    real_T V0;                                        // initial speed
+    real_T T0;                                        // initial temperature
+    real_T Vfmin;                                    // final speed constraints
     real_T Vfmax;
-    real_T Tfmin;									// final thermal constraints
+    real_T Tfmin;                                    // final thermal constraints
     real_T Tfmax;
 
     // Final states constraint
@@ -31,8 +30,9 @@ int main()
     SolverInputPtr.GridSize.Nt = NT;
     SolverInputPtr.GridSize.Nq = NQ;
     SolverInputPtr.GridSize.Nhrz = HORIZON;
+    SolverInputPtr.GridSize.ResThermal = RES_THERMAL;
 
-    SolverInputPtr.Constraint.Vmax = 200 / 3.6;		// Physical Speed limits
+    SolverInputPtr.Constraint.Vmax = 200 / 3.6;        // Physical Speed limits
     SolverInputPtr.Constraint.Vmin = 0.0;
     SolverInputPtr.Constraint.Fmax = 3e3;
     SolverInputPtr.Constraint.Fmin = -3e3;
@@ -40,12 +40,12 @@ int main()
     SolverInputPtr.Constraint.PDmax = -6e4;
     SolverInputPtr.Constraint.Tmax = 30;
     SolverInputPtr.Constraint.Tmin = 10;
-    SolverInputPtr.Constraint.Tmax_inlet = 30;
-    SolverInputPtr.Constraint.Tmin_inlet = 10;
+    SolverInputPtr.Constraint.Tmax_inlet = 80;
+    SolverInputPtr.Constraint.Tmin_inlet = -10;
     SolverInputPtr.Constraint.Qmax = 2000;
     SolverInputPtr.Constraint.Qmin = -2000;
-    SolverInputPtr.Constraint.PACmax = 1000;
-    SolverInputPtr.Constraint.PACmin = -1000;
+    SolverInputPtr.Constraint.PACmax = 150000;
+    SolverInputPtr.Constraint.PACmin = -150000;
 
     SolverInputPtr.SolverLimit.infValue = FLT_MAX;
 
@@ -63,21 +63,21 @@ int main()
     ModelParaPtr.eta_trans = 0.98;
 
     // Thermal Parameters
-    ModelParaPtr.Cth = 113e3;
-    ModelParaPtr.Rth = 15e-6;
-    ModelParaPtr.Qsun = 469.05;
-    ModelParaPtr.Qpas = 416;
+    ModelParaPtr.Cth = 1.1347e5;
+    ModelParaPtr.Rth = 0.015;
+    ModelParaPtr.Qsun = 150 * 1.7725;
+    ModelParaPtr.Qpas = 4 * 104.2975;
     ModelParaPtr.Cp = 1.0035e3;
     ModelParaPtr.rho = 1.1839;
     ModelParaPtr.mDot = 0.0842;
-    ModelParaPtr.CoP_pos = 2.14;
-    ModelParaPtr.CoP_neg = -2.14;
+    ModelParaPtr.CoP_pos = 2.1379;
+    ModelParaPtr.CoP_neg = -2.1379;
     ModelParaPtr.Tamb = 28;
 
     // Tuning Parameter
     ModelParaPtr.ds = 10;
     ModelParaPtr.speedPenalty = 11e4;
-    ModelParaPtr.thermalPenalty = 10e3;
+    ModelParaPtr.thermalPenalty = 10e6;
 
     // Environmental Information
     uint8_t numFactors = 3;
@@ -86,13 +86,13 @@ int main()
 
 #ifdef SCENE1
     // Initial Speed
-    V0 = 70/3.6;
+    V0 = 70 / 3.6;
     // Initial Temperature
     T0 = 28;
 
     real_T Vmax_GPS_1 = 130 / 3.6;
     real_T Vmin_GPS_1 = 60 / 3.6;
-    real_T T_required_1 = 26;
+    real_T T_required_1 = 25;
     uint16_t endBlock_1 = 30;
 
     real_T Vmax_GPS_2 = 80 / 3.6;
@@ -115,34 +115,26 @@ int main()
     EnvFactorPtr.endBlock[2] = endBlock_3;
     EnvFactorPtr.endBlock[3] = endBlock_4;
 
-    for (i = 0; i <= Nhrz; i++)
-    {
-        if (i < endBlock_1)
-        {
-            EnvFactorPtr.Vmax_env[i] = Vmax_GPS_1;					// Legal Vmax
-            EnvFactorPtr.Vmin_env[i] = Vmin_GPS_1;					// Legal Vmin
-            EnvFactorPtr.Angle_env[i] = 0.0;						// Road slops
+    for (i = 0; i <= Nhrz; i++) {
+        if (i < endBlock_1) {
+            EnvFactorPtr.Vmax_env[i] = Vmax_GPS_1;                    // Legal Vmax
+            EnvFactorPtr.Vmin_env[i] = Vmin_GPS_1;                    // Legal Vmin
+            EnvFactorPtr.Angle_env[i] = 0.0;                        // Road slops
             EnvFactorPtr.T_required[i] = T_required_1;              // Required Temp
-        }
-        else if (i < endBlock_2)
-        {
-            EnvFactorPtr.Vmax_env[i] = Vmax_GPS_2;					// Legal Vmax
-            EnvFactorPtr.Vmin_env[i] = Vmin_GPS_2;					// Legal Vmin
-            EnvFactorPtr.Angle_env[i] = 0.0;						// Road slops
+        } else if (i < endBlock_2) {
+            EnvFactorPtr.Vmax_env[i] = Vmax_GPS_2;                    // Legal Vmax
+            EnvFactorPtr.Vmin_env[i] = Vmin_GPS_2;                    // Legal Vmin
+            EnvFactorPtr.Angle_env[i] = 0.0;                        // Road slops
             EnvFactorPtr.T_required[i] = T_required_2;              // Required Temp
-        }
-        else if (i < endBlock_3)
-        {
-            EnvFactorPtr.Vmax_env[i] = Vmax_GPS_3;					// Legal Vmax
-            EnvFactorPtr.Vmin_env[i] = Vmin_GPS_3;					// Legal Vmin
-            EnvFactorPtr.Angle_env[i] = 0.0;						// Road slops
+        } else if (i < endBlock_3) {
+            EnvFactorPtr.Vmax_env[i] = Vmax_GPS_3;                    // Legal Vmax
+            EnvFactorPtr.Vmin_env[i] = Vmin_GPS_3;                    // Legal Vmin
+            EnvFactorPtr.Angle_env[i] = 0.0;                        // Road slops
             EnvFactorPtr.T_required[i] = T_required_3;              // Required Temp
-        }
-        else
-        {
-            EnvFactorPtr.Vmax_env[i] = Vmax_GPS_4;					// Legal Vmax
-            EnvFactorPtr.Vmin_env[i] = Vmin_GPS_4;					// Legal Vmin
-            EnvFactorPtr.Angle_env[i] = 0.0;						// Road slops
+        } else {
+            EnvFactorPtr.Vmax_env[i] = Vmax_GPS_4;                    // Legal Vmax
+            EnvFactorPtr.Vmin_env[i] = Vmin_GPS_4;                    // Legal Vmin
+            EnvFactorPtr.Angle_env[i] = 0.0;                        // Road slops
             EnvFactorPtr.T_required[i] = T_required_4;              // Required Temp
         }
     }
@@ -180,6 +172,8 @@ int main()
 #ifdef BOUNDCOUNTER
     printf("The number of boundary computation: %d\n", counterBound);
 #endif // BOUNDCOUNTER
+
+    printf("%d\n", HORIZON/RES_THERMAL);
 
     // Fix
     return 0;

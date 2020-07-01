@@ -4,6 +4,7 @@
 uint16_t Nx;                                        // Problem sizes
 uint16_t Nu;                                        // - they are changed based on running Speed or Thermal solver
 uint16_t Nhrz;
+uint16_t ResThermal;
 
 /*--- External Variables ---*/
 real_T Xinitial;                                    // The initial state
@@ -17,18 +18,14 @@ static EnvFactor *EnvFactorPtr;                     // local copy of the Env fac
 static uint16_t X0_index;                           // the rounded X0
 static Bridge *SolverBridgePtr;                     // local copy of the bridge pointer
 
-#ifdef ADAPTIVEGRID
-static real_T *BoxEdges;                            // Box Edges for adaptive grid method
-static real_T (*StateGrid)[NV];                     // Adaptive State Grid
-#endif
 
 /*--- Private Structure ---*/
 typedef struct {
     real_T *CostToCome;                             // The most recent cost-to-come vector [Nx]
     uint16_t *startIdx;                             // All the possible starting indexes [Nx]
     uint16_t Nstart;                                // Number of possible starting points
-    uint16_t (*Xn)[NT];                             // Optimal State Trajectory [Nhrz][Nx]
-    real_T (*Un)[NT];                               // Optimal Control Policy [Nhrz][Nx]
+    uint16_t (*Xn)[NT];                             // Optimal State Trajectory [ResThermal][Nx]
+    real_T (*Un)[NT];                               // Optimal Control Policy [ResThermal][Nx]
 }
         Solution;
 
@@ -88,6 +85,7 @@ thermalSolver(SolverInput *InputPtr, DynParameter *ParaPtr, EnvFactor *EnvPtr, S
     Nx = SolverInputPtr->GridSize.Nt;
     Nu = SolverInputPtr->GridSize.Nq;
     Nhrz = SolverInputPtr->GridSize.Nhrz;
+    ResThermal = SolverInputPtr->GridSize.ResThermal;
 
     // Allocate memory to State Vector and Control Vector
     StateVec = malloc(Nx * sizeof(real_T));
@@ -120,7 +118,7 @@ thermalSolver(SolverInput *InputPtr, DynParameter *ParaPtr, EnvFactor *EnvPtr, S
     // Find the minimum Cost-to-come value step by step
     uint16_t i;
     uint16_t j;
-    for (i = 0; i < Nhrz; i++) {
+    for (i = 0; i < ResThermal; i++) {
         calculate_costTocome(&SolutionStruct, i);
     }
 
@@ -141,8 +139,8 @@ static void solutionStruct_init(Solution *SolutionPtr) {
     SolutionPtr->CostToCome = malloc(Nx * sizeof(real_T));
     SolutionPtr->startIdx = malloc(Nx * sizeof(uint16_t));
 
-    SolutionPtr->Xn = malloc(sizeof(uint16_t[Nhrz][Nx]));
-    SolutionPtr->Un = malloc(sizeof(real_T[Nhrz][Nx]));
+    SolutionPtr->Xn = malloc(sizeof(uint16_t[ResThermal][Nx]));
+    SolutionPtr->Un = malloc(sizeof(real_T[ResThermal][Nx]));
 
     uint16_t i, j;
 
@@ -153,7 +151,7 @@ static void solutionStruct_init(Solution *SolutionPtr) {
     }
 
     // Initialize Optimal state trajectory and control policy
-    for (i = 0; i < Nhrz; i++) {
+    for (i = 0; i < ResThermal; i++) {
         for (j = 0; j < Nx; j++) {
             SolutionPtr->Xn[i][j] = 0;
             SolutionPtr->Un[i][j] = NAN;
@@ -373,6 +371,15 @@ static void calculate_arc_cost(ArcProcess *ArcPtr, uint16_t N)    // N is iterat
             //uint16_t idxUp = (uint16_t) findMinGEQ(StateVecCopy, Xnext_real[FeasibleCounter[i] - 1], Nx);
             //uint16_t idxDown = (uint16_t) findMaxLEQ(StateVecCopy, Xnext_real[0], Nx);
 
+            if(N == 0)
+            {
+                printf("Enter Loop\n");
+            }
+
+            if(N ==0 &&idxMax<idxMin)
+            {
+                printf("Problem\n");
+            }
 
             // Calculate all the possible arc costs to each state (in the State Vector)
             LookupTable CostComeTable;
@@ -424,15 +431,15 @@ static void findSolution(SolverOutput *OutputPtr, Solution *SolutionPtr, real_T 
     OutputPtr->Cost = minCost;
 
     // Memory for the optimal state trajectory
-    uint16_t *optimalstateIdx = (uint16_t *) calloc(Nhrz + 1, sizeof(uint16_t));
+    uint16_t *optimalstateIdx = (uint16_t *) calloc(ResThermal + 1, sizeof(uint16_t));
 
     // Load the final state index
-    optimalstateIdx[Nhrz] = finalIdx;
+    optimalstateIdx[ResThermal] = finalIdx;
 
     // Make sure there is at least one solution
     if (minCost < SolverInputPtr->SolverLimit.infValue) {
         // Retrieve the optimal index trajectory
-        k = Nhrz - 1;
+        k = ResThermal - 1;
 
         while (k >= 0) {
             optimalstateIdx[k] = SolutionPtr->Xn[k][optimalstateIdx[k + 1]];
@@ -440,7 +447,7 @@ static void findSolution(SolverOutput *OutputPtr, Solution *SolutionPtr, real_T 
         }
 
         // Find the optimal control policy and state trajectory
-        for (i = 0; i < Nhrz; i++) {
+        for (i = 0; i < ResThermal; i++) {
             OutputPtr->To[i] = StateVec[optimalstateIdx[i + 1]];
             OutputPtr->Qo[i] = SolutionPtr->Un[i][optimalstateIdx[i + 1]];
         }

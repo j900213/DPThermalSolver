@@ -67,7 +67,7 @@ void printSpeedSolution(SolverInput *InputPtr, real_T X0_round, SolverOutput *Ou
 
 void printThermalSolution(SolverInput *InputPtr, real_T X0_round, SolverOutput *OutputPtr) {
     // Make local copies of Grid sizes
-    uint16_t Nhrz = HORIZON;
+    uint16_t Nhrz = RES_THERMAL;
     uint16_t i;
 
     printf(" -- Output --\n\n");
