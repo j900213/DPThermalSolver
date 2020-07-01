@@ -24,6 +24,9 @@ void lookuptable_free(LookupTable *TableData);
 // Perform interpolation
 real_T interpolation(LookupTable *TableData, real_T *Xn, real_T *Yn, uint32_t length);
 
+// Perform extrapolation
+real_T extrapolation(real_T *XData, real_T *YData, real_T *Xn, real_T *Yn, uint8_t Flag);
+
 // Find the index with the nearest value in the Vector (based on the given Value)
 uint32_t findNearest(real_T *Vector, real_T Value, uint32_t length);
 

@@ -111,6 +111,17 @@ real_T interpolation(LookupTable *TableData, real_T *Xn, real_T *Yn, uint32_t le
     return Yn[0];
 }
 
+real_T extrapolation(real_T *XData, real_T *YData, real_T *Xn, real_T *Yn, uint8_t Flag) {
+    if (Flag) {
+        // Extrapolation for the upper point
+        Yn[0] = YData[1] + ((YData[1] - YData[0]) / (XData[1] - XData[0])) * (Xn[0] - XData[1]);
+    } else {
+        // Extrapolation for the lower point
+        Yn[0] = YData[0] + ((YData[1] - YData[0]) / (XData[1] - XData[0])) * (Xn[0] - XData[0]);
+    }
+    return Yn[0];
+}
+
 uint32_t findNearest(real_T *Vector, real_T Value, uint32_t length) {
     real_T minError = FLT_MAX;
     real_T currentError;

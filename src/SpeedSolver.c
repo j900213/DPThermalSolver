@@ -475,17 +475,22 @@ static void calculate_arc_cost(ArcProcess *ArcPtr, uint16_t N)    // N is iterat
             uint16_t idxMax = (uint16_t) findMaxLEQ(StateVecCopy, Xnext_real[FeasibleCounter[i] - 1], Nx);
             uint16_t idxMin = (uint16_t) findMinGEQ(StateVecCopy, Xnext_real[0], Nx);
 
-            // Calculate all the possible arc costs to each state (in the State Vector)
-            LookupTable CostComeTable;
-            lookuptable_init(&CostComeTable, Xnext_real, ArcCost_real, FeasibleCounter[i]);
-            interpolation(&CostComeTable, StateVecCopy + idxMin, p2pCost + idxMin, idxMax - idxMin + 1);
-            lookuptable_free(&CostComeTable);
 
-            // Calculate all the possible arc control signals to each state (in the State Vector)
-            LookupTable ControlComeTable;
-            lookuptable_init(&ControlComeTable, Xnext_real, Control_real, FeasibleCounter[i]);
-            interpolation(&ControlComeTable, StateVecCopy + idxMin, p2pControl + idxMin, idxMax - idxMin + 1);
-            lookuptable_free(&ControlComeTable);
+            // Linear Interpolation
+            if(idxMax >= idxMin)
+            {
+                // Calculate all the possible arc costs to each state (in the State Vector)
+                LookupTable CostComeTable;
+                lookuptable_init(&CostComeTable, Xnext_real, ArcCost_real, FeasibleCounter[i]);
+                interpolation(&CostComeTable, StateVecCopy + idxMin, p2pCost + idxMin, idxMax - idxMin + 1);
+                lookuptable_free(&CostComeTable);
+
+                // Calculate all the possible arc control signals to each state (in the State Vector)
+                LookupTable ControlComeTable;
+                lookuptable_init(&ControlComeTable, Xnext_real, Control_real, FeasibleCounter[i]);
+                interpolation(&ControlComeTable, StateVecCopy + idxMin, p2pControl + idxMin, idxMax - idxMin + 1);
+                lookuptable_free(&ControlComeTable);
+            }
 
         }
     }
