@@ -17,8 +17,9 @@
 #define HORIZON 200
 #define NV 200
 #define NF 500
-#define NT 50
-#define NQ 100
+#define RES_THERMAL 20
+#define NT 500
+#define NQ 500
 #define BLOCK 4
 
 
@@ -58,6 +59,7 @@ typedef struct {
     uint16_t Nt;                // Number of state grid points (Thermal)
     uint16_t Nq;                // Number of control grid points (Thermal)
     uint16_t Nhrz;              // Length of the horizon
+    uint16_t ResThermal;        // Resolution of the thermal solver
 }
         GridSetting;
 
@@ -136,8 +138,8 @@ typedef struct {
     real_T Cost;                            // Total Cost
     real_T Vo[HORIZON];                     // Optimal Speed Trajectory
     real_T Fo[HORIZON];                     // Optimal Speed Control Policy
-    real_T To[HORIZON];                     // Optimal Thermal Trajectory
-    real_T Qo[HORIZON];                     // Optimal Thermal Control Policy
+    real_T To[RES_THERMAL];                 // Optimal Thermal Trajectory
+    real_T Qo[RES_THERMAL];                 // Optimal Thermal Control Policy
     real_T upperBound[HORIZON + 1];         // Upper Boundary Line
     real_T lowerBound[HORIZON + 1];         // Lower Boundary Line
     real_T upperActual[HORIZON];

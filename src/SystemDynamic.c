@@ -196,6 +196,10 @@ void thermalDynamics(uint16_t Nx, uint16_t Nu, real_T (*Xnext)[Nu], real_T (*Arc
                      real_T const *StateVec, real_T const *ControlVec, Bridge *BridgePtr, uint16_t N,
                      uint16_t X0_index) {
 
+    // The real index in the horizon
+    uint16_t start = N * HORIZON / RES_THERMAL;
+    uint16_t end = (N + 1) * HORIZON / RES_THERMAL;
+
     // Local Copy the State and Control grids
     real_T *Xin = (real_T *) malloc(Nx * sizeof(real_T));
     real_T *Uin = (real_T *) malloc(Nu * sizeof(real_T));
@@ -203,12 +207,11 @@ void thermalDynamics(uint16_t Nx, uint16_t Nu, real_T (*Xnext)[Nu], real_T (*Arc
     memcpy(Uin, ControlVec, Nu * sizeof(real_T));
 
     // Required temperature by the driver
-    real_T Tmax_end = EnvironmentalFactor->T_required[N + 1] + 3;
-    real_T Tmin_end = EnvironmentalFactor->T_required[N + 1] - 3;
+    real_T Tmax_end = EnvironmentalFactor->T_required[end] + 3;
+    real_T Tmin_end = EnvironmentalFactor->T_required[end] - 3;
 
     // Intermediate Variables
-    real_T Pdc = BridgePtr->Pdc[N];
-    real_T tDelta = BridgePtr->tDelta[N];
+    real_T Pdc = BridgePtr->Pdc[start];
     real_T Phvac;
     real_T Ps;
     real_T Pbatt;
@@ -234,11 +237,19 @@ void thermalDynamics(uint16_t Nx, uint16_t Nu, real_T (*Xnext)[Nu], real_T (*Arc
 
     real_T beta0 = ModelParameter->beta0;
 
-    real_T T_required = EnvironmentalFactor->T_required[N + 1];
+    real_T T_required = EnvironmentalFactor->T_required[end];
     real_T penalty = ModelParameter->thermalPenalty;
 
     uint16_t i;
     uint16_t j;
+
+    // To calculate delta t between a step
+    real_T tDelta = 0;
+    for (i = start; i < end; i++) {
+        tDelta += BridgePtr->tDelta[i];
+    }
+    printf("Duration:\n");
+    printf("%f\n", tDelta);
 
     // Preserve the initial state accuracy
     if (N == 0) {
@@ -264,7 +275,7 @@ void thermalDynamics(uint16_t Nx, uint16_t Nu, real_T (*Xnext)[Nu], real_T (*Arc
             }
 
             Ps = Pdc + Phvac;
-            Pbatt = (1 - sqrt(1 - 4 * beta0 * Pdc)) / (2 * beta0);
+            Pbatt = (1 - sqrt(1 - 4 * beta0 * Ps)) / (2 * beta0);
 
             // Check if Tinlet exceeds the limits
             Tinlet = Xin[i] + Uin[j] / (Cp * rho * mDot);
@@ -283,7 +294,7 @@ void thermalDynamics(uint16_t Nx, uint16_t Nu, real_T (*Xnext)[Nu], real_T (*Arc
             }
 
             // ArcCost - added a L2 norm as the penalization
-            ArcCost[i][j] = Pbatt * tDelta *0 + penalty * (Xnext[i][j] - T_required) * (Xnext[i][j] - T_required);
+            ArcCost[i][j] = Pbatt * tDelta * 0 + penalty * (Xnext[i][j] - T_required) * (Xnext[i][j] - T_required);
         }
     }
 
@@ -321,6 +332,7 @@ void bridgeConnection(Bridge *BridgePtr, SolverOutput *OutputPtr, real_T V0) {
 
     uint16_t i;
     printf("Durations:\n");
+    real_T duration = 0;
     for (i = 0; i < HORIZON; i++) {
 
         // Calculate delta t
@@ -333,7 +345,7 @@ void bridgeConnection(Bridge *BridgePtr, SolverOutput *OutputPtr, real_T V0) {
             Pwh = OutputPtr->Fo[i] * OutputPtr->Vo[i - 1];
         }
 
-        printf("%f s\n", BridgePtr->tDelta[i]);
+        duration += BridgePtr->tDelta[i];
 
         // Calculate Pdc
         // Acceleration
@@ -349,5 +361,6 @@ void bridgeConnection(Bridge *BridgePtr, SolverOutput *OutputPtr, real_T V0) {
             BridgePtr->Pdc[i] = Pinv * eta_dc;
         }
     }
+    printf("%f\n", duration);
 
 }

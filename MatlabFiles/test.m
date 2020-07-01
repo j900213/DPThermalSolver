@@ -1,18 +1,18 @@
-Cth = 113e3;
-Rth = 15e-6;
-Qsun = 469.05;
-Qpas = 416;
+Cth = 1.1347e5;
+Rth = 0.015;
+Qsun = 150*1.7725;
+Qpas = 4*104.2975;
 Cp = 1.0035e3;
 rho = 1.1839;
 mDot = 0.0842;
-CoP_pos = 2.14;
-CoP_neg = -2.14;
+CoP_pos = 2.1379;
+CoP_neg = -2.1379;
 Tamb = 28;
 
-dt = 0.43;
+dt = 4.784287;
 
-Xin = 27.959184;
-Uin = -60000;
+Xin = 27.995992;
+Uin = -3000;
 
 Xnext = Xin + (dt / Cth) * (Uin + Qsun + Qpas + (Tamb - Xin) / Rth);
 
