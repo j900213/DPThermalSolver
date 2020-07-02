@@ -6,26 +6,6 @@
 
 #IncludeRegexTransform: 
 
-E:/Thesis_Project/CascadingDPSolver/inc/AdaptiveGrid.h
-SolverStruct.h
-E:/Thesis_Project/CascadingDPSolver/inc/SolverStruct.h
-
-E:/Thesis_Project/CascadingDPSolver/inc/BasicAlgorithm.h
-SolverStruct.h
-E:/Thesis_Project/CascadingDPSolver/inc/SolverStruct.h
-MathFunction.h
-E:/Thesis_Project/CascadingDPSolver/inc/MathFunction.h
-SpeedSolver.h
-E:/Thesis_Project/CascadingDPSolver/inc/SpeedSolver.h
-ThermalSolver.h
-E:/Thesis_Project/CascadingDPSolver/inc/ThermalSolver.h
-BoundaryLine.h
-E:/Thesis_Project/CascadingDPSolver/inc/BoundaryLine.h
-AdaptiveGrid.h
-E:/Thesis_Project/CascadingDPSolver/inc/AdaptiveGrid.h
-PrintResult.h
-E:/Thesis_Project/CascadingDPSolver/inc/PrintResult.h
-
 E:/Thesis_Project/CascadingDPSolver/inc/BoundaryLine.h
 SolverStruct.h
 E:/Thesis_Project/CascadingDPSolver/inc/SolverStruct.h
@@ -56,20 +36,6 @@ E:/Thesis_Project/CascadingDPSolver/inc/float.h
 math.h
 E:/Thesis_Project/CascadingDPSolver/inc/math.h
 
-E:/Thesis_Project/CascadingDPSolver/inc/SpeedSolver.h
-SolverStruct.h
-E:/Thesis_Project/CascadingDPSolver/inc/SolverStruct.h
-MathFunction.h
-E:/Thesis_Project/CascadingDPSolver/inc/MathFunction.h
-SystemDynamic.h
-E:/Thesis_Project/CascadingDPSolver/inc/SystemDynamic.h
-BoundaryLine.h
-E:/Thesis_Project/CascadingDPSolver/inc/BoundaryLine.h
-AdaptiveGrid.h
-E:/Thesis_Project/CascadingDPSolver/inc/AdaptiveGrid.h
-PrintResult.h
-E:/Thesis_Project/CascadingDPSolver/inc/PrintResult.h
-
 E:/Thesis_Project/CascadingDPSolver/inc/SystemDynamic.h
 SolverStruct.h
 E:/Thesis_Project/CascadingDPSolver/inc/SolverStruct.h
@@ -88,9 +54,7 @@ E:/Thesis_Project/CascadingDPSolver/inc/BoundaryLine.h
 PrintResult.h
 E:/Thesis_Project/CascadingDPSolver/inc/PrintResult.h
 
-E:/Thesis_Project/CascadingDPSolver/main.c
-./inc/SolverStruct.h
-E:/Thesis_Project/CascadingDPSolver/inc/SolverStruct.h
-./inc/BasicAlgorithm.h
-E:/Thesis_Project/CascadingDPSolver/inc/BasicAlgorithm.h
+E:/Thesis_Project/CascadingDPSolver/src/ThermalSolver.c
+../inc/ThermalSolver.h
+E:/Thesis_Project/CascadingDPSolver/inc/ThermalSolver.h
 

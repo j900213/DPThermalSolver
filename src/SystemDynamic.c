@@ -193,7 +193,8 @@ speedDynamics(uint16_t Nx, uint16_t Nu, real_T (*Xnext)[Nu], real_T (*ArcCost)[N
 }
 
 void thermalDynamics(uint16_t Nx, uint16_t Nu, real_T (*Xnext)[Nu], real_T (*ArcCost)[Nu], uint8_t (*InfFlag)[Nu],
-                     real_T const *StateVec, real_T const *ControlVec, Bridge *BridgePtr, uint16_t N,
+                     real_T const *StateVec, real_T const *ControlVec, Boundary *BoundaryPtr, Bridge *BridgePtr,
+                     uint16_t N,
                      uint16_t X0_index) {
 
     // The real index in the horizon
@@ -207,8 +208,16 @@ void thermalDynamics(uint16_t Nx, uint16_t Nu, real_T (*Xnext)[Nu], real_T (*Arc
     memcpy(Uin, ControlVec, Nu * sizeof(real_T));
 
     // Required temperature by the driver
-    real_T Tmax_end = EnvironmentalFactor->T_required[end] + 3;
-    real_T Tmin_end = EnvironmentalFactor->T_required[end] - 3;
+#if defined(NORMALBOUND) || defined(CUSTOMBOUND)
+    // Copy the boundary lines
+    real_T Tmax_start = BoundaryPtr->upperBound[N];
+    real_T Tmin_start = BoundaryPtr->lowerBound[N];
+    real_T Tmax_end = BoundaryPtr->upperBound[N+1];
+    real_T Tmin_end = BoundaryPtr->lowerBound[N+1];
+#elif defined(NOBOUND)
+    real_T Tmax_end = EnvironmentalFactor->T_required[end] + 1;
+    real_T Tmin_end = EnvironmentalFactor->T_required[end] - 1;
+#endif
 
     // Intermediate Variables
     real_T Pdc = BridgePtr->Pdc[start];
@@ -257,7 +266,17 @@ void thermalDynamics(uint16_t Nx, uint16_t Nu, real_T (*Xnext)[Nu], real_T (*Arc
     }
 
     for (i = 0; i < Nx; i++) {
+
         for (j = 0; j < Nu; j++) {
+
+#if defined(NORMALBOUND) || defined(CUSTOMBOUND)
+            // Only calculate the states with in the boundary
+            if (Xin[i] > Tmax_start || Xin[i] > SolverInputPtr->Constraint.Tmax || Xin[i] < Tmin_start ||
+                Xin[i] < SolverInputPtr->Constraint.Tmin) {
+                InfFlag[i][j] = 1;
+                continue;
+            }
+#endif
 
             // Heating or Cooling
             if (Uin[j] > 0) {
@@ -267,6 +286,10 @@ void thermalDynamics(uint16_t Nx, uint16_t Nu, real_T (*Xnext)[Nu], real_T (*Arc
             } else {
                 Phvac = Uin[j] / CoP_neg;
             }
+
+#ifdef DYNCOUNTER
+            counterDynamics++;
+#endif // DYNCOUNTER
 
             // Check if Phvac exceeds the limits
             if (Phvac > PACmax || Phvac < PACmin) {
@@ -297,7 +320,6 @@ void thermalDynamics(uint16_t Nx, uint16_t Nu, real_T (*Xnext)[Nu], real_T (*Arc
             ArcCost[i][j] = Pbatt * tDelta * 0 + penalty * (Xnext[i][j] - T_required) * (Xnext[i][j] - T_required);
         }
     }
-
 
     // Free the memory of local state and control vectors
     free(Xin);

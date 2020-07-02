@@ -125,10 +125,10 @@ void speedSolver(SolverInput *InputPtr, DynParameter *ParaPtr, EnvFactor *EnvPtr
     // Obtain the Boundary Line
 #ifdef CUSTOMBOUND
     initBoundary(&BoundaryStruct);
-    ScreteWeapon(&BoundaryStruct, SolverInputPtr, ParameterPtr, EnvFactorPtr, X0);
+    customSpeedBoundary(&BoundaryStruct, SolverInputPtr, ParameterPtr, EnvFactorPtr, X0);
 #elif defined NORMALBOUND
     initBoundary(&BoundaryStruct);
-    normalBoundary(&BoundaryStruct, EnvFactorPtr);
+    normalSpeedBoundary(&BoundaryStruct, EnvFactorPtr);
 #endif
 
 
@@ -144,7 +144,7 @@ void speedSolver(SolverInput *InputPtr, DynParameter *ParaPtr, EnvFactor *EnvPtr
 
 #if defined(NORMALBOUND) || defined(CUSTOMBOUND)
     // Get the boundary line to the output pointer
-    copyBoundary(&BoundaryStruct, OutputPtr);
+    copySpeedBoundary(&BoundaryStruct, OutputPtr);
 #endif
 
     // Print Output Solution

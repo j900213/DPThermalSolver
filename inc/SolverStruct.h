@@ -18,8 +18,8 @@
 #define NV 200
 #define NF 500
 #define RES_THERMAL 20
-#define NT 500
-#define NQ 500
+#define NT 10000
+#define NQ 50
 #define BLOCK 4
 
 
@@ -32,7 +32,7 @@
 // Turn on/off the counter of boundary calculations
 #define BOUNDCOUNTER
 // Choose the boundary line mode (NOBOUND/NORMALBOUND/CUSTOMBOUND)
-#define NOBOUND
+#define NORMALBOUND
 // Turn on/off boundary calibration
 //#define BOUNDCALIBRATION
 // Turn on/off Adaptive grid method
@@ -135,15 +135,19 @@ typedef struct {
         EnvFactor;
 
 typedef struct {
-    real_T Cost;                            // Total Cost
-    real_T Vo[HORIZON];                     // Optimal Speed Trajectory
-    real_T Fo[HORIZON];                     // Optimal Speed Control Policy
-    real_T To[RES_THERMAL];                 // Optimal Thermal Trajectory
-    real_T Qo[RES_THERMAL];                 // Optimal Thermal Control Policy
-    real_T upperBound[HORIZON + 1];         // Upper Boundary Line
-    real_T lowerBound[HORIZON + 1];         // Lower Boundary Line
-    real_T upperActual[HORIZON];
-    real_T lowerActual[HORIZON];
+    real_T Cost;                                // Total Cost
+    real_T Vo[HORIZON];                         // Optimal Speed Trajectory
+    real_T Fo[HORIZON];                         // Optimal Speed Control Policy
+    real_T To[RES_THERMAL];                     // Optimal Thermal Trajectory
+    real_T Qo[RES_THERMAL];                     // Optimal Thermal Control Policy
+    real_T upperSpeedBound[HORIZON + 1];        // Upper Speed Boundary Line
+    real_T lowerSpeedBound[HORIZON + 1];        // Lower Speed Boundary Line
+    real_T upperSpeedActual[HORIZON];
+    real_T lowerSpeedActual[HORIZON];
+    real_T upperTempBound[RES_THERMAL + 1];         // Upper Temp Boundary Line
+    real_T lowerTempBound[RES_THERMAL + 1];         // Lower Temp Boundary Line
+    real_T upperTempActual[RES_THERMAL];
+    real_T lowerTempActual[RES_THERMAL];
 }
         SolverOutput;
 
