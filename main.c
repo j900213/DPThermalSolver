@@ -40,12 +40,11 @@ int main() {
     SolverInputPtr.Constraint.PDmax = -6e4;
     SolverInputPtr.Constraint.Tmax = 30;
     SolverInputPtr.Constraint.Tmin = 10;
-    SolverInputPtr.Constraint.Tmax_inlet = 80;
-    SolverInputPtr.Constraint.Tmin_inlet = -10;
+    SolverInputPtr.Constraint.Tmax_inlet = 30;
+    SolverInputPtr.Constraint.Tmin_inlet = 10;
     SolverInputPtr.Constraint.Qmax = 2000;
     SolverInputPtr.Constraint.Qmin = -2000;
-    SolverInputPtr.Constraint.PACmax = 150000;
-    SolverInputPtr.Constraint.PACmin = -150000;
+    SolverInputPtr.Constraint.PACmax = 2000/2.1379;
 
     SolverInputPtr.SolverLimit.infValue = FLT_MAX;
 
@@ -92,7 +91,7 @@ int main() {
 
     real_T Vmax_GPS_1 = 130 / 3.6;
     real_T Vmin_GPS_1 = 60 / 3.6;
-    real_T T_required_1 = 27;
+    real_T T_required_1 = 26;
     uint16_t endBlock_1 = 30;
 
     real_T Vmax_GPS_2 = 80 / 3.6;
@@ -107,7 +106,7 @@ int main() {
 
     real_T Vmax_GPS_4 = 80 / 3.6;
     real_T Vmin_GPS_4 = 30 / 3.6;
-    real_T T_required_4 = 25;
+    real_T T_required_4 = 26;
     uint16_t endBlock_4 = Nhrz;
 
     EnvFactorPtr.endBlock[0] = endBlock_1;

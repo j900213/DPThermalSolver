@@ -18,8 +18,8 @@
 #define NV 200
 #define NF 500
 #define RES_THERMAL 20
-#define NT 10000
-#define NQ 50
+#define NT 5000
+#define NQ 100
 #define BLOCK 4
 
 
@@ -32,7 +32,7 @@
 // Turn on/off the counter of boundary calculations
 #define BOUNDCOUNTER
 // Choose the boundary line mode (NOBOUND/NORMALBOUND/CUSTOMBOUND)
-#define NORMALBOUND
+#define CUSTOMBOUND
 // Turn on/off boundary calibration
 //#define BOUNDCALIBRATION
 // Turn on/off Adaptive grid method
@@ -77,7 +77,6 @@ typedef struct {
     real_T Qmin;                // Upper limit of the inlet heat flow
     real_T Qmax;                // Lower limit of the inlet heat flow
     real_T PACmax;              // Upper limit of the AC power
-    real_T PACmin;              // Lower limit of the AC power
 }
         LimitSetting;
 

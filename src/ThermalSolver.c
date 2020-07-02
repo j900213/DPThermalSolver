@@ -116,7 +116,7 @@ thermalSolver(SolverInput *InputPtr, DynParameter *ParaPtr, EnvFactor *EnvPtr, S
     // Obtain the Boundary Line
 #ifdef CUSTOMBOUND
     initBoundary(&BoundaryStruct);
-    customSpeedBoundary(&BoundaryStruct, SolverInputPtr, ParameterPtr, EnvFactorPtr, X0);
+    customThermalBoundary(&BoundaryStruct, SolverInputPtr, ParameterPtr, EnvFactorPtr, BridgePtr, X0);
 #elif defined NORMALBOUND
     initBoundary(&BoundaryStruct);
     normalThermalBoundary(&BoundaryStruct, EnvFactorPtr);
@@ -138,7 +138,7 @@ thermalSolver(SolverInput *InputPtr, DynParameter *ParaPtr, EnvFactor *EnvPtr, S
     copyThermalBoundary(&BoundaryStruct, OutputPtr);
 #endif
 
-    for(i = 0; i <= RES_THERMAL;i++){
+    for (i = 0; i <= RES_THERMAL; i++) {
         printf("Upper: %f, Lower: %f\n", OutputPtr->upperTempBound[i], OutputPtr->lowerTempBound[i]);
     }
     // Print Output Solution
@@ -311,7 +311,8 @@ static void calculate_arc_cost(ArcProcess *ArcPtr, uint16_t N)    // N is iterat
     }
 
     // Calculate System Dynamics
-    thermalDynamics(Nx, Nu, Xnext, ArcCost, InfFlag, StateVec, ControlVec, &BoundaryStruct, SolverBridgePtr, N, X0_index);
+    thermalDynamics(Nx, Nu, Xnext, ArcCost, InfFlag, StateVec, ControlVec, &BoundaryStruct, SolverBridgePtr, N,
+                    X0_index);
 
     // Local Copy the State and Control grids
     real_T *StateVecCopy = (real_T *) malloc(Nx * sizeof(real_T));
@@ -342,6 +343,8 @@ static void calculate_arc_cost(ArcProcess *ArcPtr, uint16_t N)    // N is iterat
 
     uint16_t iMin;
     uint16_t jMin;
+
+
 
 
 #ifndef ADAPTIVEGRID

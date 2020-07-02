@@ -322,5 +322,255 @@ void customThermalBoundary(Boundary *BoundaryPtr, SolverInput *SolverInputPtr, D
     // Iteration Index
     uint16_t i, j, k;
 
+    uint16_t *tmpMemory = (uint16_t *) malloc(RES_THERMAL * sizeof(uint16_t));
+
+    uint16_t counter = 0;
     // Detect the change point and number of blocks
+    for (i = 0; i < RES_THERMAL; i++) {
+        if (EnvPtr->T_required[i * HORIZON / RES_THERMAL] != EnvPtr->T_required[(i + 1) * HORIZON / RES_THERMAL]) {
+            tmpMemory[counter] = i + 1;
+            counter++;
+        }
+    }
+
+    // For instance, if the T_required changes at 3, 10. Then changPoint[] = [0, 3, 10];
+    uint16_t numBlock = counter + 1;
+    uint16_t *changePoint = (uint16_t *) malloc((numBlock + 1) * sizeof(uint16_t));
+    changePoint[0] = 0;
+    memcpy(changePoint + 1, tmpMemory, counter * sizeof(uint16_t));
+    free(tmpMemory);
+
+//    for (i = 0; i < numBlock; i++) {
+//        printf("Change point: %d\n", changePoint[i]);
+//    }
+
+    // Local Copy of Horizon Length
+    uint16_t Nhrz = RES_THERMAL;
+
+    // Local copy of constraints
+    real_T Qmax = SolverInputPtr->Constraint.Qmax;
+    real_T Qmin = SolverInputPtr->Constraint.Qmin;
+    real_T PACmax = SolverInputPtr->Constraint.PACmax;
+    real_T Tmax_inlet = SolverInputPtr->Constraint.Tmax_inlet;
+    real_T Tmin_inlet = SolverInputPtr->Constraint.Tmin_inlet;
+
+    // Local copy of parameters
+    real_T Cth = ParaPtr->Cth;
+    real_T Rth = ParaPtr->Rth;
+    real_T Qsun = ParaPtr->Qsun;
+    real_T Qpas = ParaPtr->Qpas;
+    real_T Cp = ParaPtr->Cp;
+    real_T rho = ParaPtr->rho;
+    real_T mDot = ParaPtr->mDot;
+    real_T CoP_pos = ParaPtr->CoP_pos;
+    real_T CoP_neg = ParaPtr->CoP_neg;
+    real_T Tamb = ParaPtr->Tamb;
+
+    real_T beta0 = ParaPtr->beta0;
+
+    real_T maxQ;
+    real_T minQ;
+    real_T upperTmp;
+    real_T lowerTmp;
+
+    // First, Copy the known required temperature to the upper and lower bounds
+    for (i = 0; i <= Nhrz; i++) {
+        BoundaryPtr->upperBound[i] = EnvPtr->T_required[i * HORIZON / RES_THERMAL] + 1;
+        BoundaryPtr->lowerBound[i] = EnvPtr->T_required[i * HORIZON / RES_THERMAL] - 1;
+    }
+
+    // Let upper and lower bound both start from the known X0
+    BoundaryPtr->upperBound[0] = X0;
+    BoundaryPtr->lowerBound[0] = X0;
+
+    // Calculate a sequence of tDelta
+    real_T *tDelta = (real_T *) malloc(RES_THERMAL * sizeof(real_T));
+    for (i = 0; i < Nhrz; i++) {
+        for (j = 0; j < HORIZON / RES_THERMAL; j++) {
+            tDelta[i] += BridgePtr->tDelta[i * HORIZON / RES_THERMAL + j];
+        }
+    }
+
+    // If there is only one range block
+    if (numBlock == 1) {
+        // Draw Upper Bound
+        for (i = 0; i < Nhrz; i++) {
+            // Maximum possible Qinlet
+            if (Qmax > Cp * rho * mDot * (Tmax_inlet - BoundaryPtr->upperBound[i])) {
+                maxQ = Cp * rho * mDot * (Tmax_inlet - BoundaryPtr->upperBound[i]);
+            } else {
+                maxQ = Qmax;
+            }
+
+            upperTmp = BoundaryPtr->upperBound[i] +
+                       (tDelta[i] / Cth) * (maxQ + Qsun + Qpas + (Tamb - BoundaryPtr->upperBound[i]) / Rth);
+
+            // If it has exceeded the upper bound (required + 1), break
+            if (upperTmp >= BoundaryPtr->upperBound[i + 1]) {
+                break;
+            }
+                // If not, we give it a new (lower) value to it
+            else {
+                BoundaryPtr->upperBound[i + 1] = upperTmp;
+            }
+        }
+
+        // Draw Lower Bound
+        for (i = 0; i < Nhrz; i++) {
+            // Minimum possible Qinlet
+            if (Qmin < Cp * rho * mDot * (Tmin_inlet - BoundaryPtr->lowerBound[i])) {
+                minQ = Cp * rho * mDot * (Tmin_inlet - BoundaryPtr->lowerBound[i]);
+            } else {
+                minQ = Qmin;
+            }
+
+            lowerTmp = BoundaryPtr->lowerBound[i] +
+                       (tDelta[i] / Cth) * (minQ + Qsun + Qpas + (Tamb - BoundaryPtr->lowerBound[i]) / Rth);
+
+            // If it has exceeded the lower bound (required - 1), break
+            if (lowerTmp <= BoundaryPtr->lowerBound[i + 1]) {
+                break;
+            }
+                // If not, we give it a new (higher) value to it
+            else {
+                BoundaryPtr->lowerBound[i + 1] = lowerTmp;
+            }
+        }
+    }
+        // If there are multiple range blocks
+    else {
+        for (k = 0; k < numBlock; k++) {
+            // #1 Block
+            if (k == 0) {
+                // Draw Upper Bound
+                for (i = 0; i < (changePoint[k + 1] - 1); i++) {
+                    // Maximum possible Qinlet
+                    if (Qmax > Cp * rho * mDot * (Tmax_inlet - BoundaryPtr->upperBound[i])) {
+                        maxQ = Cp * rho * mDot * (Tmax_inlet - BoundaryPtr->upperBound[i]);
+                    } else {
+                        maxQ = Qmax;
+                    }
+
+                    upperTmp = BoundaryPtr->upperBound[i] +
+                               (tDelta[i] / Cth) * (maxQ + Qsun + Qpas + (Tamb - BoundaryPtr->upperBound[i]) / Rth);
+
+                    // Same as when numBlock == 1
+                    if (upperTmp >= BoundaryPtr->upperBound[i + 1]) {
+                        break;
+                    } else {
+                        BoundaryPtr->upperBound[i + 1] = upperTmp;
+                    }
+                }
+
+                // Draw Lower Bound
+                for (i = 0; i < (changePoint[k + 1] - 1); i++) {
+                    // Minimum possible Qinlet
+                    if (Qmin < Cp * rho * mDot * (Tmin_inlet - BoundaryPtr->lowerBound[i])) {
+                        minQ = Cp * rho * mDot * (Tmin_inlet - BoundaryPtr->lowerBound[i]);
+                    } else {
+                        minQ = Qmin;
+                    }
+
+                    lowerTmp = BoundaryPtr->lowerBound[i] +
+                               (tDelta[i] / Cth) * (minQ + Qsun + Qpas + (Tamb - BoundaryPtr->lowerBound[i]) / Rth);
+
+                    // Same as when numBlock == 1
+                    if (lowerTmp <= BoundaryPtr->lowerBound[i + 1]) {
+                        break;
+                    } else {
+                        BoundaryPtr->lowerBound[i + 1] = lowerTmp;
+                    }
+                }
+            }
+                // From the #2 Block (2 conditions)
+            else {
+                // If T_required[Block_k] > T_required[Block_k-1], draw the Left-Top upper bound (forwards) and Right-Bottom lower bound (backwards)
+                // (If required Temperature increases in the next range)
+                if (EnvPtr->T_required[changePoint[k] * HORIZON / RES_THERMAL] >
+                    EnvPtr->T_required[changePoint[k - 1] * HORIZON / RES_THERMAL]) {
+
+                    // Upper Bound
+                    for (i = changePoint[k] - 1; i < (changePoint[k + 1] - 1); i++) {
+                        // Maximum possible Qinlet
+                        if (Qmax > Cp * rho * mDot * (Tmax_inlet - BoundaryPtr->upperBound[i])) {
+                            maxQ = Cp * rho * mDot * (Tmax_inlet - BoundaryPtr->upperBound[i]);
+                        } else {
+                            maxQ = Qmax;
+                        }
+
+                        upperTmp = BoundaryPtr->upperBound[i] +
+                                   (tDelta[i] / Cth) * (maxQ + Qsun + Qpas + (Tamb - BoundaryPtr->upperBound[i]) / Rth);
+
+                        // Same
+                        if (upperTmp >= BoundaryPtr->upperBound[i + 1]) {
+                            break;
+                        } else {
+                            BoundaryPtr->upperBound[i + 1] = upperTmp;
+                        }
+                    }
+
+                    // Lower Bound
+                    for (i = changePoint[k] - 1; i >= changePoint[k - 1]; i--) {
+                        maxQ = Qmax;
+
+                        do {
+                            lowerTmp = ((Cth / tDelta[i]) * BoundaryPtr->lowerBound[i + 1] - maxQ - Qsun - Qpas -
+                                        Tamb / Rth) / (Cth / tDelta[i] - 1 / Rth);
+                            maxQ = maxQ * 0.95;
+                        } while (lowerTmp + maxQ / (Cp * rho * mDot) > Tmax_inlet);
+
+                        if (lowerTmp <= BoundaryPtr->lowerBound[i]) {
+                            break;
+                        } else {
+                            BoundaryPtr->lowerBound[i] = lowerTmp;
+                        }
+                    }
+                }
+                    // If T_required[Block_k] > T_required[Block_k-1], draw the Right-Top upper bound (backwards) and Left-Bottom lower bound (forwards)
+                else {
+
+                    // Upper Bound
+                    for (i = changePoint[k] - 1; i >= changePoint[k - 1]; i--) {
+                        // Predictive minimum Qinlet
+                        minQ = Qmin;
+
+                        // Calculate the upper bound backwards
+                        do {
+                            upperTmp = ((Cth / tDelta[i]) * BoundaryPtr->upperBound[i + 1] - minQ - Qsun - Qpas -
+                                        Tamb / Rth) / (Cth / tDelta[i] - 1 / Rth);
+                            minQ = minQ * 0.95;
+                        } while (upperTmp + minQ / (Cp * rho * mDot) < Tmin_inlet);
+
+                        if (upperTmp >= BoundaryPtr->upperBound[i]) {
+                            break;
+                        } else {
+                            BoundaryPtr->upperBound[i] = upperTmp;
+                        }
+                    }
+
+                    // Lower Bound
+                    for (i = changePoint[k] - 1; i < (changePoint[k + 1] - 1); i++) {
+                        // Minimum possible Qinlet
+                        if (Qmin < Cp * rho * mDot * (Tmin_inlet - BoundaryPtr->lowerBound[i])) {
+                            minQ = Cp * rho * mDot * (Tmin_inlet - BoundaryPtr->lowerBound[i]);
+                        } else {
+                            minQ = Qmin;
+                        }
+
+                        lowerTmp = BoundaryPtr->lowerBound[i] +
+                                   (tDelta[i] / Cth) * (minQ + Qsun + Qpas + (Tamb - BoundaryPtr->lowerBound[i]) / Rth);
+
+                        // Same as when numBlock == 1
+                        if (lowerTmp <= BoundaryPtr->lowerBound[i + 1]) {
+                            break;
+                        } else {
+                            BoundaryPtr->lowerBound[i + 1] = lowerTmp;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    free(changePoint);
 }
