@@ -194,8 +194,7 @@ speedDynamics(uint16_t Nx, uint16_t Nu, real_T (*Xnext)[Nu], real_T (*ArcCost)[N
 
 void thermalDynamics(uint16_t Nx, uint16_t Nu, real_T (*Xnext)[Nu], real_T (*ArcCost)[Nu], uint8_t (*InfFlag)[Nu],
                      real_T const *StateVec, real_T const *ControlVec, Boundary *BoundaryPtr, Bridge *BridgePtr,
-                     uint16_t N,
-                     uint16_t X0_index) {
+                     uint16_t N, uint16_t X0_index) {
 
     // The real index in the horizon
     uint16_t start = N * HORIZON / RES_THERMAL;
@@ -228,7 +227,6 @@ void thermalDynamics(uint16_t Nx, uint16_t Nu, real_T (*Xnext)[Nu], real_T (*Arc
 
     // Hard Constraints
     real_T PACmax = SolverInputPtr->Constraint.PACmax;
-    real_T PACmin = SolverInputPtr->Constraint.PACmin;
     real_T Tmax_inlet = SolverInputPtr->Constraint.Tmax_inlet;
     real_T Tmin_inlet = SolverInputPtr->Constraint.Tmin_inlet;
 
@@ -292,7 +290,7 @@ void thermalDynamics(uint16_t Nx, uint16_t Nu, real_T (*Xnext)[Nu], real_T (*Arc
 #endif // DYNCOUNTER
 
             // Check if Phvac exceeds the limits
-            if (Phvac > PACmax || Phvac < PACmin) {
+            if (Phvac > PACmax) {
                 InfFlag[i][j] = 1;
                 continue;
             }
