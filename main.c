@@ -88,16 +88,16 @@ int main() {
     // Initial Speed
     V0 = 70 / 3.6;
     // Initial Temperature
-    T0 = 28;
+    T0 = 26;
 
     real_T Vmax_GPS_1 = 130 / 3.6;
     real_T Vmin_GPS_1 = 60 / 3.6;
-    real_T T_required_1 = 25;
+    real_T T_required_1 = 27;
     uint16_t endBlock_1 = 30;
 
     real_T Vmax_GPS_2 = 80 / 3.6;
     real_T Vmin_GPS_2 = 30 / 3.6;
-    real_T T_required_2 = 25;
+    real_T T_required_2 = 26;
     uint16_t endBlock_2 = 100;
 
     real_T Vmax_GPS_3 = 50 / 3.6;
@@ -172,8 +172,6 @@ int main() {
 #ifdef BOUNDCOUNTER
     printf("The number of boundary computation: %d\n", counterBound);
 #endif // BOUNDCOUNTER
-
-    printf("%d\n", HORIZON/RES_THERMAL);
 
     // Fix
     return 0;

@@ -1,16 +1,6 @@
 #include "SolverStruct.h"
 #include "BoundaryLine.h"
 
-#ifndef BRIDGE
-#define BRIDGE
-
-typedef struct {
-    real_T *Pdc;                                    // Vector of Pdc based on the optimal Speed trajectory
-    real_T *tDelta;                                 // Vector of delta t based on the optimal Speed trajectory
-}
-        Bridge;
-#endif
-
 /*--- Public Functions ---*/
 // Get the Parameter Setting from the main.c
 void PassParameters(SolverInput *InputPtr, DynParameter *ModelParaPtr, EnvFactor *EnvFactorPtr);
@@ -28,7 +18,7 @@ void speedDynamics(uint16_t Nx, uint16_t Nu, real_T (*Xnext)[Nu], real_T (*ArcCo
 
 // Calculate the Thermal dynamics
 void thermalDynamics(uint16_t Nx, uint16_t Nu, real_T (*Xnext)[Nu], real_T (*ArcCost)[Nu], uint8_t (*InfFlag)[Nu],
-                     real_T const *StateVec, real_T const *ControlVec, Bridge *BridgePtr, uint16_t N,
+                     real_T const *StateVec, real_T const *ControlVec, Boundary *BoundaryPtr, Bridge *BridgePtr, uint16_t N,
                      uint16_t X0_index);
 
 // Initialize bridge memory

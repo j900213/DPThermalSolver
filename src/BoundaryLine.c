@@ -10,16 +10,21 @@ void initBoundary(Boundary *BoundaryPtr) {
     BoundaryPtr->boundMemo = malloc(sizeof(real_T[HORIZON][4]));
 }
 
-void copyBoundary(Boundary *BoundaryPtr, SolverOutput *OutputPtr) {
-    memcpy(OutputPtr->lowerBound, BoundaryPtr->lowerBound, (HORIZON + 1) * sizeof(real_T));
-    memcpy(OutputPtr->upperBound, BoundaryPtr->upperBound, (HORIZON + 1) * sizeof(real_T));
+void copySpeedBoundary(Boundary *BoundaryPtr, SolverOutput *OutputPtr) {
+    memcpy(OutputPtr->lowerSpeedBound, BoundaryPtr->lowerBound, (HORIZON + 1) * sizeof(real_T));
+    memcpy(OutputPtr->upperSpeedBound, BoundaryPtr->upperBound, (HORIZON + 1) * sizeof(real_T));
 
 #ifdef BOUNDCALIBRATION
     for (uint16_t i = 0; i < HORIZON; i++) {
-        OutputPtr->lowerActual[i] = BoundaryPtr->boundMemo[i][0];
-        OutputPtr->upperActual[i] = BoundaryPtr->boundMemo[i][1];
+        OutputPtr->lowerSpeedActual[i] = BoundaryPtr->boundMemo[i][0];
+        OutputPtr->upperSpeedActual[i] = BoundaryPtr->boundMemo[i][1];
     }
 #endif
+}
+
+void copyThermalBoundary(Boundary *BoundaryPtr, SolverOutput *OutputPtr) {
+    memcpy(OutputPtr->lowerTempBound, BoundaryPtr->lowerBound, (RES_THERMAL + 1) * sizeof(real_T));
+    memcpy(OutputPtr->upperTempBound, BoundaryPtr->upperBound, (RES_THERMAL + 1) * sizeof(real_T));
 }
 
 void freeBoundary(Boundary *BoundaryPtr) {
@@ -28,7 +33,7 @@ void freeBoundary(Boundary *BoundaryPtr) {
     free(BoundaryPtr->boundMemo);
 }
 
-void normalBoundary(Boundary *BoundaryPtr, EnvFactor *EnvPtr) {
+void normalSpeedBoundary(Boundary *BoundaryPtr, EnvFactor *EnvPtr) {
     for (uint16_t i = 0; i <= HORIZON; i++) {
         BoundaryPtr->upperBound[i] = EnvPtr->Vmax_env[i];
         BoundaryPtr->lowerBound[i] = EnvPtr->Vmin_env[i];
@@ -36,8 +41,8 @@ void normalBoundary(Boundary *BoundaryPtr, EnvFactor *EnvPtr) {
 }
 
 
-void ScreteWeapon(Boundary *BoundaryPtr, SolverInput *SolverInputPtr, DynParameter *ParaPtr, EnvFactor *EnvPtr,
-                  real_T X0) {
+void customSpeedBoundary(Boundary *BoundaryPtr, SolverInput *SolverInputPtr, DynParameter *ParaPtr, EnvFactor *EnvPtr,
+                         real_T X0) {
     // Iteration Index
     uint16_t i, j, k;
 
@@ -303,4 +308,19 @@ void ScreteWeapon(Boundary *BoundaryPtr, SolverInput *SolverInputPtr, DynParamet
     }
 
     free(changePoint);
+}
+
+void normalThermalBoundary(Boundary *BoundaryPtr, EnvFactor *EnvPtr) {
+    for (uint16_t i = 0; i <= RES_THERMAL; i++) {
+        BoundaryPtr->upperBound[i] = EnvPtr->T_required[i * HORIZON / RES_THERMAL] + 1;
+        BoundaryPtr->lowerBound[i] = EnvPtr->T_required[i * HORIZON / RES_THERMAL] - 1;
+    }
+}
+
+void customThermalBoundary(Boundary *BoundaryPtr, SolverInput *SolverInputPtr, DynParameter *ParaPtr, EnvFactor *EnvPtr,
+                           Bridge *BridgePtr, real_T X0) {
+    // Iteration Index
+    uint16_t i, j, k;
+
+    // Detect the change point and number of blocks
 }

@@ -5,6 +5,7 @@ uint16_t Nx;                                        // Problem sizes
 uint16_t Nu;                                        // - they are changed based on running Speed or Thermal solver
 uint16_t Nhrz;
 uint16_t ResThermal;
+Boundary BoundaryStruct;                            // boundary line structure
 
 /*--- External Variables ---*/
 real_T Xinitial;                                    // The initial state
@@ -113,6 +114,13 @@ thermalSolver(SolverInput *InputPtr, DynParameter *ParaPtr, EnvFactor *EnvPtr, S
     printInputInfo(SolverInputPtr, X0, X0_round, SolutionStruct.startIdx[0], StateVec, ControlVec, Nx, Nu);
 
     // Obtain the Boundary Line
+#ifdef CUSTOMBOUND
+    initBoundary(&BoundaryStruct);
+    customSpeedBoundary(&BoundaryStruct, SolverInputPtr, ParameterPtr, EnvFactorPtr, X0);
+#elif defined NORMALBOUND
+    initBoundary(&BoundaryStruct);
+    normalThermalBoundary(&BoundaryStruct, EnvFactorPtr);
+#endif
 
 
     // Find the minimum Cost-to-come value step by step
@@ -125,14 +133,24 @@ thermalSolver(SolverInput *InputPtr, DynParameter *ParaPtr, EnvFactor *EnvPtr, S
     // Retrieve the optimal solution
     findSolution(OutputPtr, &SolutionStruct, Xfmin, Xfmax);
 
+#if defined(NORMALBOUND) || defined(CUSTOMBOUND)
+    // Get the boundary line to the output pointer
+    copyThermalBoundary(&BoundaryStruct, OutputPtr);
+#endif
+
+    for(i = 0; i <= RES_THERMAL;i++){
+        printf("Upper: %f, Lower: %f\n", OutputPtr->upperTempBound[i], OutputPtr->lowerTempBound[i]);
+    }
     // Print Output Solution
     printThermalSolution(SolverInputPtr, X0_round, OutputPtr);
-
 
     // Free the memory
     solutionStruct_free(&SolutionStruct);
     free(StateVec);
     free(ControlVec);
+#if defined(NORMALBOUND) || defined(CUSTOMBOUND)
+    freeBoundary(&BoundaryStruct);
+#endif
 }
 
 static void solutionStruct_init(Solution *SolutionPtr) {
@@ -293,13 +311,11 @@ static void calculate_arc_cost(ArcProcess *ArcPtr, uint16_t N)    // N is iterat
     }
 
     // Calculate System Dynamics
-    thermalDynamics(Nx, Nu, Xnext, ArcCost, InfFlag, StateVec, ControlVec, SolverBridgePtr, N, X0_index);
-
+    thermalDynamics(Nx, Nu, Xnext, ArcCost, InfFlag, StateVec, ControlVec, &BoundaryStruct, SolverBridgePtr, N, X0_index);
 
     // Local Copy the State and Control grids
     real_T *StateVecCopy = (real_T *) malloc(Nx * sizeof(real_T));
     memcpy(StateVecCopy, StateVec, Nx * sizeof(real_T));
-
 
     // Count the number of feasible control signals per state
     uint32_t counter;
@@ -323,6 +339,9 @@ static void calculate_arc_cost(ArcProcess *ArcPtr, uint16_t N)    // N is iterat
         // Store the number of feasible control inputs per starting state
         FeasibleCounter[i] = counter;
     }
+
+    uint16_t iMin;
+    uint16_t jMin;
 
 
 #ifndef ADAPTIVEGRID
@@ -370,16 +389,6 @@ static void calculate_arc_cost(ArcProcess *ArcPtr, uint16_t N)    // N is iterat
             // Find the up and down points where we perform extrapolation to avoid shrinking the searching space
             //uint16_t idxUp = (uint16_t) findMinGEQ(StateVecCopy, Xnext_real[FeasibleCounter[i] - 1], Nx);
             //uint16_t idxDown = (uint16_t) findMaxLEQ(StateVecCopy, Xnext_real[0], Nx);
-
-            if(N == 0)
-            {
-                printf("Enter Loop\n");
-            }
-
-            if(N ==0 &&idxMax<idxMin)
-            {
-                printf("Problem\n");
-            }
 
             // Calculate all the possible arc costs to each state (in the State Vector)
             LookupTable CostComeTable;
