@@ -111,7 +111,7 @@ thermalSolver(SolverInput *InputPtr, DynParameter *ParaPtr, EnvFactor *EnvPtr, S
     printf("The starting index: %d\n", X0_index);
 
     // Print Input Info
-    printInputInfo(SolverInputPtr, X0, X0_round, SolutionStruct.startIdx[0], StateVec, ControlVec, Nx, Nu);
+    //printInputInfo(SolverInputPtr, X0, X0_round, SolutionStruct.startIdx[0], StateVec, ControlVec, Nx, Nu);
 
     // Obtain the Boundary Line
 #ifdef CUSTOMBOUND
@@ -138,11 +138,9 @@ thermalSolver(SolverInput *InputPtr, DynParameter *ParaPtr, EnvFactor *EnvPtr, S
     copyThermalBoundary(&BoundaryStruct, OutputPtr);
 #endif
 
-    for (i = 0; i <= RES_THERMAL; i++) {
-        printf("Upper: %f, Lower: %f\n", OutputPtr->upperTempBound[i], OutputPtr->lowerTempBound[i]);
-    }
     // Print Output Solution
     printThermalSolution(SolverInputPtr, X0_round, OutputPtr);
+
 
     // Free the memory
     solutionStruct_free(&SolutionStruct);
@@ -340,11 +338,6 @@ static void calculate_arc_cost(ArcProcess *ArcPtr, uint16_t N)    // N is iterat
         // Store the number of feasible control inputs per starting state
         FeasibleCounter[i] = counter;
     }
-
-    uint16_t iMin;
-    uint16_t jMin;
-
-
 
 
 #ifndef ADAPTIVEGRID
