@@ -18,7 +18,7 @@
 #define NV 200
 #define NF 500
 #define RES_THERMAL 20
-#define NT 5000
+#define NT 500
 #define NQ 100
 #define BLOCK 4
 
@@ -74,8 +74,8 @@ typedef struct {
     real_T Tmin;                // Lower limit of the cabin temperature
     real_T Tmax_inlet;          // Upper limit of the inlet temperature
     real_T Tmin_inlet;          // Lower limit of the inlet temperature
-    real_T Qmin;                // Upper limit of the inlet heat flow
-    real_T Qmax;                // Lower limit of the inlet heat flow
+    real_T Qmax;                // Upper limit of the inlet heat flow
+    real_T Qmin;                // Lower limit of the inlet heat flow
     real_T PACmax;              // Upper limit of the AC power
 }
         LimitSetting;

@@ -120,7 +120,7 @@ void speedSolver(SolverInput *InputPtr, DynParameter *ParaPtr, EnvFactor *EnvPtr
     printf("The starting index: %d\n", X0_index);
 
     // Print Input Info
-    printInputInfo(SolverInputPtr, X0, X0_round, SolutionStruct.startIdx[0], StateVec, ControlVec, Nx, Nu);
+    //printInputInfo(SolverInputPtr, X0, X0_round, SolutionStruct.startIdx[0], StateVec, ControlVec, Nx, Nu);
 
     // Obtain the Boundary Line
 #ifdef CUSTOMBOUND
@@ -148,7 +148,7 @@ void speedSolver(SolverInput *InputPtr, DynParameter *ParaPtr, EnvFactor *EnvPtr
 #endif
 
     // Print Output Solution
-    printSpeedSolution(SolverInputPtr, X0_round, OutputPtr);
+    //printSpeedSolution(SolverInputPtr, X0_round, OutputPtr);
 
     // Free the memory
     solutionStruct_free(&SolutionStruct);

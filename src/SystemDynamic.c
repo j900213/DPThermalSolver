@@ -255,8 +255,6 @@ void thermalDynamics(uint16_t Nx, uint16_t Nu, real_T (*Xnext)[Nu], real_T (*Arc
     for (i = start; i < end; i++) {
         tDelta += BridgePtr->tDelta[i];
     }
-    printf("Duration:\n");
-    printf("%f\n", tDelta);
 
     // Preserve the initial state accuracy
     if (N == 0) {
@@ -351,7 +349,7 @@ void bridgeConnection(Bridge *BridgePtr, SolverOutput *OutputPtr, real_T V0) {
     real_T alpha2 = ModelParameter->alpha2;
 
     uint16_t i;
-    printf("Durations:\n");
+
     real_T duration = 0;
     for (i = 0; i < HORIZON; i++) {
 
@@ -381,6 +379,5 @@ void bridgeConnection(Bridge *BridgePtr, SolverOutput *OutputPtr, real_T V0) {
             BridgePtr->Pdc[i] = Pinv * eta_dc;
         }
     }
-    printf("%f\n", duration);
 
 }
