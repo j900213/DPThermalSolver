@@ -218,6 +218,16 @@ void thermalDynamics(uint16_t Nx, uint16_t Nu, real_T (*Xnext)[Nu], real_T (*Arc
     real_T Tmin_end = EnvironmentalFactor->T_required[end] - 1;
 #endif
 
+#ifdef BOUNDCALIBRATION
+    // Besides the points on the state grid, also consider the points on the boundary
+    if (N > 0) {
+        uint16_t minIdx = (uint16_t) findMaxLEQ(Xin, BoundaryPtr->boundMemo[N - 1][0], Nx);
+        uint16_t maxIdx = (uint16_t) findMinGEQ(Xin, BoundaryPtr->boundMemo[N - 1][1], Nx);
+        Xin[minIdx] = BoundaryPtr->boundMemo[N - 1][0];
+        Xin[maxIdx] = BoundaryPtr->boundMemo[N - 1][1];
+    }
+#endif
+
     // Intermediate Variables
     real_T Pdc = BridgePtr->Pdc[start];
     real_T Phvac;
@@ -255,6 +265,8 @@ void thermalDynamics(uint16_t Nx, uint16_t Nu, real_T (*Xnext)[Nu], real_T (*Arc
     for (i = start; i < end; i++) {
         tDelta += BridgePtr->tDelta[i];
     }
+
+    printf("Duration: %f\n", tDelta);
 
     // Preserve the initial state accuracy
     if (N == 0) {
@@ -313,7 +325,7 @@ void thermalDynamics(uint16_t Nx, uint16_t Nu, real_T (*Xnext)[Nu], real_T (*Arc
             }
 
             // ArcCost - added a L2 norm as the penalization
-            ArcCost[i][j] = Pbatt * tDelta * 0 + penalty * (Xnext[i][j] - T_required) * (Xnext[i][j] - T_required);
+            ArcCost[i][j] = Pbatt * tDelta + penalty * (Xnext[i][j] - T_required) * (Xnext[i][j] - T_required);
         }
     }
 

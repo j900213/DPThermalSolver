@@ -8,7 +8,7 @@ Tfmin = 10;
 % <<IMPORTANT!>> Nx, Nu, Nhrz has to be the same as NX, NU, HORIZON in SolverStruct.h
 solverinput.GridSize.Nv = 200;
 solverinput.GridSize.Nf = 500;
-solverinput.GridSize.Nt = 200;
+solverinput.GridSize.Nt = 500;
 solverinput.GridSize.Nq = 100;
 solverinput.GridSize.Nhrz = 200;
 solverinput.GridSize.ResThermal = 20;
@@ -130,11 +130,11 @@ end
 % end
 
 %% Scenario 1 - Thermal
-T0 = 26;
+T0 = 25;
 
 envFactor.T_required = zeros((solverinput.GridSize.Nhrz+1), 1);
 
-T_required = [26, 26, 25, 26];
+T_required = [26, 25, 25, 26];
 
 for i = 1:(solverinput.GridSize.Nhrz+1)
     if i<=changePoint(1)

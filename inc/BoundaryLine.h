@@ -6,8 +6,11 @@
 typedef struct {
     real_T *upperBound;                         // Upper Boundary Line
     real_T *lowerBound;                         // Lower Boundary Line
+
+#ifdef BOUNDCALIBRATION
     real_T (*boundMemo)[4];                     // Record the actual bounds over time
     // ... [lower bound], [upper bound], [lower index], [upper index]
+#endif
 }
         Boundary;
 
@@ -24,9 +27,11 @@ typedef struct {
 #endif
 
 /*--- Public Functions ---*/
+#if defined(NORMALBOUND) || defined(CUSTOMBOUND)
 
 // Allocate memory to boundary lines
-void initBoundary(Boundary *BoundaryPtr);
+void initSpeedBoundary(Boundary *BoundaryPtr);
+void initThermalBoundary(Boundary *BoundaryPtr);
 
 // Copy the boundary line results to the output pointer
 void copySpeedBoundary(Boundary *BoundaryPtr, SolverOutput *OutputPtr);
@@ -50,3 +55,5 @@ void normalThermalBoundary(Boundary *BoundaryPtr, EnvFactor *EnvPtr);
 // DP Optimization - Boundary Line (Thermal)
 void customThermalBoundary(Boundary *BoundaryPtr, SolverInput *SolverInputPtr, DynParameter *ParaPtr, EnvFactor *EnvPtr,
                            Bridge *BridgePtr, real_T X0);
+
+#endif

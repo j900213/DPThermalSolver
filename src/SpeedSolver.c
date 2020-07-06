@@ -120,14 +120,14 @@ void speedSolver(SolverInput *InputPtr, DynParameter *ParaPtr, EnvFactor *EnvPtr
     printf("The starting index: %d\n", X0_index);
 
     // Print Input Info
-    //printInputInfo(SolverInputPtr, X0, X0_round, SolutionStruct.startIdx[0], StateVec, ControlVec, Nx, Nu);
+    printInputInfo(SolverInputPtr, X0, X0_round, SolutionStruct.startIdx[0], StateVec, ControlVec, Nx, Nu);
 
     // Obtain the Boundary Line
 #ifdef CUSTOMBOUND
-    initBoundary(&BoundaryStruct);
+    initSpeedBoundary(&BoundaryStruct);
     customSpeedBoundary(&BoundaryStruct, SolverInputPtr, ParameterPtr, EnvFactorPtr, X0);
 #elif defined NORMALBOUND
-    initBoundary(&BoundaryStruct);
+    initSpeedBoundary(&BoundaryStruct);
     normalSpeedBoundary(&BoundaryStruct, EnvFactorPtr);
 #endif
 
@@ -148,7 +148,19 @@ void speedSolver(SolverInput *InputPtr, DynParameter *ParaPtr, EnvFactor *EnvPtr
 #endif
 
     // Print Output Solution
-    //printSpeedSolution(SolverInputPtr, X0_round, OutputPtr);
+    printSpeedSolution(SolverInputPtr, X0_round, OutputPtr);
+
+#ifdef DYNCOUNTER
+    printf("(Speed) The number of dynamics computation: %d\n", counterDynamics);
+#endif // DYNCOUNTER
+
+#ifdef INTERPOCOUNTER
+    printf("(Speed) The number of interpolation computation: %d\n", counterInterpo);
+#endif // INTERPOCOUNTER
+
+#ifdef BOUNDCOUNTER
+    printf("(Speed) The number of boundary computation: %d\n", counterBound);
+#endif // BOUNDCOUNTER
 
     // Free the memory
     solutionStruct_free(&SolutionStruct);

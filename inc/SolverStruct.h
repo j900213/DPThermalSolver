@@ -14,12 +14,12 @@
 
 // Problem sizes
 // TODO: These values require to be the same as defined in MatLab
-#define HORIZON 200
 #define NV 200
 #define NF 500
-#define RES_THERMAL 20
 #define NT 500
 #define NQ 100
+#define HORIZON 200
+#define RES_THERMAL 20
 #define BLOCK 4
 
 
@@ -34,7 +34,7 @@
 // Choose the boundary line mode (NOBOUND/NORMALBOUND/CUSTOMBOUND)
 #define CUSTOMBOUND
 // Turn on/off boundary calibration
-//#define BOUNDCALIBRATION
+#define BOUNDCALIBRATION
 // Turn on/off Adaptive grid method
 //#define ADAPTIVEGRID
 
@@ -139,14 +139,21 @@ typedef struct {
     real_T Fo[HORIZON];                         // Optimal Speed Control Policy
     real_T To[RES_THERMAL];                     // Optimal Thermal Trajectory
     real_T Qo[RES_THERMAL];                     // Optimal Thermal Control Policy
+
+#if defined(NORMALBOUND) || defined(CUSTOMBOUND)
     real_T upperSpeedBound[HORIZON + 1];        // Upper Speed Boundary Line
     real_T lowerSpeedBound[HORIZON + 1];        // Lower Speed Boundary Line
-    real_T upperSpeedActual[HORIZON];
-    real_T lowerSpeedActual[HORIZON];
     real_T upperTempBound[RES_THERMAL + 1];         // Upper Temp Boundary Line
     real_T lowerTempBound[RES_THERMAL + 1];         // Lower Temp Boundary Line
+#endif
+
+#ifdef BOUNDCALIBRATION
+    real_T upperSpeedActual[HORIZON];
+    real_T lowerSpeedActual[HORIZON];
     real_T upperTempActual[RES_THERMAL];
     real_T lowerTempActual[RES_THERMAL];
+#endif
+
 }
         SolverOutput;
 
