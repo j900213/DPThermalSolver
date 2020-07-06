@@ -4,16 +4,26 @@
 uint32_t counterBound = 0;
 #endif // BOUNDCOUNTER
 
-void initBoundary(Boundary *BoundaryPtr) {
+#if defined(NORMALBOUND) || defined(CUSTOMBOUND)
+void initSpeedBoundary(Boundary *BoundaryPtr) {
     BoundaryPtr->lowerBound = (real_T *) malloc((HORIZON + 1) * sizeof(real_T));
     BoundaryPtr->upperBound = (real_T *) malloc((HORIZON + 1) * sizeof(real_T));
+#ifdef BOUNDCALIBRATION
     BoundaryPtr->boundMemo = malloc(sizeof(real_T[HORIZON][4]));
+#endif
+}
+
+void initThermalBoundary(Boundary *BoundaryPtr) {
+    BoundaryPtr->lowerBound = (real_T *) malloc((RES_THERMAL + 1) * sizeof(real_T));
+    BoundaryPtr->upperBound = (real_T *) malloc((RES_THERMAL + 1) * sizeof(real_T));
+#ifdef BOUNDCALIBRATION
+    BoundaryPtr->boundMemo = malloc(sizeof(real_T[RES_THERMAL][4]));
+#endif
 }
 
 void copySpeedBoundary(Boundary *BoundaryPtr, SolverOutput *OutputPtr) {
     memcpy(OutputPtr->lowerSpeedBound, BoundaryPtr->lowerBound, (HORIZON + 1) * sizeof(real_T));
     memcpy(OutputPtr->upperSpeedBound, BoundaryPtr->upperBound, (HORIZON + 1) * sizeof(real_T));
-
 #ifdef BOUNDCALIBRATION
     for (uint16_t i = 0; i < HORIZON; i++) {
         OutputPtr->lowerSpeedActual[i] = BoundaryPtr->boundMemo[i][0];
@@ -25,12 +35,20 @@ void copySpeedBoundary(Boundary *BoundaryPtr, SolverOutput *OutputPtr) {
 void copyThermalBoundary(Boundary *BoundaryPtr, SolverOutput *OutputPtr) {
     memcpy(OutputPtr->lowerTempBound, BoundaryPtr->lowerBound, (RES_THERMAL + 1) * sizeof(real_T));
     memcpy(OutputPtr->upperTempBound, BoundaryPtr->upperBound, (RES_THERMAL + 1) * sizeof(real_T));
+#ifdef BOUNDCALIBRATION
+    for (uint16_t i = 0; i < RES_THERMAL; i++) {
+        OutputPtr->lowerSpeedActual[i] = BoundaryPtr->boundMemo[i][0];
+        OutputPtr->upperSpeedActual[i] = BoundaryPtr->boundMemo[i][1];
+    }
+#endif
 }
 
 void freeBoundary(Boundary *BoundaryPtr) {
     free(BoundaryPtr->lowerBound);
     free(BoundaryPtr->upperBound);
+#ifdef BOUNDCALIBRATION
     free(BoundaryPtr->boundMemo);
+#endif
 }
 
 void normalSpeedBoundary(Boundary *BoundaryPtr, EnvFactor *EnvPtr) {
@@ -386,10 +404,13 @@ void customThermalBoundary(Boundary *BoundaryPtr, SolverInput *SolverInputPtr, D
     // Calculate a sequence of tDelta
     real_T *tDelta = (real_T *) malloc(RES_THERMAL * sizeof(real_T));
     for (i = 0; i < Nhrz; i++) {
+        tDelta[i] = 0;
         for (j = 0; j < HORIZON / RES_THERMAL; j++) {
             tDelta[i] += BridgePtr->tDelta[i * HORIZON / RES_THERMAL + j];
         }
+        printf("Duration_boundary: %f\n", tDelta[i]);
     }
+
 
     // If there is only one range block
     if (numBlock == 1) {
@@ -404,6 +425,8 @@ void customThermalBoundary(Boundary *BoundaryPtr, SolverInput *SolverInputPtr, D
 
             upperTmp = BoundaryPtr->upperBound[i] +
                        (tDelta[i] / Cth) * (maxQ + Qsun + Qpas + (Tamb - BoundaryPtr->upperBound[i]) / Rth);
+
+            counterBound++;
 
             // If it has exceeded the upper bound (required + 1), break
             if (upperTmp >= BoundaryPtr->upperBound[i + 1]) {
@@ -426,6 +449,8 @@ void customThermalBoundary(Boundary *BoundaryPtr, SolverInput *SolverInputPtr, D
 
             lowerTmp = BoundaryPtr->lowerBound[i] +
                        (tDelta[i] / Cth) * (minQ + Qsun + Qpas + (Tamb - BoundaryPtr->lowerBound[i]) / Rth);
+
+            counterBound++;
 
             // If it has exceeded the lower bound (required - 1), break
             if (lowerTmp <= BoundaryPtr->lowerBound[i + 1]) {
@@ -454,6 +479,8 @@ void customThermalBoundary(Boundary *BoundaryPtr, SolverInput *SolverInputPtr, D
                     upperTmp = BoundaryPtr->upperBound[i] +
                                (tDelta[i] / Cth) * (maxQ + Qsun + Qpas + (Tamb - BoundaryPtr->upperBound[i]) / Rth);
 
+                    counterBound++;
+
                     // Same as when numBlock == 1
                     if (upperTmp >= BoundaryPtr->upperBound[i + 1]) {
                         break;
@@ -473,6 +500,8 @@ void customThermalBoundary(Boundary *BoundaryPtr, SolverInput *SolverInputPtr, D
 
                     lowerTmp = BoundaryPtr->lowerBound[i] +
                                (tDelta[i] / Cth) * (minQ + Qsun + Qpas + (Tamb - BoundaryPtr->lowerBound[i]) / Rth);
+
+                    counterBound++;
 
                     // Same as when numBlock == 1
                     if (lowerTmp <= BoundaryPtr->lowerBound[i + 1]) {
@@ -501,6 +530,8 @@ void customThermalBoundary(Boundary *BoundaryPtr, SolverInput *SolverInputPtr, D
                         upperTmp = BoundaryPtr->upperBound[i] +
                                    (tDelta[i] / Cth) * (maxQ + Qsun + Qpas + (Tamb - BoundaryPtr->upperBound[i]) / Rth);
 
+                        counterBound++;
+
                         // Same
                         if (upperTmp >= BoundaryPtr->upperBound[i + 1]) {
                             break;
@@ -517,6 +548,7 @@ void customThermalBoundary(Boundary *BoundaryPtr, SolverInput *SolverInputPtr, D
                             lowerTmp = ((Cth / tDelta[i]) * BoundaryPtr->lowerBound[i + 1] - maxQ - Qsun - Qpas -
                                         Tamb / Rth) / (Cth / tDelta[i] - 1 / Rth);
                             maxQ = maxQ * 0.95;
+                            counterBound++;
                         } while (lowerTmp + maxQ / (Cp * rho * mDot) > Tmax_inlet);
 
                         if (lowerTmp <= BoundaryPtr->lowerBound[i]) {
@@ -539,6 +571,7 @@ void customThermalBoundary(Boundary *BoundaryPtr, SolverInput *SolverInputPtr, D
                             upperTmp = ((Cth / tDelta[i]) * BoundaryPtr->upperBound[i + 1] - minQ - Qsun - Qpas -
                                         Tamb / Rth) / (Cth / tDelta[i] - 1 / Rth);
                             minQ = minQ * 0.95;
+                            counterBound++;
                         } while (upperTmp + minQ / (Cp * rho * mDot) < Tmin_inlet);
 
                         if (upperTmp >= BoundaryPtr->upperBound[i]) {
@@ -560,6 +593,8 @@ void customThermalBoundary(Boundary *BoundaryPtr, SolverInput *SolverInputPtr, D
                         lowerTmp = BoundaryPtr->lowerBound[i] +
                                    (tDelta[i] / Cth) * (minQ + Qsun + Qpas + (Tamb - BoundaryPtr->lowerBound[i]) / Rth);
 
+                        counterBound++;
+
                         // Same as when numBlock == 1
                         if (lowerTmp <= BoundaryPtr->lowerBound[i + 1]) {
                             break;
@@ -572,5 +607,8 @@ void customThermalBoundary(Boundary *BoundaryPtr, SolverInput *SolverInputPtr, D
         }
     }
 
+    free(tDelta);
     free(changePoint);
 }
+
+#endif

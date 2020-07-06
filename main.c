@@ -76,7 +76,7 @@ int main() {
     // Tuning Parameter
     ModelParaPtr.ds = 10;
     ModelParaPtr.speedPenalty = 11e4;
-    ModelParaPtr.thermalPenalty = 10e6;
+    ModelParaPtr.thermalPenalty = 10e10;
 
     // Environmental Information
     uint8_t numFactors = 3;
@@ -87,7 +87,7 @@ int main() {
     // Initial Speed
     V0 = 70 / 3.6;
     // Initial Temperature
-    T0 = 26;
+    T0 = 25;
 
     real_T Vmax_GPS_1 = 130 / 3.6;
     real_T Vmin_GPS_1 = 60 / 3.6;
@@ -96,7 +96,7 @@ int main() {
 
     real_T Vmax_GPS_2 = 80 / 3.6;
     real_T Vmin_GPS_2 = 30 / 3.6;
-    real_T T_required_2 = 26;
+    real_T T_required_2 = 25;
     uint16_t endBlock_2 = 100;
 
     real_T Vmax_GPS_3 = 50 / 3.6;
@@ -160,17 +160,12 @@ int main() {
     /*-------------------------*/
     MagicBox(&SolverInputPtr, &ModelParaPtr, &EnvFactorPtr, &SolverOutputPtr, V0, T0, Vfmin, Vfmax, Tfmin, Tfmax);
 
-#ifdef DYNCOUNTER
-    printf("The number of dynamics computation: %d\n", counterDynamics);
-#endif // DYNCOUNTER
 
-#ifdef INTERPOCOUNTER
-    printf("The number of interpolation computation: %d\n", counterInterpo);
-#endif // INTERPOCOUNTER
 
-#ifdef BOUNDCOUNTER
-    printf("The number of boundary computation: %d\n", counterBound);
-#endif // BOUNDCOUNTER
+//    for(i = 0; i<=RES_THERMAL;i++)
+//    {
+//        printf("Upper Thermal bound: %f, Lower Thermal bound: %f\n", SolverOutputPtr.upperTempBound[i], SolverOutputPtr.lowerTempBound[i]);
+//    }
 
     // Fix
     return 0;

@@ -111,14 +111,14 @@ thermalSolver(SolverInput *InputPtr, DynParameter *ParaPtr, EnvFactor *EnvPtr, S
     printf("The starting index: %d\n", X0_index);
 
     // Print Input Info
-    //printInputInfo(SolverInputPtr, X0, X0_round, SolutionStruct.startIdx[0], StateVec, ControlVec, Nx, Nu);
+    printInputInfo(SolverInputPtr, X0, X0_round, SolutionStruct.startIdx[0], StateVec, ControlVec, Nx, Nu);
 
     // Obtain the Boundary Line
 #ifdef CUSTOMBOUND
-    initBoundary(&BoundaryStruct);
+    initThermalBoundary(&BoundaryStruct);
     customThermalBoundary(&BoundaryStruct, SolverInputPtr, ParameterPtr, EnvFactorPtr, BridgePtr, X0);
 #elif defined NORMALBOUND
-    initBoundary(&BoundaryStruct);
+    initThermalBoundary(&BoundaryStruct);
     normalThermalBoundary(&BoundaryStruct, EnvFactorPtr);
 #endif
 
@@ -141,6 +141,17 @@ thermalSolver(SolverInput *InputPtr, DynParameter *ParaPtr, EnvFactor *EnvPtr, S
     // Print Output Solution
     printThermalSolution(SolverInputPtr, X0_round, OutputPtr);
 
+#ifdef DYNCOUNTER
+    printf("(Thermal) The number of dynamics computation: %d\n", counterDynamics);
+#endif // DYNCOUNTER
+
+#ifdef INTERPOCOUNTER
+    printf("(Thermal) The number of interpolation computation: %d\n", counterInterpo);
+#endif // INTERPOCOUNTER
+
+#ifdef BOUNDCOUNTER
+    printf("(Thermal) The number of boundary computation: %d\n", counterBound);
+#endif // BOUNDCOUNTER
 
     // Free the memory
     solutionStruct_free(&SolutionStruct);
@@ -316,6 +327,31 @@ static void calculate_arc_cost(ArcProcess *ArcPtr, uint16_t N)    // N is iterat
     real_T *StateVecCopy = (real_T *) malloc(Nx * sizeof(real_T));
     memcpy(StateVecCopy, StateVec, Nx * sizeof(real_T));
 
+#ifdef BOUNDCALIBRATION
+    // Adjust the state vector to be fit on the boundary lines
+    // 1, Get the theoretical upper and lower bounds at Xnext
+    real_T Tmax_end = BoundaryStruct.upperBound[N + 1];
+    real_T Tmin_end = BoundaryStruct.lowerBound[N + 1];
+
+    // 2, Get the index of state vector that just exceeds the bounds
+    uint16_t minIdx = (uint16_t) findMaxLEQ(StateVecCopy, Tmin_end, Nx);
+    uint16_t maxIdx = (uint16_t) findMinGEQ(StateVecCopy, Tmax_end, Nx);
+
+    // 3, Get the actual upper and lower bound within Xnext
+    uint16_t minIdxReal = (uint16_t) findMinGEQ(Xnext[0], Tmin_end, Nx * Nu);
+    uint16_t maxIdxReal = (uint16_t) findMaxLEQ(Xnext[0], Tmax_end, Nx * Nu);
+
+    // 4, Shift the upper and lower points on the state vector
+    StateVecCopy[minIdx] = *(Xnext[0] + minIdxReal);
+    StateVecCopy[maxIdx] = *(Xnext[0] + maxIdxReal);
+
+    // 5, Update the boundary memory
+    BoundaryStruct.boundMemo[N][0] = StateVecCopy[minIdx];                 // Actual lower bound at step N+1
+    BoundaryStruct.boundMemo[N][1] = StateVecCopy[maxIdx];                 // Actual upper bound at step N+1
+    BoundaryStruct.boundMemo[N][2] = minIdx;                               // The index of the lower bound in the vector
+    BoundaryStruct.boundMemo[N][3] = maxIdx;                               // The index of the upper bound in the vector
+#endif
+
     // Count the number of feasible control signals per state
     uint32_t counter;
 
@@ -453,7 +489,25 @@ static void findSolution(SolverOutput *OutputPtr, Solution *SolutionPtr, real_T 
 
         // Find the optimal control policy and state trajectory
         for (i = 0; i < ResThermal; i++) {
+
+
+#ifdef ADAPTIVEGRID
+            //OutputPtr->Vo[i] = StateGrid[i + 1][optimalstateIdx[i + 1]];
+#elif defined(BOUNDCALIBRATION)
+            if (optimalstateIdx[i + 1] == BoundaryStruct.boundMemo[i][2]) {
+                OutputPtr->To[i] = BoundaryStruct.boundMemo[i][0];
+                printf("Hit!!!!\n");
+                printf("%d\n", i);
+            } else if (optimalstateIdx[i + 1] == BoundaryStruct.boundMemo[i][3]) {
+                OutputPtr->To[i] = BoundaryStruct.boundMemo[i][1];
+                printf("Hit!!!!\n");
+                printf("%d\n", i);
+            } else {
+                OutputPtr->To[i] = StateVec[optimalstateIdx[i + 1]];
+            }
+#else
             OutputPtr->To[i] = StateVec[optimalstateIdx[i + 1]];
+#endif
             OutputPtr->Qo[i] = SolutionPtr->Un[i][optimalstateIdx[i + 1]];
         }
     }

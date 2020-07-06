@@ -105,7 +105,6 @@ for i = 2:Nv
     SpeedVector(i) = SpeedVector(i - 1) + delta;
 end
 
-figure(1)
 hold on
 
 if (gridFlag)
@@ -144,7 +143,6 @@ ylabel('Speed (km/h)');
 
 %legend(line([1 2 4 5 7]),  'Calculated speed trajectpry', 'Legal speed limits', 'Actual speed trajectory','Calculated Boundary line', 'Calibration')
 legend(line([1 2]),  'Calculated speed trajectpry', 'Legal speed limits')
-
 hold off;
 
 %% Plot - Thermal
@@ -157,7 +155,6 @@ for i = 2:Nt
     ThermalVector(i) = ThermalVector(i - 1) + delta;
 end
 
-figure(2)
 hold on
 
 if (gridFlag)
@@ -174,20 +171,16 @@ line(1) = plot((0:ResThermal)*10*ds, To_copy(1:ResThermal+1),'-','LineWidth',1.2
 for i = 1:N
     yRequired = [T_required(i), T_required(i)];
     xIndex = [turningPoint(i), (turningPoint(i+1) - 1)];
-    line(2) = plot(xIndex*ds, yRequired, 'LineWidth',2, 'Color', [0.25, 0.25, 0.25]);
+    line(3) = plot(xIndex*ds, yRequired, 'LineWidth',2, 'Color', [0.25, 0.25, 0.25]);
 end
-
-if(boundaryFlag)
-    line(5) = plot((0:ResThermal)*10*ds, upperTempBound_copy(1:ResThermal+1),'LineWidth',1.2, 'Color', [0.4660, 0.6740, 0.1880]);
-    line(6) = plot((0:ResThermal)*10*ds, lowerTempBound_copy(1:ResThermal+1),'LineWidth',1.2, 'Color', [0.4660, 0.6740, 0.1880]);
-    line(7) = plot((0:Nhrz)*ds, upperTempActual_copy(1:Nhrz+1)*3.6,'r.','MarkerSize',5);
-    line(8) = plot((0:Nhrz)*ds, lowerTempActual_copy(1:Nhrz+1)*3.6,'r.','MarkerSize',5);
-end
+%line(5) = plot((0:ResThermal)*10*ds, upperTempBound_copy(1:ResThermal+1),'LineWidth',1.2, 'Color', [0.4660, 0.6740, 0.1880]);
+%line(6) = plot((0:ResThermal)*10*ds, lowerTempBound_copy(1:ResThermal+1),'LineWidth',1.2, 'Color', [0.4660, 0.6740, 0.1880]);
+%line(7) = plot((0:Nhrz)*ds, upperTempActual_copy(1:Nhrz+1)*3.6,'r.','MarkerSize',5);
+%line(8) = plot((0:Nhrz)*ds, lowerTempActual_copy(1:Nhrz+1)*3.6,'r.','MarkerSize',5);
 
 xlabel('Distance (m)');
-ylabel('Cabin Temperature (celsius)');
-
-legend(line([1 2]),  'Calculated thermal trajectpry', 'Required temperature')
-
+ylabel('Speed (km/h)');
+%legend(line([1 2 3 5 7]),  'Calculated thermal trajectpry', 'Actual speed trajectory','Temperature', 'Calculated Boundary line', 'Calibration')
+legend(line([1 3]),  'Calculated optimal thermal trajectpry', 'User required temperature')
 hold off;
 
