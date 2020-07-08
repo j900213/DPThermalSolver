@@ -7,13 +7,13 @@ rho = 1.1839;
 mDot = 0.0842;
 CoP_pos = 2.1379;
 CoP_neg = -2.1379;
-Tamb = 28;
+Tamb = 30;
 T_required = 26;
 
-dt = 4.339624;
+dt = 10;
 
-Xin = 25.058322;
-Uin = 494.3322;
+Xin = 30;
+Uin = -800;
 
 Xnext = Xin + (dt / Cth) * (Uin + Qsun + Qpas + (Tamb - Xin) / Rth);
 
@@ -21,3 +21,5 @@ Phvac = Uin / -2.14;
 ArcCost = 10e6 * (Xnext - T_required)^2;
 
 Tinlet = Xin + Uin / (Cp * rho * mDot);
+
+disp(Xnext)

@@ -340,11 +340,14 @@ void customThermalBoundary(Boundary *BoundaryPtr, SolverInput *SolverInputPtr, D
     // Iteration Index
     uint16_t i, j, k;
 
-    uint16_t *tmpMemory = (uint16_t *) malloc(RES_THERMAL * sizeof(uint16_t));
+    // Local Copy of Horizon Length
+    uint16_t Nhrz = SolverInputPtr->GridSize.ResThermal;
+
+    uint16_t *tmpMemory = (uint16_t *) malloc(Nhrz * sizeof(uint16_t));
 
     uint16_t counter = 0;
     // Detect the change point and number of blocks
-    for (i = 0; i < RES_THERMAL; i++) {
+    for (i = 0; i < Nhrz; i++) {
         if (EnvPtr->T_required[i * HORIZON / RES_THERMAL] != EnvPtr->T_required[(i + 1) * HORIZON / RES_THERMAL]) {
             tmpMemory[counter] = i + 1;
             counter++;
@@ -361,9 +364,6 @@ void customThermalBoundary(Boundary *BoundaryPtr, SolverInput *SolverInputPtr, D
 //    for (i = 0; i < numBlock; i++) {
 //        printf("Change point: %d\n", changePoint[i]);
 //    }
-
-    // Local Copy of Horizon Length
-    uint16_t Nhrz = RES_THERMAL;
 
     // Local copy of constraints
     real_T Qmax = SolverInputPtr->Constraint.Qmax;
@@ -393,8 +393,8 @@ void customThermalBoundary(Boundary *BoundaryPtr, SolverInput *SolverInputPtr, D
 
     // First, Copy the known required temperature to the upper and lower bounds
     for (i = 0; i <= Nhrz; i++) {
-        BoundaryPtr->upperBound[i] = EnvPtr->T_required[i * HORIZON / RES_THERMAL] + 1;
-        BoundaryPtr->lowerBound[i] = EnvPtr->T_required[i * HORIZON / RES_THERMAL] - 1;
+        BoundaryPtr->upperBound[i] = EnvPtr->T_required[i * HORIZON / RES_THERMAL] + 5;
+        BoundaryPtr->lowerBound[i] = EnvPtr->T_required[i * HORIZON / RES_THERMAL] - 5;
     }
 
     // Let upper and lower bound both start from the known X0
@@ -402,7 +402,7 @@ void customThermalBoundary(Boundary *BoundaryPtr, SolverInput *SolverInputPtr, D
     BoundaryPtr->lowerBound[0] = X0;
 
     // Calculate a sequence of tDelta
-    real_T *tDelta = (real_T *) malloc(RES_THERMAL * sizeof(real_T));
+    real_T *tDelta = (real_T *) malloc(Nhrz * sizeof(real_T));
     for (i = 0; i < Nhrz; i++) {
         tDelta[i] = 0;
         for (j = 0; j < HORIZON / RES_THERMAL; j++) {

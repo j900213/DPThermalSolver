@@ -2,6 +2,7 @@
 #include "MathFunction.h"
 #include "SystemDynamic.h"
 #include "BoundaryLine.h"
+#include "AdaptiveGrid.h"
 #include "PrintResult.h"
 
 /*--- Public Functions ---*/

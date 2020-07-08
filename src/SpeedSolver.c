@@ -105,7 +105,7 @@ void speedSolver(SolverInput *InputPtr, DynParameter *ParaPtr, EnvFactor *EnvPtr
     createBoxEdges(BoxEdges, StateVec, Nx);
     // Initialize the Adaptive State Grid
     StateGrid = malloc(sizeof(real_T[Nhrz + 1][Nx]));
-    createStateGrid(StateGrid, StateVec, Nx, Nhrz);
+    createSpeedGrid(StateGrid, StateVec, Nx, Nhrz);
 #endif
 
     // Initialize Solution Structure
@@ -172,6 +172,7 @@ void speedSolver(SolverInput *InputPtr, DynParameter *ParaPtr, EnvFactor *EnvPtr
 
 #ifdef ADAPTIVEGRID
     free(BoxEdges);
+    free(StateGrid);
 #endif
 }
 
@@ -234,7 +235,6 @@ static void arcStruct_init(ArcProcess *ArcPtr) {
 
     ArcPtr->arcCost = malloc(sizeof(real_T[Nx][Nx]));
     ArcPtr->arcU = malloc(sizeof(real_T[Nx][Nx]));
-
 #ifdef ADAPTIVEGRID
     ArcPtr->arcX = malloc(sizeof(real_T[Nx][Nx]));
 #endif
@@ -303,7 +303,6 @@ static void calculate_costTocome(Solution *SolutionPtr, uint16_t N)        // (N
                 SolutionPtr->Xn[N][j] = startIdx;
                 SolutionPtr->Un[N][j] = ArcStruct.arcU[startIdx][j];
                 CostToCome[j] = CostToBeComp[j];
-
 #ifdef ADAPTIVEGRID
                 StateGrid[N + 1][j] = ArcStruct.arcX[startIdx][j];
 #endif
@@ -389,10 +388,10 @@ static void calculate_arc_cost(ArcProcess *ArcPtr, uint16_t N)    // N is iterat
     memcpy(BoxEdgesCopy, BoxEdges, (Nx + 1) * sizeof(real_T));
 
     // Shift the min and max Edge to be the same as Calibrated StateVecCopy
-    uint16_t minIdxEdge = findMaxLEQ(BoxEdgesCopy, StateVecCopy[minIdx], (Nx + 1));
-    uint16_t maxIdxEdge = findMinGEQ(BoxEdgesCopy, StateVecCopy[maxIdx], (Nx + 1));
-    BoxEdgesCopy[minIdxEdge] = StateVecCopy[minIdx];
-    BoxEdgesCopy[maxIdxEdge] = StateVecCopy[maxIdx];
+    //uint16_t minIdxEdge = findMaxLEQ(BoxEdgesCopy, StateVecCopy[minIdx], (Nx + 1));
+    //uint16_t maxIdxEdge = findMinGEQ(BoxEdgesCopy, StateVecCopy[maxIdx], (Nx + 1));
+    //BoxEdgesCopy[minIdxEdge] = StateVecCopy[minIdx];
+    //BoxEdgesCopy[maxIdxEdge] = StateVecCopy[maxIdx];
 #endif
 
     // Count the number of feasible control signals per state
@@ -515,7 +514,6 @@ static void calculate_arc_cost(ArcProcess *ArcPtr, uint16_t N)    // N is iterat
     free(FeasibleCounter);
     free(idxSort);
     free(StateVecCopy);
-
 #ifdef ADAPTIVEGRID
     free(BoxEdgesCopy);
 #endif
