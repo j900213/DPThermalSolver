@@ -55,6 +55,7 @@ CMakeFiles/DPThermalSolver.dir/src/SystemDynamic.c.obj
  E:/Thesis_Project/CascadingDPSolver/inc/SystemDynamic.h
  E:/Thesis_Project/CascadingDPSolver/src/SystemDynamic.c
 CMakeFiles/DPThermalSolver.dir/src/ThermalSolver.c.obj
+ E:/Thesis_Project/CascadingDPSolver/inc/AdaptiveGrid.h
  E:/Thesis_Project/CascadingDPSolver/inc/BoundaryLine.h
  E:/Thesis_Project/CascadingDPSolver/inc/MathFunction.h
  E:/Thesis_Project/CascadingDPSolver/inc/PrintResult.h

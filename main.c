@@ -44,7 +44,7 @@ int main() {
     SolverInputPtr.Constraint.Tmin_inlet = 10;
     SolverInputPtr.Constraint.Qmax = 2000;
     SolverInputPtr.Constraint.Qmin = -2000;
-    SolverInputPtr.Constraint.PACmax = 2000/2.1379;
+    SolverInputPtr.Constraint.PACmax = 2000 / 2.1379;
 
     SolverInputPtr.SolverLimit.infValue = FLT_MAX;
 
@@ -71,12 +71,12 @@ int main() {
     ModelParaPtr.mDot = 0.0842;
     ModelParaPtr.CoP_pos = 2.1379;
     ModelParaPtr.CoP_neg = -2.1379;
-    ModelParaPtr.Tamb = 28;
+    ModelParaPtr.Tamb = 30;
 
     // Tuning Parameter
-    ModelParaPtr.ds = 10;
+    ModelParaPtr.ds = 30;
     ModelParaPtr.speedPenalty = 11e4;
-    ModelParaPtr.thermalPenalty = 10e10;
+    ModelParaPtr.thermalPenalty = 10e4;
 
     // Environmental Information
     uint8_t numFactors = 3;
@@ -85,34 +85,40 @@ int main() {
 
 #ifdef SCENE1
     // Initial Speed
-    V0 = 70 / 3.6;
+    V0 = 0 / 3.6;
     // Initial Temperature
-    T0 = 25;
+    T0 = 30;
 
-    real_T Vmax_GPS_1 = 130 / 3.6;
-    real_T Vmin_GPS_1 = 60 / 3.6;
-    real_T T_required_1 = 26;
-    uint16_t endBlock_1 = 30;
+    real_T Vmax_GPS_1 = 50 / 3.6;
+    real_T Vmin_GPS_1 = 0 / 3.6;
+    real_T T_required_1 = 25;
+    uint16_t endBlock_1 = 100;
 
     real_T Vmax_GPS_2 = 80 / 3.6;
     real_T Vmin_GPS_2 = 30 / 3.6;
     real_T T_required_2 = 25;
-    uint16_t endBlock_2 = 100;
+    uint16_t endBlock_2 = 250;
 
-    real_T Vmax_GPS_3 = 50 / 3.6;
-    real_T Vmin_GPS_3 = 10 / 3.6;
+    real_T Vmax_GPS_3 = 130 / 3.6;
+    real_T Vmin_GPS_3 = 60 / 3.6;
     real_T T_required_3 = 25;
-    uint16_t endBlock_3 = 150;
+    uint16_t endBlock_3 = 750;
 
     real_T Vmax_GPS_4 = 80 / 3.6;
     real_T Vmin_GPS_4 = 30 / 3.6;
-    real_T T_required_4 = 26;
-    uint16_t endBlock_4 = Nhrz;
+    real_T T_required_4 = 25;
+    uint16_t endBlock_4 = 850;
+
+    real_T Vmax_GPS_5 = 50 / 3.6;
+    real_T Vmin_GPS_5 = 0 / 3.6;
+    real_T T_required_5 = 25;
+    uint16_t endBlock_5 = Nhrz;
 
     EnvFactorPtr.endBlock[0] = endBlock_1;
     EnvFactorPtr.endBlock[1] = endBlock_2;
     EnvFactorPtr.endBlock[2] = endBlock_3;
     EnvFactorPtr.endBlock[3] = endBlock_4;
+    EnvFactorPtr.endBlock[4] = endBlock_5;
 
     for (i = 0; i <= Nhrz; i++) {
         if (i < endBlock_1) {
@@ -130,11 +136,16 @@ int main() {
             EnvFactorPtr.Vmin_env[i] = Vmin_GPS_3;                    // Legal Vmin
             EnvFactorPtr.Angle_env[i] = 0.0;                        // Road slops
             EnvFactorPtr.T_required[i] = T_required_3;              // Required Temp
-        } else {
+        } else if (i < endBlock_4) {
             EnvFactorPtr.Vmax_env[i] = Vmax_GPS_4;                    // Legal Vmax
             EnvFactorPtr.Vmin_env[i] = Vmin_GPS_4;                    // Legal Vmin
             EnvFactorPtr.Angle_env[i] = 0.0;                        // Road slops
             EnvFactorPtr.T_required[i] = T_required_4;              // Required Temp
+        } else {
+            EnvFactorPtr.Vmax_env[i] = Vmax_GPS_5;                    // Legal Vmax
+            EnvFactorPtr.Vmin_env[i] = Vmin_GPS_5;                    // Legal Vmin
+            EnvFactorPtr.Angle_env[i] = 0.0;                        // Road slops
+            EnvFactorPtr.T_required[i] = T_required_5;              // Required Temp
         }
     }
 #elif defined(SCENE2)

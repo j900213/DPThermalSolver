@@ -214,8 +214,8 @@ void thermalDynamics(uint16_t Nx, uint16_t Nu, real_T (*Xnext)[Nu], real_T (*Arc
     real_T Tmax_end = BoundaryPtr->upperBound[N+1];
     real_T Tmin_end = BoundaryPtr->lowerBound[N+1];
 #elif defined(NOBOUND)
-    real_T Tmax_end = EnvironmentalFactor->T_required[end] + 1;
-    real_T Tmin_end = EnvironmentalFactor->T_required[end] - 1;
+    real_T Tmax_end = EnvironmentalFactor->T_required[end] + 5;
+    real_T Tmin_end = EnvironmentalFactor->T_required[end] - 5;
 #endif
 
 #ifdef BOUNDCALIBRATION
@@ -325,7 +325,7 @@ void thermalDynamics(uint16_t Nx, uint16_t Nu, real_T (*Xnext)[Nu], real_T (*Arc
             }
 
             // ArcCost - added a L2 norm as the penalization
-            ArcCost[i][j] = Pbatt * tDelta + penalty * (Xnext[i][j] - T_required) * (Xnext[i][j] - T_required);
+            ArcCost[i][j] = Pbatt * tDelta+ penalty * (Xnext[i][j] - T_required) * (Xnext[i][j] - T_required);
         }
     }
 
@@ -359,6 +359,7 @@ void bridgeConnection(Bridge *BridgePtr, SolverOutput *OutputPtr, real_T V0) {
     real_T alpha0 = ModelParameter->alpha0;
     real_T alpha1 = ModelParameter->alpha1;
     real_T alpha2 = ModelParameter->alpha2;
+    real_T beta0 = ModelParameter->beta0;
 
     uint16_t i;
 
@@ -391,5 +392,16 @@ void bridgeConnection(Bridge *BridgePtr, SolverOutput *OutputPtr, real_T V0) {
             BridgePtr->Pdc[i] = Pinv * eta_dc;
         }
     }
+
+    real_T Pbatt;
+    real_T Edem = 0;
+
+    for(i = 0; i< HORIZON; i++){
+        Pbatt = (1 - sqrt(1 - 4 * beta0 * BridgePtr->Pdc[i])) / (2 * beta0);
+        Edem += Pbatt * BridgePtr->tDelta[i];
+    }
+
+    printf("\nPower demanding: %f\n", Edem);
+    printf("\nTotal duration:%f\n\n", duration);
 
 }

@@ -54,6 +54,7 @@ CMakeFiles/DPThermalSolver.dir/src/SystemDynamic.c.obj: ../inc/SolverStruct.h
 CMakeFiles/DPThermalSolver.dir/src/SystemDynamic.c.obj: ../inc/SystemDynamic.h
 CMakeFiles/DPThermalSolver.dir/src/SystemDynamic.c.obj: ../src/SystemDynamic.c
 
+CMakeFiles/DPThermalSolver.dir/src/ThermalSolver.c.obj: ../inc/AdaptiveGrid.h
 CMakeFiles/DPThermalSolver.dir/src/ThermalSolver.c.obj: ../inc/BoundaryLine.h
 CMakeFiles/DPThermalSolver.dir/src/ThermalSolver.c.obj: ../inc/MathFunction.h
 CMakeFiles/DPThermalSolver.dir/src/ThermalSolver.c.obj: ../inc/PrintResult.h

@@ -18,9 +18,9 @@
 #define NF 500
 #define NT 500
 #define NQ 100
-#define HORIZON 200
-#define RES_THERMAL 20
-#define BLOCK 4
+#define HORIZON 1000
+#define RES_THERMAL 100
+#define BLOCK 5
 
 
 // Choose pre-defined scenario (SCENE1/SCENE2)
@@ -34,9 +34,9 @@
 // Choose the boundary line mode (NOBOUND/NORMALBOUND/CUSTOMBOUND)
 #define CUSTOMBOUND
 // Turn on/off boundary calibration
-#define BOUNDCALIBRATION
+//#define BOUNDCALIBRATION
 // Turn on/off Adaptive grid method
-//#define ADAPTIVEGRID
+#define ADAPTIVEGRID
 
 /*--- External Variables ---*/
 extern real_T Xinitial;

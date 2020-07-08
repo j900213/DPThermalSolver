@@ -4,7 +4,6 @@
 uint16_t Nx;                                        // Problem sizes
 uint16_t Nu;                                        // - they are changed based on running Speed or Thermal solver
 uint16_t Nhrz;
-uint16_t ResThermal;
 Boundary BoundaryStruct;                            // boundary line structure
 
 /*--- External Variables ---*/
@@ -19,14 +18,19 @@ static EnvFactor *EnvFactorPtr;                     // local copy of the Env fac
 static uint16_t X0_index;                           // the rounded X0
 static Bridge *SolverBridgePtr;                     // local copy of the bridge pointer
 
+#ifdef ADAPTIVEGRID
+static real_T *BoxEdges;                            // Box Edges for adaptive grid method
+static real_T (*StateGrid)[NT];                     // Adaptive State Grid
+#endif
+
 
 /*--- Private Structure ---*/
 typedef struct {
     real_T *CostToCome;                             // The most recent cost-to-come vector [Nx]
     uint16_t *startIdx;                             // All the possible starting indexes [Nx]
     uint16_t Nstart;                                // Number of possible starting points
-    uint16_t (*Xn)[NT];                             // Optimal State Trajectory [ResThermal][Nx]
-    real_T (*Un)[NT];                               // Optimal Control Policy [ResThermal][Nx]
+    uint16_t (*Xn)[NT];                             // Optimal State Trajectory [RES_THERMAL][Nx]
+    real_T (*Un)[NT];                               // Optimal Control Policy [RES_THERMAL][Nx]
 }
         Solution;
 
@@ -85,8 +89,7 @@ thermalSolver(SolverInput *InputPtr, DynParameter *ParaPtr, EnvFactor *EnvPtr, S
     // Global copy of the problem size (Thermal)
     Nx = SolverInputPtr->GridSize.Nt;
     Nu = SolverInputPtr->GridSize.Nq;
-    Nhrz = SolverInputPtr->GridSize.Nhrz;
-    ResThermal = SolverInputPtr->GridSize.ResThermal;
+    Nhrz = SolverInputPtr->GridSize.ResThermal;
 
     // Allocate memory to State Vector and Control Vector
     StateVec = malloc(Nx * sizeof(real_T));
@@ -98,6 +101,15 @@ thermalSolver(SolverInput *InputPtr, DynParameter *ParaPtr, EnvFactor *EnvPtr, S
     // Initialize State Vector and Control Vector (based on given [Vmin, Vmax] and [Fmin, Fmax])
     createStateVector(StateVec, SolverInputPtr->Constraint.Tmin, SolverInputPtr->Constraint.Tmax, Nx);
     createControlVector(ControlVec, SolverInputPtr->Constraint.Qmin, SolverInputPtr->Constraint.Qmax, Nu);
+
+#ifdef ADAPTIVEGRID
+    // Initialize Box Edges
+    BoxEdges = malloc((Nx + 1) * sizeof(real_T));
+    createBoxEdges(BoxEdges, StateVec, Nx);
+    // Initialize the Adaptive State Grid
+    StateGrid = malloc(sizeof(real_T[Nhrz + 1][Nx]));
+    createThermalGrid(StateGrid, StateVec, Nx, Nhrz);
+#endif
 
     // Initialize Solution Structure
     Solution SolutionStruct;
@@ -126,7 +138,7 @@ thermalSolver(SolverInput *InputPtr, DynParameter *ParaPtr, EnvFactor *EnvPtr, S
     // Find the minimum Cost-to-come value step by step
     uint16_t i;
     uint16_t j;
-    for (i = 0; i < ResThermal; i++) {
+    for (i = 0; i < Nhrz; i++) {
         calculate_costTocome(&SolutionStruct, i);
     }
 
@@ -160,14 +172,19 @@ thermalSolver(SolverInput *InputPtr, DynParameter *ParaPtr, EnvFactor *EnvPtr, S
 #if defined(NORMALBOUND) || defined(CUSTOMBOUND)
     freeBoundary(&BoundaryStruct);
 #endif
+
+#ifdef ADAPTIVEGRID
+    free(BoxEdges);
+    free(StateGrid);
+#endif
 }
 
 static void solutionStruct_init(Solution *SolutionPtr) {
     SolutionPtr->CostToCome = malloc(Nx * sizeof(real_T));
     SolutionPtr->startIdx = malloc(Nx * sizeof(uint16_t));
 
-    SolutionPtr->Xn = malloc(sizeof(uint16_t[ResThermal][Nx]));
-    SolutionPtr->Un = malloc(sizeof(real_T[ResThermal][Nx]));
+    SolutionPtr->Xn = malloc(sizeof(uint16_t[Nhrz][Nx]));
+    SolutionPtr->Un = malloc(sizeof(real_T[Nhrz][Nx]));
 
     uint16_t i, j;
 
@@ -178,7 +195,7 @@ static void solutionStruct_init(Solution *SolutionPtr) {
     }
 
     // Initialize Optimal state trajectory and control policy
-    for (i = 0; i < ResThermal; i++) {
+    for (i = 0; i < Nhrz; i++) {
         for (j = 0; j < Nx; j++) {
             SolutionPtr->Xn[i][j] = 0;
             SolutionPtr->Un[i][j] = NAN;
@@ -221,11 +238,17 @@ static void arcStruct_init(ArcProcess *ArcPtr) {
 
     ArcPtr->arcCost = malloc(sizeof(real_T[Nx][Nx]));
     ArcPtr->arcU = malloc(sizeof(real_T[Nx][Nx]));
+#ifdef ADAPTIVEGRID
+    ArcPtr->arcX = malloc(sizeof(real_T[Nx][Nx]));
+#endif
 
     // Initialize the arc costs
     for (i = 0; i < Nx; i++) {
         for (j = 0; j < Nx; j++) {
             ArcPtr->arcCost[i][j] = SolverInputPtr->SolverLimit.infValue;
+#ifdef ADAPTIVEGRID
+            ArcPtr->arcX[i][j] = 0.0;
+#endif
         }
     }
 }
@@ -233,6 +256,9 @@ static void arcStruct_init(ArcProcess *ArcPtr) {
 static void arcStruct_free(ArcProcess *ArcPtr) {
     free(ArcPtr->arcCost);
     free(ArcPtr->arcU);
+#ifdef ADAPTIVEGRID
+    free(ArcPtr->arcX);
+#endif
 }
 
 static void calculate_costTocome(Solution *SolutionPtr, uint16_t N)        // (N is iteration index)
@@ -280,6 +306,9 @@ static void calculate_costTocome(Solution *SolutionPtr, uint16_t N)        // (N
                 SolutionPtr->Xn[N][j] = startIdx;
                 SolutionPtr->Un[N][j] = ArcStruct.arcU[startIdx][j];
                 CostToCome[j] = CostToBeComp[j];
+#ifdef ADAPTIVEGRID
+                StateGrid[N + 1][j] = ArcStruct.arcX[startIdx][j];
+#endif
             }
         }
     }
@@ -319,9 +348,15 @@ static void calculate_arc_cost(ArcProcess *ArcPtr, uint16_t N)    // N is iterat
         }
     }
 
+#ifdef ADAPTIVEGRID
+    // Calculate System Dynamics
+    thermalDynamics(Nx, Nu, Xnext, ArcCost, InfFlag, StateGrid[N], ControlVec, &BoundaryStruct, SolverBridgePtr, N,
+                    X0_index);
+#else
     // Calculate System Dynamics
     thermalDynamics(Nx, Nu, Xnext, ArcCost, InfFlag, StateVec, ControlVec, &BoundaryStruct, SolverBridgePtr, N,
                     X0_index);
+#endif
 
     // Local Copy the State and Control grids
     real_T *StateVecCopy = (real_T *) malloc(Nx * sizeof(real_T));
@@ -352,6 +387,18 @@ static void calculate_arc_cost(ArcProcess *ArcPtr, uint16_t N)    // N is iterat
     BoundaryStruct.boundMemo[N][3] = maxIdx;                               // The index of the upper bound in the vector
 #endif
 
+#ifdef ADAPTIVEGRID
+    // Local copy of box edges (for step N)
+    real_T *BoxEdgesCopy = (real_T *) malloc((Nx + 1) * sizeof(real_T));
+    memcpy(BoxEdgesCopy, BoxEdges, (Nx + 1) * sizeof(real_T));
+
+    // Shift the min and max Edge to be the same as Calibrated StateVecCopy
+    //uint16_t minIdxEdge = findMaxLEQ(BoxEdgesCopy, StateVecCopy[minIdx], (Nx + 1));
+    //uint16_t maxIdxEdge = findMinGEQ(BoxEdgesCopy, StateVecCopy[maxIdx], (Nx + 1));
+    //BoxEdgesCopy[minIdxEdge] = StateVecCopy[minIdx];
+    //BoxEdgesCopy[maxIdxEdge] = StateVecCopy[maxIdx];
+#endif
+
     // Count the number of feasible control signals per state
     uint32_t counter;
 
@@ -373,6 +420,33 @@ static void calculate_arc_cost(ArcProcess *ArcPtr, uint16_t N)    // N is iterat
         }
         // Store the number of feasible control inputs per starting state
         FeasibleCounter[i] = counter;
+
+#ifdef ADAPTIVEGRID
+        if (FeasibleCounter[i] > 0) {
+            // Start and End indexes of the Box of interest (use findMaxLEQ to find endIdx in this case)
+            uint16_t startBox = findMaxLEQ(BoxEdgesCopy, Xnext[i][0], (Nx + 1));
+            uint16_t endBox = findMaxLEQ(BoxEdgesCopy, Xnext[i][(FeasibleCounter[i] - 1)], (Nx + 1));
+
+            uint16_t k = 0;
+
+            for (j = startBox; j <= endBox; j++) {
+                while (k < FeasibleCounter[i]) {
+                    // Break when Xnext has entered the next Box
+                    if (Xnext[i][k] > BoxEdgesCopy[j + 1]) {
+                        break;
+                    }
+
+                    // Pick the minimum cost among all the possible costs to the box
+                    if (ArcCost[i][k] < ArcPtr->arcCost[i][j]) {
+                        ArcPtr->arcCost[i][j] = ArcCost[i][k];
+                        ArcPtr->arcU[i][j] = Control[i][k];
+                        ArcPtr->arcX[i][j] = Xnext[i][k];
+                    }
+                    k++;
+                }
+            }
+        }
+#endif
     }
 
 
@@ -445,6 +519,9 @@ static void calculate_arc_cost(ArcProcess *ArcPtr, uint16_t N)    // N is iterat
     free(FeasibleCounter);
     free(idxSort);
     free(StateVecCopy);
+#ifdef ADAPTIVEGRID
+    free(BoxEdgesCopy);
+#endif
 
 }
 
@@ -472,15 +549,15 @@ static void findSolution(SolverOutput *OutputPtr, Solution *SolutionPtr, real_T 
     OutputPtr->Cost = minCost;
 
     // Memory for the optimal state trajectory
-    uint16_t *optimalstateIdx = (uint16_t *) calloc(ResThermal + 1, sizeof(uint16_t));
+    uint16_t *optimalstateIdx = (uint16_t *) calloc(Nhrz + 1, sizeof(uint16_t));
 
     // Load the final state index
-    optimalstateIdx[ResThermal] = finalIdx;
+    optimalstateIdx[Nhrz] = finalIdx;
 
     // Make sure there is at least one solution
     if (minCost < SolverInputPtr->SolverLimit.infValue) {
         // Retrieve the optimal index trajectory
-        k = ResThermal - 1;
+        k = Nhrz - 1;
 
         while (k >= 0) {
             optimalstateIdx[k] = SolutionPtr->Xn[k][optimalstateIdx[k + 1]];
@@ -488,11 +565,11 @@ static void findSolution(SolverOutput *OutputPtr, Solution *SolutionPtr, real_T 
         }
 
         // Find the optimal control policy and state trajectory
-        for (i = 0; i < ResThermal; i++) {
+        for (i = 0; i < Nhrz; i++) {
 
 
 #ifdef ADAPTIVEGRID
-            //OutputPtr->Vo[i] = StateGrid[i + 1][optimalstateIdx[i + 1]];
+            OutputPtr->To[i] = StateGrid[i + 1][optimalstateIdx[i + 1]];
 #elif defined(BOUNDCALIBRATION)
             if (optimalstateIdx[i + 1] == BoundaryStruct.boundMemo[i][2]) {
                 OutputPtr->To[i] = BoundaryStruct.boundMemo[i][0];
