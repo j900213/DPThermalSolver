@@ -38,25 +38,6 @@
   <component name="ChangeListManager">
     <list default="true" id="b3db8204-853c-4db9-a74f-bbcd32791450" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MatlabFiles/ModelSpeedSolver.slx" beforeDir="false" afterPath="$PROJECT_DIR$/MatlabFiles/ModelSpeedSolver.slx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MatlabFiles/cascadingSolver.c" beforeDir="false" afterPath="$PROJECT_DIR$/MatlabFiles/cascadingSolver.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MatlabFiles/cascadingSolver.mexw64" beforeDir="false" afterPath="$PROJECT_DIR$/MatlabFiles/cascadingSolver.mexw64" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MatlabFiles/cascadingSolver.tlc" beforeDir="false" afterPath="$PROJECT_DIR$/MatlabFiles/cascadingSolver.tlc" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MatlabFiles/inputSolver.m" beforeDir="false" afterPath="$PROJECT_DIR$/MatlabFiles/inputSolver.m" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MatlabFiles/showResult.asv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/MatlabFiles/test.m" beforeDir="false" afterPath="$PROJECT_DIR$/MatlabFiles/test.m" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/DPThermalSolver.dir/C.includecache" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/DPThermalSolver.dir/C.includecache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/DPThermalSolver.dir/depend.internal" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/DPThermalSolver.dir/depend.internal" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/DPThermalSolver.dir/depend.make" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/DPThermalSolver.dir/depend.make" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/inc/AdaptiveGrid.h" beforeDir="false" afterPath="$PROJECT_DIR$/inc/AdaptiveGrid.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/inc/SolverStruct.h" beforeDir="false" afterPath="$PROJECT_DIR$/inc/SolverStruct.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/inc/ThermalSolver.h" beforeDir="false" afterPath="$PROJECT_DIR$/inc/ThermalSolver.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.c" beforeDir="false" afterPath="$PROJECT_DIR$/main.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/AdaptiveGrid.c" beforeDir="false" afterPath="$PROJECT_DIR$/src/AdaptiveGrid.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/BoundaryLine.c" beforeDir="false" afterPath="$PROJECT_DIR$/src/BoundaryLine.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/SpeedSolver.c" beforeDir="false" afterPath="$PROJECT_DIR$/src/SpeedSolver.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/SystemDynamic.c" beforeDir="false" afterPath="$PROJECT_DIR$/src/SystemDynamic.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ThermalSolver.c" beforeDir="false" afterPath="$PROJECT_DIR$/src/ThermalSolver.c" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -123,6 +104,8 @@
       <workItem from="1593711251535" duration="12597000" />
       <workItem from="1594024607083" duration="16035000" />
       <workItem from="1594128244494" duration="19913000" />
+      <workItem from="1595236220646" duration="614000" />
+      <workItem from="1595239304356" duration="4000" />
     </task>
     <servers />
   </component>
